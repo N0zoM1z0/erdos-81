@@ -68,6 +68,8 @@ The current Lean project machine-checks:
 - clique edge partitions with unique edge coverage;
 - the exact Erdős 81 statement and the stronger eventual upper-bound
   statement;
+- the floor identity between `(2n+1)^2/24` and `n(n+1)/6`, including its
+  modulo-six remainder argument;
 - the universal partition into two-vertex cliques and the implication from
   the eventual bound to `n^2 / 6 + O(n)` for every order;
 - the rational stability identities and all decisive numerical margins

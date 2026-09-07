@@ -151,7 +151,8 @@ The staged project now lives entirely under `lean/` and builds with Lean
 4.31.0 against a manifest-pinned Mathlib revision.  It currently checks the
 exact graph-theoretic statement, a universal partition into edge-sized
 cliques, the implication from the eventual sharp bound to the original
-all-order assertion, the main rational identities and margins, finite LP weak
+all-order assertion, the exact floor identity (including its modulo-six
+argument), the main rational identities and margins, finite LP weak
 duality, the mixed triangle--four-clique incidence model, and the discrete
 convexity mechanism behind single-vertex copying.  It also verifies the exact
 two-direction copy edge count and solves the averaged complete-split dual LP,

@@ -20,6 +20,14 @@ def Q (n : ℚ) : ℚ :=
 def splitFirstBranch (n p : ℚ) : ℚ :=
   p * (n - p) - p * (p - 1) / 2
 
+/-- The second complete-split branch. -/
+def splitSecondBranch (n p : ℚ) : ℚ :=
+  (2 * p * (n - p) - p * (p - 1) / 2) / 3
+
+/-- The continuous envelope of the second complete-split branch. -/
+def secondBranchEnvelope (n : ℚ) : ℚ :=
+  (4 * n + 1) ^ 2 / 120
+
 /-- The exact square identity behind local stability. -/
 theorem square_identity (n p : ℚ) :
     Q n - splitFirstBranch n p = (6 * p - 2 * n - 1) ^ 2 / 24 := by
@@ -30,6 +38,19 @@ theorem square_identity (n p : ℚ) :
 theorem splitFirstBranch_le_Q (n p : ℚ) : splitFirstBranch n p ≤ Q n := by
   rw [← sub_nonneg]
   rw [square_identity]
+  positivity
+
+/-- The exact square identity for the second terminal branch. -/
+theorem second_branch_square_identity (n p : ℚ) :
+    secondBranchEnvelope n - splitSecondBranch n p =
+      (10 * p - 4 * n - 1) ^ 2 / 120 := by
+  simp only [secondBranchEnvelope, splitSecondBranch]
+  ring
+
+/-- The second terminal branch never exceeds its own continuous envelope. -/
+theorem splitSecondBranch_le_envelope (n p : ℚ) :
+    splitSecondBranch n p ≤ secondBranchEnvelope n := by
+  rw [← sub_nonneg, second_branch_square_identity]
   positivity
 
 /-- The exact coefficient accumulated when irregular root vertices are moved. -/

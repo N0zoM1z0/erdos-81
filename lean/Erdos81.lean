@@ -3,6 +3,7 @@ import Erdos81.Copying
 import Erdos81.DiscreteConvexity
 import Erdos81.FiniteLP
 import Erdos81.MixedModel
+import Erdos81.SharpBound
 import Erdos81.SplitDual
 import Erdos81.Statement
 

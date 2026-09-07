@@ -16,6 +16,9 @@ Erdős Problem 81 manuscript.  It is deliberately self-contained under
 - `Erdos81/Arithmetic.lean` proves the exact stability square identity, root
   regularization constants, terminal-branch gaps, first-entry numerical
   inequality, and far-case closing arithmetic.
+- `Erdos81/SharpBound.lean` proves the exact floor identity relating the
+  continuous envelope to `floor(n(n+1)/6)`, including the required modulo-six
+  argument.
 - `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
   first principles.
 - `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,
