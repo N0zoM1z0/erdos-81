@@ -1,0 +1,43 @@
+{
+  "scope": "Current-run checks only; no asymptotic extrapolation.",
+  "atlas": {
+    "chordal_graphs": 531,
+    "subtree_checks": 3507,
+    "prefix_subset_hostings": 607,
+    "exact_incident_optima": 160,
+    "ideal_union_checks": 4543,
+    "rich_layer_hostings": 291,
+    "prefix_scores": 3507,
+    "conditional_mean_selections": 125
+  },
+  "window_regression": {
+    "n": 144,
+    "d": 48,
+    "k": 6,
+    "window": 12,
+    "best_margin": "6",
+    "incident_parts": 546,
+    "allowance": "552",
+    "best_small_clique_margin": "-37/6",
+    "best_clique_counts": [
+      0,
+      1
+    ],
+    "forced_anchor_bonus": "1807",
+    "expected_jacobian_max": "1843"
+  },
+  "nonuniform_seed": {
+    "vertices": 11,
+    "minimum_degree": 5,
+    "batch_order": 3,
+    "common_palette": 0,
+    "internal_edges": 2,
+    "incident_edges": 18,
+    "incident_parts": 14,
+    "C": 2,
+    "budget_margin": "3/2"
+  },
+  "robust_prefix_identity_checks": 303000,
+  "edge_edit_repairs": 1000,
+  "runtime_seconds": 3.501
+}

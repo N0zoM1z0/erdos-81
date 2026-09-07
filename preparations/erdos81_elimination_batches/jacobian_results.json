@@ -1,0 +1,22 @@
+{
+  "edge_clique_partition": {
+    "operation": "graph.edge_clique_partition.check",
+    "verdict": "VALID",
+    "vertices": 11,
+    "edges": 18,
+    "parts": 14,
+    "note": "Coverage was checked by Jacobian. Exact optimality follows from the incident-edge signed dual in PROOF.md."
+  },
+  "batch_margin": {
+    "operation": "graph.signed_induced_weight.extrema.compute",
+    "maximum": "1843",
+    "maximizing_vertices": ["anchor0","anchor1","x00","x01","x02","x03","x04","x05","x06","x07","x08","x09","x10","x11"],
+    "minimum": "-283",
+    "anchor_bonus": "1807",
+    "six_times_best_margin": "36",
+    "best_margin": "6",
+    "domain_size": 12,
+    "original_graph_order": 144,
+    "note": "The source graph is the exact signed objective encoding, not the original chordal graph."
+  }
+}
