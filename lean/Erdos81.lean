@@ -1,0 +1,11 @@
+import Erdos81.Arithmetic
+import Erdos81.Statement
+
+/-!
+# Erdős Problem 81
+
+This is the public import surface for the staged formalization.  The exact
+finite-graph statement and the verified arithmetic kernel are unconditional.
+The long graph-theoretic reduction and its three published external inputs are
+tracked separately; no custom axiom is introduced to conceal that boundary.
+-/
