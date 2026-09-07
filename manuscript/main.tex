@@ -1,0 +1,1058 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\hypersetup{
+  pdftitle={Clique partitions of chordal graphs with linear error},
+  pdfauthor={Anonymous},
+  pdfsubject={Erdos Problem 81},
+  pdfkeywords={chordal graphs, clique partitions, fractional packings, stability}
+}
+
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\cp}{\operatorname{cp}}
+\newcommand{\cple}[1]{\operatorname{cp}_{\leq #1}}
+\newcommand{\Wint}{W_4}
+\newcommand{\Wfrac}{W_4^*}
+\newcommand{\PhiF}{\Phi}
+\newcommand{\distsp}{d_{\mathrm{sp}}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\one}{\mathbf{1}}
+
+\title[Linear-error clique partitions of chordal graphs]
+  {Clique partitions of chordal graphs with linear error}
+
+\author{Anonymous}
+\date{September 7, 2026}
+
+\subjclass[2020]{05C70, 05C35, 90C27}
+\keywords{chordal graph, clique partition, fractional packing,
+  symmetrization, stability}
+
+\begin{document}
+
+\begin{abstract}
+We prove that the edges of every chordal graph on $n$ vertices can be
+partitioned into $n^2/6+O(n)$ complete subgraphs.  This resolves a problem of
+Erd\H{o}s, Ordman, and Zalcstein.  In fact, for all sufficiently large $n$, the
+maximum clique-partition number among $n$-vertex chordal graphs is
+\[
+  \left\lfloor\frac{n(n+1)}6\right\rfloor .
+\]
+The proof combines a weighted fractional packing of triangles and copies of
+$K_4$ with a quantitative stability argument.  Near the extremal
+complete-split graphs we construct a partition using only edges and triangles,
+with a strict saving for every structural defect.  Far from that family, a
+finite-family packing transfer absorbs its subquadratic rounding error.  A
+single-vertex symmetrization path and a first-entry argument connect the two
+regimes.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+A \emph{clique partition} of a finite simple graph $G$ is a collection of
+complete subgraphs whose edge sets partition $E(G)$.  We write $\cp(G)$ for
+the minimum number of parts in such a partition.  Erd\H{o}s, Ordman, and
+Zalcstein asked whether every chordal graph on $n$ vertices satisfies
+\begin{equation}\label{eq:erdos-question}
+  \cp(G)\leq \frac{n^2}{6}+O(n).
+\end{equation}
+Their complete-split examples show that the coefficient $1/6$ cannot be
+improved \cite{ErdosOrdmanZalcstein1993}.  The question is listed as Erd\H{o}s
+Problem 81 \cite{ErdosProblems81}.
+
+Recall that a graph is chordal if it contains no induced cycle of length at
+least four.  Split graphs, whose vertices can be divided into a clique and an
+independent set, form an important subclass.  Chen, Erd\H{o}s, and Ordman
+proved the bound $3n^2/16+O(n)$ for split graphs
+\cite{ChenErdosOrdman1994}.  Two recent preprints give complementary partial
+progress: Traverso proves \eqref{eq:erdos-question} for split graphs and
+determines an associated fractional triangle functional, while Cipollini
+proves $n^2/6+o(n^2)$ for all chordal graphs
+\cite{Traverso2026,Cipollini2026}.  Neither partial result supplies the
+linear-error conclusion for general chordal graphs.
+
+Our main result is stronger than \eqref{eq:erdos-question}.
+
+\begin{theorem}\label{thm:main}
+There is an integer $N$ such that, for every $n\geq N$,
+\[
+  \max\{\cp(G): G\text{ is chordal and }|V(G)|=n\}
+  =M(n):=\left\lfloor\frac{n(n+1)}6\right\rfloor .
+\]
+\end{theorem}
+
+\begin{corollary}\label{cor:erdos81}
+There is an absolute constant $C$ such that every chordal graph $G$ on $n$
+vertices satisfies
+\[
+  \cp(G)\leq \frac{n^2}{6}+Cn.
+\]
+\end{corollary}
+
+The proof has two distinct parts.  We first introduce a mixed packing
+functional in which a triangle has gain $2$ and a copy of $K_4$ has gain $5$.
+The corresponding fractional functional is well behaved under vertex
+copying.  Repeated copies lead monotonically to a complete-split graph.  This
+gives the correct global quadratic bound, but a general packing-transfer
+theorem loses $o(n^2)$ and therefore cannot by itself prove
+\eqref{eq:erdos-question}.
+
+The second part repairs precisely that loss near the extremal family.  Starting
+from a clique of order close to $n/3$, we regularize the choice of root clique
+without changing the graph.  A balanced Vizing edge-colouring and the
+H\"aggkvist--Janssen list-edge-colouring theorem then produce an integral
+triangle packing with a fixed saving for both types of defect: edges outside
+the root and missing edges between the root and its complement.  This yields a
+local stability inequality in the actual labelled edit distance.  Finally, a
+single-vertex version of the copying argument forces every graph with nearly
+extremal fractional value into that local neighbourhood.  The first path
+vertex entering the neighbourhood would otherwise satisfy incompatible upper
+and lower bounds on its edit distance.
+
+The constants used below are intentionally conservative.  Put
+\begin{equation}\label{eq:constants}
+  \rho=10^{-12},\qquad \eta=10^{-30}.
+\end{equation}
+For the packing-transfer theorem stated in \cref{thm:packing-transfer}, choose
+a threshold $T(\varepsilon)$ that works uniformly for all graphs, and set
+\begin{equation}\label{eq:N-definition}
+  N=\max\{10^{32},T(\eta/2)\}.
+\end{equation}
+No numerical value for $T(\eta/2)$ is asserted.
+
+\section{Preliminaries and external inputs}
+
+All graphs in the paper are finite and simple.  For $r\geq2$, let
+$\cple{r}(G)$ be the minimum number of parts in a clique partition of $G$ in
+which every part has at most $r$ vertices.  Thus
+\[
+  \cp(G)\leq \cple{r}(G).
+\]
+We allow copies of $K_2$ as parts.  We write $e(G)=|E(G)|$,
+$\Delta(G)$ for maximum degree, and $\omega(G)$ for clique number.
+
+We use the following three published results.  Their quantifiers are recorded
+explicitly because the uniformity in the third result is important.
+
+\begin{theorem}[Vizing \cite{Vizing1964}]\label{thm:vizing}
+Every finite simple graph $H$ has a proper edge-colouring with at most
+$\Delta(H)+1$ colours.
+\end{theorem}
+
+\begin{theorem}[H\"aggkvist--Janssen \cite{HaggkvistJanssen1997}]
+\label{thm:HJ}
+The list-chromatic index of $K_p$ is at most $p$.  Equivalently, if every edge
+of $K_p$ is assigned a list of at least $p$ colours, then the edges admit a
+proper colouring in which each edge receives a colour from its own list.
+\end{theorem}
+
+For a graph $G$, consider edge-disjoint packings by triangles and copies of
+$K_4$.  Assign gain $2$ to a triangle and gain $5$ to a copy of $K_4$.  Let
+$\Wint(G)$ be the maximum total gain of an integral packing and let
+$\Wfrac(G)$ be the optimum of the fractional relaxation.  Explicitly, if
+$\mathcal{T}(G)$ and $\mathcal{K}_4(G)$ denote the triangles and copies of
+$K_4$ in $G$, then
+\begin{equation}\label{eq:mixed-primal}
+ \begin{aligned}
+ \Wfrac(G)=\max\quad
+   &2\sum_{T\in\mathcal{T}(G)}x_T
+    +5\sum_{K\in\mathcal{K}_4(G)}z_K,\\
+ \text{subject to}\quad
+   &x_T,z_K\geq0,\\
+   &\sum_{T\ni e}x_T+\sum_{K\ni e}z_K\leq1
+       &&\text{for every }e\in E(G).
+ \end{aligned}
+\end{equation}
+
+\begin{theorem}[finite-family packing transfer]
+\label{thm:packing-transfer}
+For every $\varepsilon>0$ there is an integer $T(\varepsilon)$ such that every
+graph $G$ with $|V(G)|\geq T(\varepsilon)$ satisfies
+\[
+  0\leq \Wfrac(G)-\Wint(G)\leq
+  \varepsilon |V(G)|^2.
+\]
+The threshold is uniform over all graphs of the given order.
+\end{theorem}
+
+This is the specialization of the weighted finite-family theorem
+\cite[Theorem~3.4]{RohatgiUrschelWellens2021} to $\{K_3,K_4\}$ and gains
+$2,5$.  The proof of
+\cite[Theorem~3.6]{RohatgiUrschelWellens2021} also makes the required uniform
+application explicit.
+
+We shall use standard properties of chordal graphs: induced subgraphs are
+chordal; chordal graphs admit perfect elimination orderings; adding a vertex
+whose neighbourhood is a clique preserves chordality; and every noncomplete
+chordal graph has two nonadjacent simplicial vertices
+\cite{Dirac1961,BlairPeyton1993}.  We also need the following convenient form
+of the elimination-ordering property.
+
+\begin{lemma}\label{lem:peo-ending-clique}
+If $P$ is a clique in a chordal graph $G$, then $G$ has a perfect elimination
+ordering whose final vertices are precisely the vertices of $P$.
+\end{lemma}
+
+\begin{proof}
+As long as a vertex remains outside $P$, remove a simplicial vertex outside
+$P$.  Such a vertex exists: if the current graph is complete, every outside
+vertex is simplicial; otherwise, two nonadjacent simplicial vertices exist and
+they cannot both lie in the clique $P$.  The induced graph left after each
+removal is chordal.  Appending the vertices of $P$ in any order completes the
+desired ordering.
+\end{proof}
+
+The fractional mixed packing has the dual formulation
+\begin{equation}\label{eq:mixed-dual}
+  \Wfrac(G)=\min\left\{
+  \sum_{e\in E(G)}y_e:
+  \begin{array}{l}
+    y_e\geq0,\\[2pt]
+    \sum_{e\in E(T)}y_e\geq2\quad\text{for every triangle }T,\\[2pt]
+    \sum_{e\in E(K)}y_e\geq5\quad\text{for every }K\cong K_4
+  \end{array}\right\}.
+\end{equation}
+Both primal and dual optima are attained.  For example, a dual coordinate
+larger than $5$ can be replaced by $5$, so the dual minimum may be taken over
+a compact box.
+
+Define
+\begin{equation}\label{eq:functional-definitions}
+  \PhiF(G)=e(G)-\Wfrac(G),\qquad
+  Q(n)=\frac{(2n+1)^2}{24}.
+\end{equation}
+Since the gain of a clique is the number of edges saved when it replaces its
+constituent $K_2$ parts, we have the exact identity
+\begin{equation}\label{eq:cp4-identity}
+  \cple{4}(G)=e(G)-\Wint(G)
+  =\PhiF(G)+\Wfrac(G)-\Wint(G).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:Phi-cp3}
+  \PhiF(G)\leq \cple{3}(G),
+\end{equation}
+because every integral triangle packing is an admissible mixed fractional
+packing.  Notice that \eqref{eq:Phi-cp3} does not assert
+$\PhiF(G)\leq\cp(G)$.
+
+Finally,
+\begin{equation}\label{eq:floor-identity}
+  \lfloor Q(n)\rfloor
+  =\left\lfloor\frac{n(n+1)}6\right\rfloor=M(n).
+\end{equation}
+Indeed, $Q(n)=n(n+1)/6+1/24$, while the fractional part of $n(n+1)/6$ is
+either $0$ or $1/3$.
+
+\section{An integral construction around a root clique}
+
+Let $P$ be a clique in a chordal graph $G$, and introduce the data
+\begin{equation}\label{eq:root-data}
+  p=|P|,\quad H=G-P,\quad q=|V(H)|,\quad
+  m=e(H),\quad w=\omega(H).
+\end{equation}
+Write
+\begin{equation}\label{eq:root-defects}
+  A=pq-e_G(P,V(H)),\qquad
+  D=\max_{x\in P}|V(H)\setminus N_G(x)|.
+\end{equation}
+Thus $A$ is the total number of missing root--outside incidences and $D$ is
+the largest missing column; here $e_G(X,Y)$ denotes the number of edges with
+one endpoint in each of the disjoint sets $X$ and $Y$.
+
+\begin{lemma}[terminal construction]\label{lem:terminal-construction}
+Assume $p\geq1$, and put
+\[
+  c=\max\{p,\Delta(H)+1\},\qquad
+  t=\left\lceil\frac{m}{c}\right\rceil.
+\]
+If
+\begin{equation}\label{eq:host-condition}
+  q-2D-4t\geq p,
+\end{equation}
+then
+\begin{equation}\label{eq:terminal-bound}
+  \cple{3}(G)
+  \leq pq-\binom p2
+    +\left(1-\frac{2p}{c}\right)m
+    -\left(1-\frac{2(w-1)}p\right)A.
+\end{equation}
+The clique $P$ need not be maximum.
+\end{lemma}
+
+\begin{proof}
+By \cref{thm:vizing}, the edges of $H$ have a proper colouring with $c$
+colours.  Choose such a colouring for which the sum of the squares of the
+colour-class sizes is minimum.  Its classes differ in size by at most one.
+Indeed, if two classes differed by at least two, their union would contain an
+alternating path with one more edge of the larger colour; interchanging the
+two colours on that path would decrease the sum of squares.  Consequently
+each class has at most $t$ edges.
+
+Retain the $p$ largest classes.  Together they contain at least $pm/c$ edges.
+We assign these classes bijectively to the vertices of $P$.  An outside edge
+$uv$ assigned to $x\in P$ is retained when $x$ is adjacent to both $u$ and
+$v$; it then yields the triangle $uvx$.
+
+Choose a perfect elimination ordering ending in $P$, as in
+\cref{lem:peo-ending-clique}, and orient every edge of $H$ from its earlier to
+its later endpoint.  If $uv$ is oriented from $u$ to $v$, then
+\[
+  N_G(u)\cap P\subseteq N_G(v)\cap P,
+\]
+because the later neighbours of $u$ form a clique.  Hence the number of root
+vertices that are invalid hosts for $uv$ is exactly
+$a_u=p-|N_G(u)\cap P|$.  The vertex $u$ has at most $w-1$ later neighbours in
+$H$, and therefore the total number of invalid-host incidences over all
+outside edges is at most
+\[
+  (w-1)\sum_{u\in V(H)}a_u=(w-1)A.
+\]
+This remains an upper bound after only the selected colour classes are kept.
+
+Choose the bijection from the selected classes to $P$ uniformly at random.
+Each invalid host is assigned to its class with probability $1/p$, so some
+bijection retains at least
+\begin{equation}\label{eq:f-lower}
+  f\geq \frac{pm}{c}-\frac{(w-1)A}{p}
+\end{equation}
+outside edges.  Use the corresponding $f$ triangles.  Since every selected
+class is a matching of size at most $t$, each root vertex is incident with at
+most $2t$ outside spokes already used by these triangles.
+
+It remains to cover the edges within $P$.  For each $xy\in E(G[P])$, let
+$L(xy)$ be the set of outside vertices $z$ such that $xyz$ is a triangle and
+neither $xz$ nor $yz$ has already been used.  The union bound gives
+\[
+  |L(xy)|\geq q-2D-4t\geq p.
+\]
+Apply \cref{thm:HJ} to the complete graph on $P$ with these actual lists.  Its
+proper list-edge-colouring assigns a host $z\in L(xy)$ to every root edge
+$xy$.  The resulting root triangles are pairwise edge-disjoint and are also
+edge-disjoint from the $f$ outside-edge triangles.
+
+Use $K_2$ parts for every crossing or outside edge not yet covered.  The exact
+number of parts is
+\[
+  pq-\binom p2+m-A-2f.
+\]
+Substituting \eqref{eq:f-lower} proves \eqref{eq:terminal-bound}.
+\end{proof}
+
+We shall repeatedly use the following immediate consequence.
+
+\begin{corollary}\label{cor:strict-terminal-bound}
+Under the hypotheses of \cref{lem:terminal-construction}, if in addition
+\[
+  c\leq\frac{9p}{5}
+  \quad\text{and}\quad
+  \frac{2(w-1)}p\leq\frac12,
+\]
+then
+\begin{equation}\label{eq:strict-terminal-bound}
+  \cple{3}(G)\leq pq-\binom p2-\frac m9-\frac A2.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+In \eqref{eq:terminal-bound}, the coefficient of $m$ is at most $-1/9$ and
+the coefficient of $A$ is at most $-1/2$.
+\end{proof}
+
+\section{Strict regularization of the root}
+
+The construction in \cref{lem:terminal-construction} becomes useful only when
+both coefficients in \eqref{eq:terminal-bound} are bounded away from zero.
+The next elementary observation controls vertices that are not complete to the
+root.
+
+\begin{lemma}\label{lem:nonadjacency}
+With the notation of \eqref{eq:root-data}--\eqref{eq:root-defects}, suppose
+$u\in V(H)$ is nonadjacent to some $x\in P$.  Then
+\[
+  d_H(u)\leq D+w-2.
+\]
+\end{lemma}
+
+\begin{proof}
+The common neighbours of two nonadjacent vertices in a chordal graph form a
+clique: two nonadjacent common neighbours would induce a $4$-cycle.  Thus
+$N_H(u)\cap N_H(x)$, together with $u$, is a clique in $H$, and the
+intersection has at most $w-1$ vertices.  Every remaining neighbour of $u$ in
+$H$ lies in $V(H)\setminus N_G(x)$.  This set has at most $D$ vertices and
+contains $u$ itself, so it contains at most $D-1$ neighbours of $u$.  Adding
+the two estimates proves the claim.
+\end{proof}
+
+\begin{lemma}[strict root regularization]\label{lem:root-regularization}
+Suppose that a chordal graph $G$ contains a clique $P$ whose data satisfy
+\begin{equation}\label{eq:regularization-hypotheses}
+  p\geq128,\qquad |q-2p|\leq\frac p{64},\qquad
+  m+A\leq\frac{p^2}{65536}.
+\end{equation}
+Then $G$ contains a clique $P'$---not necessarily a maximum clique---such that,
+for the corresponding data $p',q',m',A'$,
+\begin{equation}\label{eq:regularized-bound}
+  \cple{3}(G)
+  \leq p'q'-\binom{p'}2-\frac{m'}9-\frac{A'}2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+First demote every root vertex whose original missing column has more than
+$p/64$ entries.  Let $R$ be the set of demoted vertices, let $r=|R|$, and put
+$P_0=P\setminus R$.  This changes only the designation of the root: no edge is
+edited and no clique-partition part is chosen.  From
+\eqref{eq:regularization-hypotheses},
+\begin{equation}\label{eq:demotion-size}
+  r\leq\frac{64A}{p}\leq\frac p{1024},\qquad
+  p_0=p-r\geq\frac{99p}{100},\qquad q_0=q+r,
+\end{equation}
+and the largest missing column of the retained root satisfies $D_0\leq p/64$.
+
+Let $H_0=G-P_0$.  Since $R$ was contained in the original clique, its outside
+edge count is exactly
+\[
+  m_0=m+e_G(R,V(H))+\binom r2.
+\]
+Using $q\leq129p/64$ and \eqref{eq:demotion-size}, we obtain
+\begin{align}
+  m_0
+  &\leq \left(\frac1{65536}
+      +\frac{129}{64\cdot1024}
+      +\frac1{2\cdot1024^2}\right)p^2  \notag\\
+  &=\frac{4161}{2097152}p^2
+   <\frac{p^2}{400}.
+  \label{eq:m0-bound}
+\end{align}
+If $w_0=\omega(H_0)$, then
+$\binom{w_0}{2}\leq m_0$, and hence
+\begin{equation}\label{eq:w0-bound}
+  w_0-1\leq\sqrt{2m_0}<\frac p{10}.
+\end{equation}
+
+Define the fixed defect bound
+\begin{equation}\label{eq:Dbar-definition}
+  \overline D=\max\left\{D_0,q_0-\frac{7p_0}{4}\right\}.
+\end{equation}
+Equations \eqref{eq:regularization-hypotheses} and
+\eqref{eq:demotion-size} give
+\begin{equation}\label{eq:Dbar-bound}
+  \overline D
+  \leq\max\left\{\frac p{64},
+        \left(\frac{17}{64}+\frac{11}{4096}\right)p\right\}
+  =\frac{1099}{4096}p<\frac p3.
+\end{equation}
+
+Starting from $P_0$, promote an outside vertex whenever its degree in the
+current outside graph is at least $7/4$ times the current root order.  Every
+promotion is legal.  Indeed, by \cref{lem:nonadjacency}, a vertex not complete
+to the current root has outside degree at most
+\[
+  \overline D+w_0-2<\frac{13p}{30},
+\]
+far below $7p_0/4$.  Thus every promoted vertex is complete to the current
+root, which consequently remains a clique.
+
+The bound $\overline D$ remains valid throughout the procedure.  If $u$ is
+promoted when the outside and root orders are $q_i$ and $p_i$, respectively,
+then its missing column after promotion has size at most
+\[
+  q_i-1-d_{H_i}(u)
+  \leq q_i-\frac{7p_i}{4}-1
+  \leq q_0-\frac{7p_0}{4}\leq\overline D.
+\]
+The old missing columns can only shrink, and the outside clique number cannot
+increase.
+
+The edges removed from the outside graph in different promotions are
+disjointly accounted for.  If $h$ vertices are promoted, then
+\begin{equation}\label{eq:promotion-count}
+  h\leq\frac{4m_0}{7p_0}\leq\frac p{693}.
+\end{equation}
+Let $P'$ and $H'$ be the root and outside graph at termination.  Then
+$\Delta(H')<7p'/4$, and therefore
+\begin{equation}\label{eq:cprime-bound}
+  c':=\max\{p',\Delta(H')+1\}
+  \leq\left\lceil\frac{7p'}4\right\rceil
+  \leq\frac{9p'}5.
+\end{equation}
+The last inequality holds for every integer $p'\geq15$, whereas here
+$p'\geq p_0\geq127$.  Also, by \eqref{eq:w0-bound},
+\begin{equation}\label{eq:wprime-bound}
+  \frac{2(w'-1)}{p'}<\frac{20}{99}<\frac12.
+\end{equation}
+
+Put $t'=\lceil m'/c'\rceil$.  Since $m'\leq m_0$ and $c'\geq p_0$,
+\begin{equation}\label{eq:tprime-bound}
+  t'\leq\left\lceil\frac{m_0}{p_0}\right\rceil
+  \leq\frac p{396}+1.
+\end{equation}
+Finally, each promotion decreases $q-p$ by two, so
+\begin{align}
+ q'-p'-2D'-4t'
+ &\geq
+ \left(\frac{63}{64}-\frac2{693}-\frac23-\frac1{99}\right)p-4 \notag\\
+ &=\frac{4505}{14784}p-4
+  >\frac p4-4\geq0.
+ \label{eq:final-host-margin}
+\end{align}
+Thus the host condition \eqref{eq:host-condition} holds for $P'$.  Apply
+\cref{cor:strict-terminal-bound} using \eqref{eq:cprime-bound} and
+\eqref{eq:wprime-bound}; this gives \eqref{eq:regularized-bound}.
+\end{proof}
+
+\begin{remark}
+The promotion threshold $7p/4$ is what leaves a fixed negative coefficient on
+$m'$ in \eqref{eq:regularized-bound}.  A threshold of $2p$ would permit that
+coefficient to vanish.  The exact formula for $m_0$ also shows that every edge
+created in the outside graph by demoting a root vertex has been charged.
+\end{remark}
+
+\section{Quantitative local stability}
+
+Fix $n$, put $a=\lfloor n/3\rfloor$, and, for each $A_0\subseteq V(G)$ with
+$|A_0|=a$, let $S_{A_0}$ be the complete-split graph on $V(G)$ with clique
+side $A_0$.  Thus two vertices are adjacent in $S_{A_0}$ if and only if at
+least one of them lies in $A_0$.  Define the labelled edit distance
+\begin{equation}\label{eq:edit-distance}
+  \distsp(G)=\min_{|A_0|=a}
+    |E(G)\mathbin{\triangle}E(S_{A_0})|.
+\end{equation}
+A single operation that replaces the neighbourhood of one vertex by the
+neighbourhood of a nonadjacent vertex changes at most $n-2$ unordered pairs.
+Consequently, $\distsp$ changes by at most $n-2$ in one such operation.
+
+\begin{lemma}\label{lem:local-root}
+Let $G$ be chordal of order $n\geq1000$.  If
+\[
+  \distsp(G)\leq\rho n^2,
+\]
+then $G$ has a clique satisfying the hypotheses of
+\cref{lem:root-regularization}.
+\end{lemma}
+
+\begin{proof}
+Choose $A_0$ in \eqref{eq:edit-distance} with edit count
+$E\leq\rho n^2$.  Let $P$ be a maximum clique of the chordal graph $G[A_0]$,
+write $p=|P|$, and put $u=a-p$.
+
+A chordal graph on $a$ vertices with clique number $p$ has at most
+\begin{equation}\label{eq:chordal-edge-bound}
+  (p-1)a-\binom p2
+\end{equation}
+edges.  To see this, sum the number of later neighbours in a perfect
+elimination ordering, bounding the successive terms by
+$\min\{p-1,a-i\}$.  The number of pairs missing from $G[A_0]$ is therefore at
+least $\binom{u+1}{2}$.  These pairs are counted by $E$, and hence
+\begin{equation}\label{eq:u-bound}
+  u\leq\sqrt{2E}\leq\sqrt{2\rho}\,n.
+\end{equation}
+
+Since $p=a-u$ and $q=n-p$, for $n\geq1000$ we have
+\begin{align}
+  p&\geq \frac n3-1-\sqrt{2\rho}\,n
+      \geq\frac{33n}{100}\geq128,\label{eq:p-local-range}\\
+  p&\leq\frac n3,\qquad
+  0\leq q-2p=n-3p
+      \leq3+3\sqrt{2\rho}\,n\leq\frac p{64}.
+  \label{eq:q-local-range}
+\end{align}
+
+The edges in the old independent side and the nonedges between the two old
+sides contribute at most $E$ defects altogether.  Every newly relevant pair
+involving $A_0\setminus P$ contributes at most $un$.  Thus the outside-edge
+count and missing-incidence count for the root $P$ satisfy
+\begin{align}
+  m+A
+  &\leq E+un
+   \leq(\rho+\sqrt{2\rho})n^2 \notag\\
+  &\leq\left(10^{-12}+\frac{3}{2\cdot10^6}\right)n^2
+   <\frac{(33/100)^2n^2}{65536}
+   \leq\frac{p^2}{65536}.
+\end{align}
+Together with \eqref{eq:p-local-range}--\eqref{eq:q-local-range}, this is
+exactly \eqref{eq:regularization-hypotheses}.
+\end{proof}
+
+\begin{lemma}[local stability]\label{lem:local-stability}
+Under the hypotheses of \cref{lem:local-root}, put
+\[
+  \mathcal{D}=Q(n)-\PhiF(G).
+\]
+Then $\mathcal{D}\geq0$ and
+\begin{equation}\label{eq:local-stability}
+  \distsp(G)
+  \leq9\mathcal{D}+n\sqrt{\frac{2\mathcal{D}}3}+n.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:local-integral-conclusion}
+  \cple{3}(G)\leq M(n).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Apply \cref{lem:root-regularization}, and use primes for the resulting root
+data.  By \eqref{eq:Phi-cp3} and \eqref{eq:regularized-bound},
+\begin{equation}\label{eq:deficit-lower}
+  \mathcal{D}
+  \geq Q(n)-\left(p'q'-\binom{p'}2\right)
+      +\frac{m'}9+\frac{A'}2.
+\end{equation}
+The first difference on the right has the exact form
+\begin{equation}\label{eq:square-identity}
+  Q(n)-\left(p'(n-p')-\binom{p'}2\right)
+  =\frac{(6p'-2n-1)^2}{24}.
+\end{equation}
+It follows that
+\begin{equation}\label{eq:defect-and-root-control}
+  m'+A'\leq9\mathcal{D},
+  \qquad
+  \left|p'-\frac{2n+1}{6}\right|
+  \leq\sqrt{\frac{2\mathcal{D}}3}.
+\end{equation}
+In particular, $\mathcal{D}\geq0$.
+
+The graph $G$ differs from the complete-split graph with clique side $P'$ on
+exactly $m'+A'$ pairs.  Changing that clique side to have order
+$\lfloor n/3\rfloor$ requires at most
+$|p'-\lfloor n/3\rfloor|$ vertex-role changes, each costing at most $n$ edge
+edits.  Since
+\[
+  \left|\frac{2n+1}{6}-\left\lfloor\frac n3\right\rfloor\right|<1,
+\]
+equation \eqref{eq:local-stability} follows from
+\eqref{eq:defect-and-root-control}.
+
+Finally, \eqref{eq:regularized-bound} and \eqref{eq:square-identity} give
+$\cple{3}(G)\leq Q(n)$.  The left side is an integer, so
+\eqref{eq:floor-identity} yields \eqref{eq:local-integral-conclusion}.
+\end{proof}
+
+\section{A monotone path of single-vertex copies}
+
+Let $u$ and $v$ be nonadjacent vertices of a graph $G$.  Write
+$G_{u\to v}$ for the graph obtained by deleting the edges incident with $u$
+and then making $N_{G_{u\to v}}(u)=N_G(v)$.  In particular, $u$ and $v$
+remain nonadjacent.
+
+\begin{lemma}[copy inequality]\label{lem:copy-inequality}
+For every graph $G$ and every nonadjacent pair $u,v$,
+\begin{equation}\label{eq:copy-inequality}
+  \PhiF(G_{u\to v})+\PhiF(G_{v\to u})\geq2\PhiF(G).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose an optimal dual cover $y$ in \eqref{eq:mixed-dual}.  To obtain a cover
+of $G_{u\to v}$, keep every unaffected edge weight and give each new edge
+$ux$ the old weight $y_{vx}$.  Every triangle or $K_4$ containing $u$ is then
+a copy of one containing $v$ in $G$, while no clique contains both $u$ and
+$v$.  Thus all dual constraints remain valid.
+
+Let $s_u$ and $s_v$ be the sums of the $y$-weights on edges incident with $u$
+and $v$.  The copied covers of $G_{u\to v}$ and $G_{v\to u}$ have respective
+weights
+\[
+  \Wfrac(G)-s_u+s_v
+  \quad\text{and}\quad
+  \Wfrac(G)-s_v+s_u.
+\]
+They therefore give
+\[
+  \Wfrac(G_{u\to v})+\Wfrac(G_{v\to u})
+  \leq2\Wfrac(G).
+\]
+On the other hand, the two copied edge counts sum to $2e(G)$.  Subtracting the
+preceding inequality from this identity gives
+\eqref{eq:copy-inequality}.
+\end{proof}
+
+Vertices with the same open neighbourhood are called \emph{false twins}.
+Every false-twin class is independent.  Suppose $A_1$ and $A_2$ are distinct
+false-twin classes consisting of simplicial vertices, with no edge between
+the two classes.  Keep the graph outside $A_1\cup A_2$ fixed.  If
+$r=|A_1|+|A_2|$, let $H_j$ be the graph in which $j$ of these $r$ vertices
+have neighbourhood $N_G(A_1)$ and the other $r-j$ have neighbourhood
+$N_G(A_2)$.  Both neighbourhoods are cliques, so every $H_j$ is chordal.
+For $0<j<r$, \cref{lem:copy-inequality} gives
+\begin{equation}\label{eq:discrete-convexity}
+  \PhiF(H_{j-1})+\PhiF(H_{j+1})\geq2\PhiF(H_j).
+\end{equation}
+Thus $j\mapsto\PhiF(H_j)$ is discretely convex.  At any interior index, at
+least one adjacent value is no smaller.  Once such a direction is chosen,
+the successive differences in that direction remain nonnegative by
+\eqref{eq:discrete-convexity}.  We may therefore move one vertex at a time to
+the corresponding endpoint without ever decreasing $\PhiF$.
+
+At the endpoint the two selected false-twin classes have merged.  No class
+outside their union splits: all of its vertices have the same adjacency to a
+representative of the target class and consequently acquire the same
+adjacency to every copied vertex.  The number of false-twin classes has
+strictly decreased.
+
+We next identify the graphs at which this procedure stops.
+
+\begin{lemma}[terminal characterization]\label{lem:terminal-characterization}
+Let $G$ be chordal.  If every two nonadjacent simplicial vertices of $G$ have
+the same open neighbourhood, then $G$ is complete-split; that is,
+\[
+  G\cong K_k\vee\overline K_{n-k}
+\]
+for some $0\leq k\leq n$.
+\end{lemma}
+
+\begin{proof}
+Suppose first that $G$ is disconnected and has an edge.  Choose a nonisolated
+simplicial vertex in a nontrivial component and a simplicial vertex in another
+component.  Their neighbourhoods are disjoint and at least one is nonempty,
+contrary to the hypothesis.  Hence a disconnected terminal graph is edgeless.
+Complete graphs are also of the required form.
+
+It remains to consider a connected, noncomplete graph.  Take a clique tree of
+$G$ with at least two maximal-clique bags.  A vertex private to a leaf bag is
+simplicial and occurs in no other bag.  Private vertices chosen from distinct
+leaves are nonadjacent, and hence they have a common open neighbourhood, say
+$K$.
+
+Each leaf has exactly one private vertex.  Otherwise, the neighbourhood of a
+private vertex in that leaf would contain another private vertex from the
+same leaf, whereas the neighbourhood of a private vertex in a different leaf
+would not.  It follows that every leaf bag is $K$ together with its unique
+private vertex.
+
+Every member of $K$ occurs in every leaf bag.  By the running-intersection
+property, it then occurs in every bag, because every node of a finite tree lies
+on a path between two leaves.  Thus $K$ is complete and universal to
+$V(G)\setminus K$.  Each leaf-private vertex is isolated in $G-K$.
+
+If $G-K$ had a nontrivial component, choose a nonisolated simplicial vertex of
+that chordal component.  Its neighbourhood in $G$ is a clique, so it is also
+simplicial in $G$.  It is nonadjacent to a leaf-private vertex, but its
+neighbourhood properly contains $K$, again a contradiction.  Therefore $G-K$
+is independent, as required.
+\end{proof}
+
+\begin{proposition}[fine monotone symmetrization]
+\label{prop:fine-symmetrization}
+Every chordal graph $G$ of order $n$ admits a sequence
+\[
+  G=G_0,G_1,\ldots,G_L=S_{k,n-k}
+\]
+of chordal graphs such that
+\[
+  \PhiF(G_{i+1})\geq\PhiF(G_i)
+  \quad\text{and}\quad
+  |E(G_{i+1})\mathbin{\triangle}E(G_i)|\leq n-2
+\]
+for every $i$.  One may take $L\leq n(n-1)$.
+\end{proposition}
+
+\begin{proof}
+If the condition in \cref{lem:terminal-characterization} fails, choose two
+nonadjacent simplicial vertices with different neighbourhoods and take their
+false-twin classes.  The preceding discrete-convexity argument merges those
+classes by a sequence of nondecreasing single-vertex copies.  Each copied
+vertex changes at most $n-2$ incident pairs.  Repeat.  A full-class merge
+strictly decreases the number of false-twin classes, so there are at most
+$n-1$ merges, each requiring at most $n$ copies.  The terminal graph is
+complete-split by \cref{lem:terminal-characterization}.
+\end{proof}
+
+The single-vertex resolution in \cref{prop:fine-symmetrization} is essential:
+the proof below controls the first point at which the path crosses the boundary
+of a fixed edit-distance neighbourhood.
+
+\section{The mixed functional on complete-split graphs}
+
+Write
+\[
+  S_{k,\ell}=K_k\vee\overline K_\ell,
+  \qquad k+\ell=n.
+\]
+
+\begin{lemma}\label{lem:split-functional}
+If $k\geq4$ and $\ell\geq1$, then
+\begin{equation}\label{eq:split-functional}
+  \PhiF(S_{k,\ell})=
+  \max\left\{
+    k\ell-\binom k2,
+    \frac{2k\ell-\binom k2}{3},
+    \frac{k\ell+\binom k2}{6}
+  \right\}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Average an optimal dual cover over all automorphisms of $S_{k,\ell}$.  We may
+therefore assign a common weight $x$ to each edge in the clique side and a
+common weight $y$ to each spoke.  The triangle and $K_4$ constraints in
+\eqref{eq:mixed-dual} reduce to
+\begin{equation}\label{eq:split-dual-region}
+  x\geq\frac56,\qquad y\geq0,\qquad
+  x+2y\geq2,\qquad x+y\geq\frac53.
+\end{equation}
+Here $x\geq5/6$ subsumes the root-triangle constraint $x\geq2/3$.
+
+The lower boundary of \eqref{eq:split-dual-region} has vertices
+\[
+  (2,0),\qquad \left(\frac43,\frac13\right),\qquad
+  \left(\frac56,\frac56\right).
+\]
+The dual objective is $\binom{k}{2}x+k\ell y$, so its minimum is attained at
+one of these vertices.  Subtracting the three possible values from
+$e(S_{k,\ell})=\binom{k}{2}+k\ell$ gives
+\eqref{eq:split-functional}.
+\end{proof}
+
+The three expressions in \eqref{eq:split-functional}, maximized over the real
+variable $k$, are bounded respectively by
+\begin{equation}\label{eq:three-global-bounds}
+  Q(n),\qquad \frac{(4n+1)^2}{120},qquad
+  \frac{n(n-1)}{12}.
+\end{equation}
+The first bound is the square identity \eqref{eq:square-identity}; the other
+two follow by completing the square and by $e(S_{k,\ell})\leq\binom n2$.
+If $\ell=0$ and $k\geq4$, then
+$\PhiF(K_k)=e(K_k)/6$: the constant dual weight $5/6$ is optimal, as witnessed
+by the uniform fractional packing of all copies of $K_4$.  If $k\leq3$, then
+$\PhiF(S_{k,n-k})\leq e(S_{k,n-k})\leq3n$.
+
+For $n\geq100$, every branch except the first in
+\eqref{eq:split-functional}, including the preceding degenerate cases, is
+strictly smaller than
+\begin{equation}\label{eq:branch-gap}
+  \frac{n^2}{6}-\frac{n^2}{40}.
+\end{equation}
+For the second branch this is equivalent to $n^2>8n+1$, while
+$3n<n^2/6-n^2/40$ follows from $17n>360$; the third branch and the complete
+graph are smaller still.
+
+\begin{corollary}\label{cor:global-Phi-bound}
+Every chordal graph $G$ of order $n\geq100$ satisfies
+\[
+  \PhiF(G)\leq Q(n).
+\]
+\end{corollary}
+
+\begin{proof}
+Apply \cref{prop:fine-symmetrization}.  The functional does not decrease along
+the path, and \eqref{eq:three-global-bounds} bounds its complete-split
+endpoint by $Q(n)$.
+\end{proof}
+
+We shall also need a quantitative statement about a nearly extremal terminal
+graph.
+
+\begin{lemma}\label{lem:terminal-stability}
+Let $n\geq100$, and suppose that a complete-split graph $S$ of order $n$
+satisfies
+\[
+  \PhiF(S)\geq\frac{n^2}{6}-\eta n^2.
+\]
+If $\mathcal{D}=Q(n)-\PhiF(S)$, then the first branch in
+\eqref{eq:split-functional} gives the value of $\PhiF(S)$ and
+\begin{equation}\label{eq:terminal-stability}
+  \distsp(S)\leq n\sqrt{\frac{2\mathcal{D}}3}+n.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $\eta=10^{-30}<1/40$, the branch separation
+\eqref{eq:branch-gap} forces the first branch.  If its root has order $k$,
+the square identity \eqref{eq:square-identity} gives
+\[
+  \left|k-\frac{2n+1}{6}\right|
+  \leq\sqrt{\frac{2\mathcal{D}}3}.
+\]
+Changing the root order to $\lfloor n/3\rfloor$ costs at most $n$ edits per
+vertex-role change.  The offset between $(2n+1)/6$ and $\lfloor n/3\rfloor$
+is less than one, proving \eqref{eq:terminal-stability}.
+\end{proof}
+
+\section{Global stability by first entry}
+
+\begin{theorem}[fixed-neighbourhood stability]\label{thm:global-stability}
+Let $G$ be chordal of order $n\geq10^{32}$.  If
+\begin{equation}\label{eq:near-extremal-Phi}
+  \PhiF(G)\geq\frac{n^2}{6}-\eta n^2,
+\end{equation}
+then
+\begin{equation}\label{eq:global-stability-conclusion}
+  \distsp(G)<\frac{\rho n^2}{2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Take the path $G=G_0,\ldots,G_L$ from
+\cref{prop:fine-symmetrization}.  Its functional values are no smaller than
+$\PhiF(G)$.  Therefore, for every graph $H$ on the path,
+\begin{align}
+  Q(n)-\PhiF(H)
+  &\leq \eta n^2+\frac n6+\frac1{24}
+   \leq2\eta n^2,
+  \label{eq:path-deficit}
+\end{align}
+where the last inequality follows from $n\geq10^{32}$.
+By \cref{lem:terminal-stability}, the endpoint satisfies
+\[
+  \frac{\distsp(G_L)}{n^2}
+  \leq\sqrt{\frac{4\eta}{3}}+\frac1n
+  <\frac\rho4.
+\]
+
+Suppose, contrary to \eqref{eq:global-stability-conclusion}, that
+$\distsp(G_0)\geq\rho n^2/2$.  Let $i$ be the first path index with
+$\distsp(G_i)<\rho n^2/2$.  A path step changes at most $n-2$ edges, and hence
+\begin{equation}\label{eq:first-entry-lower}
+  \frac{\rho n^2}{2}-n
+  \leq\distsp(G_i)<\frac{\rho n^2}{2}.
+\end{equation}
+In particular, $G_i$ lies inside the radius-$\rho n^2$ neighbourhood, so
+\cref{lem:local-stability} applies.  Combining
+\eqref{eq:local-stability} with \eqref{eq:path-deficit} gives
+\begin{align}
+  \frac{\distsp(G_i)}{n^2}
+  &\leq18\eta+\sqrt{\frac{4\eta}{3}}+\frac1n \notag\\
+  &<18\cdot10^{-30}+2\cdot10^{-15}+10^{-32}
+   <\frac\rho4.
+  \label{eq:first-entry-upper}
+\end{align}
+But $\rho/2-1/n>\rho/4$, so
+\eqref{eq:first-entry-lower} and \eqref{eq:first-entry-upper} are
+incompatible.  This proves the theorem.
+\end{proof}
+
+\section{Proof of the main theorem}
+
+We now combine the near and far regimes.  Recall the definition of $N$ in
+\eqref{eq:N-definition}.
+
+\begin{theorem}\label{thm:eventual-upper}
+Every chordal graph $G$ on $n\geq N$ vertices satisfies
+\[
+  \cple{4}(G)\leq M(n).
+\]
+\end{theorem}
+
+\begin{proof}
+If \eqref{eq:near-extremal-Phi} holds, then
+\cref{thm:global-stability} places $G$ within the radius-$\rho n^2$
+neighbourhood.  Equation \eqref{eq:local-integral-conclusion} gives the
+stronger bound $\cple{3}(G)\leq M(n)$.
+
+Otherwise, apply \cref{thm:packing-transfer} with $\varepsilon=\eta/2$.
+Using \eqref{eq:cp4-identity},
+\begin{align*}
+  \cple{4}(G)
+  &=\PhiF(G)+\Wfrac(G)-\Wint(G)\\
+  &<\frac{n^2}{6}-\eta n^2+\frac{\eta n^2}{2}
+   <\frac{n^2}{6}\leq M(n),
+\end{align*}
+where the final inequality is valid for the present range of $n$.  This
+completes both cases.
+\end{proof}
+
+It remains to match the upper bound.  We record the standard complete-split
+calculation because it also explains the linear term in $M(n)$.
+
+\begin{lemma}\label{lem:split-exact-cp}
+If $\ell\geq\chi'(K_k)$, then
+\begin{equation}\label{eq:split-exact-cp}
+  \cp(S_{k,\ell})=k\ell-\binom k2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Properly edge-colour the clique $K_k$ using at most $\ell$ colours, identified
+with distinct vertices of the independent side.  For every root edge $xy$,
+use the triangle consisting of $x,y$ and the vertex corresponding to the
+colour of $xy$.  Properness makes these triangles edge-disjoint.  Cover every
+unused spoke by a $K_2$.  The resulting partition has
+\[
+  \binom k2+\left(k\ell-2\binom k2\right)
+  =k\ell-\binom k2
+\]
+parts.
+
+For the reverse inequality, assign weight $-1$ to each root edge and weight
+$+1$ to each spoke.  Every clique in a complete-split graph has total edge
+weight at most $1$: a clique contains at most one independent-side vertex,
+and, if it contains $r$ root vertices and one outside vertex, its weight is
+$r-\binom r2\leq1$.  Its value is nonpositive when it contains only root
+vertices.  Summing over any clique partition shows that the number of parts is
+at least the total edge weight $k\ell-\binom{k}{2}$.
+\end{proof}
+
+Choose an integer $k$ nearest to $(2n+1)/6$ and put $\ell=n-k$.  Then
+$\ell\geq k\geq\chi'(K_k)$, using Vizing's theorem, and a check of the three
+residue classes of $n$ modulo $3$ gives
+\begin{equation}\label{eq:integer-maximization}
+  k(n-k)-\binom k2
+  =\left\lfloor\frac{n(n+1)}6\right\rfloor=M(n).
+\end{equation}
+Together with \cref{thm:eventual-upper}, this proves
+\cref{thm:main}.
+
+For completeness, let $C=N$.  If $0<n<N$, the partition into individual
+edges gives
+\[
+  \cp(G)\leq\binom n2\leq\frac{n^2}{6}+Nn.
+\]
+For $n\geq N$, \cref{thm:eventual-upper} and
+$M(n)\leq n^2/6+n/6$ give the same conclusion.  The empty graph is immediate.
+This proves \cref{cor:erdos81}.
+
+\section{Verification and scope}
+
+The proof uses exactly three non-elementary external inputs:
+\cref{thm:vizing,thm:HJ,thm:packing-transfer}.  In particular, it does not
+assume a linear bound for the general integral--fractional packing gap.  The
+transfer theorem is invoked only in the far regime, where a fixed quadratic
+deficit pays for its $o(n^2)$ loss.  In the near regime,
+\cref{lem:terminal-construction} constructs an actual edge partition into
+triangles and $K_2$'s.
+
+The accompanying repository contains exact rational checks of the numerical
+inequalities, finite mixed-packing certificates, and the single-copy
+mechanism.  These computations are regression tests; none is a premise of the
+proof for arbitrary $n$.  The repository also records the precise boundary of
+the staged Lean formalization and the commands used to reproduce every
+machine check.
+
+\subsection*{AI-assisted development disclosure}
+
+AI systems were used in exploration, proof organization, adversarial review,
+finite computation, and editorial work.  The mathematical claims have been
+restated as the self-contained argument above, with all external results
+identified explicitly.  Responsibility for verification, attribution, and
+publication remains with the human authors; no AI system is an author.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
