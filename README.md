@@ -73,7 +73,11 @@ The current Lean project machine-checks:
 - the rational stability identities and all decisive numerical margins
   formalized so far;
 - finite packing/covering weak duality and its mixed triangle--`K_4` model;
-- the discrete-convexity step used by the single-vertex copy path.
+- the exact two-direction edge-count identity for vertex copying and
+  preservation of simpliciality at the copied vertex;
+- the discrete-convexity step used by the single-vertex copy path;
+- the complete-split averaged dual LP, including attainment at its three
+  relevant vertices and the resulting three-branch potential formula.
 
 The chordal structural reduction, terminal construction, full copy-map
 construction, and the three external inputs are not yet fully formalized.  No

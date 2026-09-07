@@ -153,9 +153,11 @@ exact graph-theoretic statement, a universal partition into edge-sized
 cliques, the implication from the eventual sharp bound to the original
 all-order assertion, the main rational identities and margins, finite LP weak
 duality, the mixed triangle--four-clique incidence model, and the discrete
-convexity mechanism behind single-vertex copying.  Its check script rejects
-source-level `axiom` and `sorry` declarations and prints the assumptions of
-the principal theorems.
+convexity mechanism behind single-vertex copying.  It also verifies the exact
+two-direction copy edge count and solves the averaged complete-split dual LP,
+including the three-branch formula.  Its check script rejects source-level
+`axiom` and `sorry` declarations and prints the assumptions of the principal
+theorems.
 
 This is meaningful progress but not yet the first milestone below: the full
 new chordal reduction has not all been expressed in Lean.  In particular, the

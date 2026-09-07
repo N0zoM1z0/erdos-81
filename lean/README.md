@@ -22,6 +22,12 @@ Erdős Problem 81 manuscript.  It is deliberately self-contained under
   triangles and four-cliques as items, and gains `2` and `5`.
 - `Erdos81/DiscreteConvexity.lean` checks the direction choice, propagation to
   an endpoint, and the sign algebra in the single-vertex copying argument.
+- `Erdos81/Copying.lean` fixes the orientation of Mathlib's vertex-replacement
+  operation, proves preservation of simpliciality at the copied vertex, and
+  proves the exact two-direction edge-count identity.
+- `Erdos81/SplitDual.lean` solves the averaged two-variable dual on a
+  complete-split graph, proves attainment at one of its three lower-boundary
+  vertices, and derives the manuscript's three-branch potential formula.
 - `Erdos81/AxiomAudit.lean` prints the assumptions of the principal theorems.
 
 The long chordal symmetrization, local structural lemma, and the applications
