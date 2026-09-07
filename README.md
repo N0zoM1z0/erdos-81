@@ -73,7 +73,7 @@ The current Lean project machine-checks:
 - the universal partition into two-vertex cliques and the implication from
   the eventual bound to `n^2 / 6 + O(n)` for every order;
 - the rational stability identities and all decisive numerical margins
-  formalized so far;
+  formalized so far, including the complete root-regularization constant chain;
 - finite packing/covering weak duality and its mixed triangle--`K_4` model;
 - the exact two-direction edge-count identity for vertex copying and
   preservation of simpliciality at the copied vertex;
@@ -81,7 +81,9 @@ The current Lean project machine-checks:
 - the complete-split averaged dual LP, including attainment at its three
   relevant vertices and the resulting three-branch potential formula;
 - the least-index first-entry barrier and the normalized step-size inequality
-  at the manuscript's explicit threshold `n >= 10^32`.
+  at the manuscript's explicit threshold `n >= 10^32`;
+- the algebraic extraction of defect and root-displacement control from the
+  local deficit inequality, including the final integrality step.
 
 The chordal structural reduction, terminal construction, full copy-map
 construction, and the three external inputs are not yet fully formalized.  No

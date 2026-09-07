@@ -34,6 +34,12 @@ Erdős Problem 81 manuscript.  It is deliberately self-contained under
 - `Erdos81/FirstEntry.lean` uses a genuine least path index to prove the
   first-entry barrier argument and verifies the normalized one-step bound at
   `n >= 10^32`.
+- `Erdos81/RootArithmetic.lean` checks the complete exact-constant chain in
+  strict root demotion/promotion, including the ceiling and final host-list
+  margins.
+- `Erdos81/LocalStability.lean` derives defect and root-displacement control
+  from the regularized deficit inequality and checks the final integrality
+  step from `Q(n)` to `sharpBound n`.
 - `Erdos81/AxiomAudit.lean` prints the assumptions of the principal theorems.
 
 The long chordal symmetrization, local structural lemma, and the applications
