@@ -76,7 +76,7 @@ The current Lean project machine-checks:
   formalized so far, including the complete root-regularization constant chain;
 - finite packing/covering weak duality and its mixed triangle--`K_4` model;
 - the exact two-direction edge-count identity for vertex copying and
-  preservation of simpliciality at the copied vertex;
+  preservation of simpliciality and chordality under the required copy;
 - the discrete-convexity step used by the single-vertex copy path;
 - the complete-split averaged dual LP, including attainment at its three
   relevant vertices and the resulting three-branch potential formula;

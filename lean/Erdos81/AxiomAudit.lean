@@ -21,6 +21,7 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.Arithmetic.far_case_closure
 #print axioms Erdos81.Copying.opposite_copy_edge_count
 #print axioms Erdos81.Copying.simplicial_target_of_simplicial_source
+#print axioms Erdos81.Copying.chordal_replaceVertex_of_simplicial_source
 #print axioms Erdos81.DiscreteConvexity.monotone_to_right_endpoint
 #print axioms Erdos81.DiscreteConvexity.potential_copy_inequality
 #print axioms Erdos81.FiniteLP.weak_duality

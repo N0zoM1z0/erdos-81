@@ -35,7 +35,7 @@ because no such theorem is claimed yet.
 | Local root extraction in edit distance | — | Pending |
 | Orientation and edge count of opposite vertex copies | `Erdos81.Copying` | Checked |
 | Simpliciality of the copied vertex | `Erdos81.Copying.simplicial_target_of_simplicial_source` | Checked |
-| Chordality preservation under the required copy | — | Pending |
+| Chordality preservation under the required copy | `Erdos81.Copying.chordal_replaceVertex_of_simplicial_source` | Checked |
 | Copied mixed-dual cover construction | — | Pending |
 | Copy-potential sign algebra | `Erdos81.DiscreteConvexity.potential_copy_inequality` | Checked |
 | Discrete-convex endpoint propagation | `Erdos81.DiscreteConvexity` | Checked |

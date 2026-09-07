@@ -28,7 +28,9 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   an endpoint, and the sign algebra in the single-vertex copying argument.
 - `Erdos81/Copying.lean` fixes the orientation of Mathlib's vertex-replacement
   operation, proves preservation of simpliciality at the copied vertex, and
-  proves the exact two-direction edge-count identity.
+  proves the exact two-direction edge-count identity.  It also proves directly
+  from the forbidden-induced-cycle definition that copying a simplicial source
+  preserves chordality.
 - `Erdos81/SplitDual.lean` solves the averaged two-variable dual on a
   complete-split graph, proves attainment at one of its three lower-boundary
   vertices, and derives the manuscript's three-branch potential formula.
