@@ -19,6 +19,7 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.Arithmetic.first_entry_numerics
 #print axioms Erdos81.Arithmetic.second_branch_square_identity
 #print axioms Erdos81.Arithmetic.far_case_closure
+#print axioms Erdos81.Chordal.commonNeighbors_isClique_of_chordal
 #print axioms Erdos81.Copying.opposite_copy_edge_count
 #print axioms Erdos81.Copying.simplicial_target_of_simplicial_source
 #print axioms Erdos81.Copying.chordal_replaceVertex_of_simplicial_source

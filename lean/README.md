@@ -20,6 +20,9 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
 - `Erdos81/SharpBound.lean` proves the exact floor identity relating the
   continuous envelope to `floor(n(n+1)/6)`, including the required modulo-six
   argument.
+- `Erdos81/Chordal.lean` derives directly from the induced-cycle definition
+  that the common neighborhood of two distinct nonadjacent vertices in a
+  chordal graph is a clique, the structural fact used in the root lemma.
 - `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
   first principles.
 - `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,
@@ -45,10 +48,11 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   step from `Q(n)` to `sharpBound n`.
 - `Erdos81/AxiomAudit.lean` prints the assumptions of the principal theorems.
 
-The long chordal symmetrization, local structural lemma, and the applications
-of Vizing, Häggkvist--Janssen, and Rohatgi--Urschel--Wellens are **not yet fully
-formalized**.  No placeholder axiom or `sorry` is used to hide this boundary.
-Accordingly, the Lean project is not yet a kernel proof of the complete result.
+The long chordal symmetrization, the full root and local structural lemmas, and
+the applications of Vizing, Häggkvist--Janssen, and
+Rohatgi--Urschel--Wellens are **not yet fully formalized**.  No placeholder
+axiom or `sorry` is used to hide this boundary.  Accordingly, the Lean project
+is not yet a kernel proof of the complete result.
 
 ## Reproduce
 

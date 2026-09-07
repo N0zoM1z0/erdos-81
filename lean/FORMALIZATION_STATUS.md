@@ -27,7 +27,7 @@ because no such theorem is claimed yet.
 | Rohatgi--Urschel--Wellens uniform transfer | — | External theorem; not yet formalized |
 | Terminal host construction | — | Pending |
 | Demotion/promotion numerical chain | `Erdos81.RootArithmetic` | Checked |
-| Nonadjacent common-neighbor structural lemma | — | Pending |
+| Distinct nonadjacent common-neighbor structural lemma | `Erdos81.Chordal.commonNeighbors_isClique_of_chordal` | Checked |
 | Full strict root-regularization lemma | — | Pending |
 | Stability square identity and second-branch square identity | `Erdos81.Arithmetic` | Checked |
 | Exact floor identity for `Q(n)` | `Erdos81.SharpBound.floor_Q_eq_sharpBound` | Checked |
