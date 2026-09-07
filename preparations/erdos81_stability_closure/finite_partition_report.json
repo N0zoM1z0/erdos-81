@@ -1,0 +1,9 @@
+{
+  "vertices": 12,
+  "edges": 39,
+  "parts": 25,
+  "triangles": 7,
+  "K2s": 18,
+  "verdict": "VALID",
+  "verification": "Independent exact edge-counter; remote checker attempts returned network errors, not mathematical verdicts."
+}

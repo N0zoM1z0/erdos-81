@@ -1,0 +1,7 @@
+{
+  "LP_certificates_replayed": 7964,
+  "positive_packing_entries": 14134,
+  "all_triangle_K4_dual_constraints": 36743,
+  "copy_steps_replayed": 1889,
+  "verdict": "PASS"
+}

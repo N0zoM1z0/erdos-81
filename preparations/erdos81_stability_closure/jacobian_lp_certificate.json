@@ -1,0 +1,51 @@
+{
+  "operation_id": "optimization.linear.rational_general_optimum.compute",
+  "status": "OPTIMAL",
+  "description": "mixed covering LP for S_{20,40}",
+  "variables": [
+    "x_root",
+    "y_spoke"
+  ],
+  "objective": [
+    190,
+    800
+  ],
+  "GE_constraints": [
+    [
+      3,
+      0,
+      2
+    ],
+    [
+      1,
+      2,
+      2
+    ],
+    [
+      6,
+      0,
+      5
+    ],
+    [
+      3,
+      3,
+      5
+    ]
+  ],
+  "primal": [
+    "2",
+    "0"
+  ],
+  "constraint_dual": [
+    "0",
+    "190",
+    "0",
+    "0"
+  ],
+  "lower_bound_dual": [
+    "0",
+    "420"
+  ],
+  "objective_value": "380",
+  "source": "Successful Jacobian tool call in current conversation. A preceding attempt failed at the network layer."
+}

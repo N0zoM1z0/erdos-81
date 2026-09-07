@@ -1,0 +1,28 @@
+{
+  "atlas_graphs": 531,
+  "monotone_paths": 531,
+  "full_class_rounds": 1224,
+  "two_direction_copy_checks": 5394,
+  "single_vertex_monotone_steps": 1889,
+  "exact_mixed_LP_certificates": 7964,
+  "two_class_sequence": [
+    "9",
+    "7",
+    "7",
+    "7",
+    "9"
+  ],
+  "scalar_constants": {
+    "m0_coefficient": "4161/2097152",
+    "Dbar_coefficient": "1099/4096",
+    "terminal_list_margin_coefficient": "4505/14784",
+    "barrier_upper_normalized_distance": "200000000000001801/100000000000000000000000000000000",
+    "rho": "1/1000000000000",
+    "delta": "1/1000000000000000000000000000000",
+    "nmin": "100000000000000000000000000000000"
+  },
+  "integer_colour_count_bounds": 19986,
+  "terminal_formula_bound_checks": 711246,
+  "seconds": 14.782,
+  "scope": "Finite exact certificates and arithmetic only; the infinite proof is PROOF.md. No weighted-transfer threshold is evaluated."
+}
