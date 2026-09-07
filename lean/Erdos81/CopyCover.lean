@@ -1,4 +1,5 @@
 import Erdos81.Copying
+import Erdos81.DiscreteConvexity
 import Erdos81.MixedModel
 
 /-!
@@ -182,6 +183,239 @@ noncomputable def pullbackCover {H : SimpleGraph V} {J : SimpleGraph W}
       _ ≤ ∑ e, incidence (mapItem f i) e * d.price e := d.demand (mapItem f i)
       _ = ∑ e, incidence i e * d.price (f.mapEdgeSet e) :=
         (pullback_incidence_sum f i d.price).symm
+
+section OppositeCopies
+
+variable {X : Type*} [Fintype X] [DecidableEq X]
+
+/-- Extend an edge price by zero to all unordered vertex pairs. -/
+noncomputable def extendPrice {G : SimpleGraph X}
+    (price : Resource G → ℚ) (e : Sym2 X) : ℚ := by
+  classical
+  exact if h : e ∈ G.edgeSet then price ⟨e, h⟩ else 0
+
+omit [Fintype X] [DecidableEq X] in
+@[simp]
+theorem extendPrice_of_mem {G : SimpleGraph X} (price : Resource G → ℚ)
+    (e : Sym2 X) (he : e ∈ G.edgeSet) :
+    extendPrice price e = price ⟨e, he⟩ := by
+  simp [extendPrice, he]
+
+omit [DecidableEq X] in
+/-- Summing the zero extension over the edge finset recovers the subtype sum. -/
+theorem sum_extendPrice_edgeFinset {G : SimpleGraph X}
+    (price : Resource G → ℚ) :
+    (∑ e ∈ G.edgeFinset, extendPrice price e) = ∑ e, price e := by
+  classical
+  rw [Finset.sum_subtype G.edgeFinset (fun e ↦ G.mem_edgeFinset)]
+  apply Fintype.sum_congr
+  intro e
+  exact extendPrice_of_mem price e.1 e.2
+
+omit [DecidableEq X] in
+/-- Express a homomorphic edge-price pullback as a sum over the domain edge finset. -/
+theorem mapped_edge_sum_eq_edgeFinset {H G : SimpleGraph X}
+    (f : H →g G) (price : Resource G → ℚ) :
+    (∑ e : Resource H, price (f.mapEdgeSet e)) =
+      ∑ z ∈ H.edgeFinset, extendPrice price (Sym2.map f z) := by
+  classical
+  rw [Finset.sum_subtype H.edgeFinset (fun e ↦ H.mem_edgeFinset)]
+  apply Fintype.sum_congr
+  intro e
+  symm
+  apply extendPrice_of_mem
+
+omit [Fintype X] in
+/-- The collapse map fixes an unordered pair which does not contain its target. -/
+theorem collapse_sym2_eq_self_of_not_mem (a b : X) (z : Sym2 X)
+    (hb : b ∉ z) :
+    Sym2.map (Copying.collapseVertex a b) z = z := by
+  revert hb
+  refine Sym2.inductionOn z ?_
+  intro x y hb
+  simp only [Sym2.mem_iff, not_or] at hb
+  simp [Copying.collapseVertex, Ne.symm hb.1, Ne.symm hb.2]
+
+/-- Incident edges are the image of the neighbor finset under `x ↦ {a,x}`. -/
+theorem incidenceFinset_eq_neighbor_image (G : SimpleGraph X) (a : X)
+    [DecidableRel G.Adj] :
+    G.incidenceFinset a = (G.neighborFinset a).image (fun x ↦ s(a, x)) := by
+  ext z
+  refine Sym2.inductionOn z ?_
+  intro x y
+  simp only [SimpleGraph.mem_incidenceFinset, SimpleGraph.mem_neighborFinset,
+    SimpleGraph.mk'_mem_incidenceSet_iff, Finset.mem_image, Sym2.eq,
+    Sym2.rel_iff', Prod.mk.injEq, Prod.swap_prod_mk]
+  constructor
+  · rintro ⟨hxy, hax | hay⟩
+    · subst x
+      exact ⟨y, hxy, Or.inl ⟨rfl, rfl⟩⟩
+    · subst y
+      exact ⟨x, hxy.symm, Or.inr ⟨rfl, rfl⟩⟩
+  · rintro ⟨z, haz, (⟨hax, hzy⟩ | ⟨hay, hzx⟩)⟩
+    · subst x
+      subst y
+      exact ⟨haz, Or.inl rfl⟩
+    · subst y
+      subst x
+      exact ⟨haz.symm, Or.inr rfl⟩
+
+/--
+The weight of one collapsed cover is the weight away from the old target,
+plus the weight incident with the copied source.
+-/
+theorem mapped_collapse_sum_eq_complement_add_incident
+    (G : SimpleGraph X) [DecidableRel G.Adj] {a b : X}
+    (hn : ¬G.Adj a b) (price : Resource G → ℚ) :
+    (∑ e : Resource (G.replaceVertex a b),
+        price ((Copying.collapseHom G).mapEdgeSet e)) =
+      (∑ z ∈ G.edgeFinset \ G.incidenceFinset b, extendPrice price z) +
+        ∑ z ∈ G.incidenceFinset a, extendPrice price z := by
+  classical
+  rw [mapped_edge_sum_eq_edgeFinset]
+  have hedgeEq : (G.replaceVertex a b).edgeFinset =
+      G.edgeFinset \ G.incidenceFinset b ∪
+        (G.neighborFinset a).image (fun x ↦ s(x, b)) := by
+    apply Finset.coe_injective
+    push_cast
+    exact G.edgeSet_replaceVertex_of_not_adj hn
+  rw [hedgeEq]
+  have hdis : Disjoint (G.edgeFinset \ G.incidenceFinset b)
+      ((G.neighborFinset a).image (fun x ↦ s(x, b))) := by
+    rw [Finset.disjoint_left]
+    intro z hz hnew
+    have hbnot : b ∉ z := by
+      intro hbz
+      exact (Finset.mem_sdiff.mp hz).2 <|
+        (G.mem_incidenceFinset b z).mpr
+          ⟨G.mem_edgeFinset.mp (Finset.mem_sdiff.mp hz).1, hbz⟩
+    obtain ⟨x, _hx, rfl⟩ := Finset.mem_image.mp hnew
+    exact hbnot (Sym2.mem_mk_right x b)
+  rw [Finset.sum_union hdis]
+  congr 1
+  · apply Finset.sum_congr rfl
+    intro z hz
+    apply congrArg (extendPrice price)
+    apply collapse_sym2_eq_self_of_not_mem
+    intro hbz
+    exact (Finset.mem_sdiff.mp hz).2 <|
+      (G.mem_incidenceFinset b z).mpr
+        ⟨G.mem_edgeFinset.mp (Finset.mem_sdiff.mp hz).1, hbz⟩
+  · rw [incidenceFinset_eq_neighbor_image]
+    have hinjB : Function.Injective (fun x : X ↦ s(x, b)) := by
+      intro x y hxy
+      apply (Sym2.mkEmbedding b).injective
+      simpa [Sym2.eq_swap] using hxy
+    have hinjA : Function.Injective (fun x : X ↦ s(a, x)) :=
+      (Sym2.mkEmbedding a).injective
+    rw [Finset.sum_image hinjB.injOn, Finset.sum_image hinjA.injOn]
+    apply Finset.sum_congr rfl
+    intro x hx
+    have hxb : x ≠ b := by
+      intro h
+      subst x
+      exact hn ((G.mem_neighborFinset a b).mp hx)
+    congr 1
+    simp [Copying.collapseHom, Copying.collapseVertex, hxb, Sym2.eq_swap]
+
+/-- The two opposite collapse pullbacks have exactly twice the original weight. -/
+theorem opposite_collapse_edge_sum
+    (G : SimpleGraph X) [DecidableRel G.Adj] {a b : X}
+    (hn : ¬G.Adj a b) (price : Resource G → ℚ) :
+    (∑ e : Resource (G.replaceVertex a b),
+        price ((Copying.collapseHom G).mapEdgeSet e)) +
+      (∑ e : Resource (G.replaceVertex b a),
+        price ((Copying.collapseHom G).mapEdgeSet e)) =
+      2 * ∑ e : Resource G, price e := by
+  classical
+  have hnr : ¬G.Adj b a := by simpa [G.adj_comm] using hn
+  rw [mapped_collapse_sum_eq_complement_add_incident G hn price]
+  rw [mapped_collapse_sum_eq_complement_add_incident G hnr price]
+  have hsubA : G.incidenceFinset a ⊆ G.edgeFinset := by
+    intro z hz
+    exact G.mem_edgeFinset.mpr
+      (G.incidenceSet_subset a ((G.mem_incidenceFinset a z).mp hz))
+  have hsubB : G.incidenceFinset b ⊆ G.edgeFinset := by
+    intro z hz
+    exact G.mem_edgeFinset.mpr
+      (G.incidenceSet_subset b ((G.mem_incidenceFinset b z).mp hz))
+  have hpartA := Finset.sum_sdiff (f := extendPrice price) hsubA
+  have hpartB := Finset.sum_sdiff (f := extendPrice price) hsubB
+  have htotal := sum_extendPrice_edgeFinset price
+  calc
+    ((∑ z ∈ G.edgeFinset \ G.incidenceFinset b, extendPrice price z) +
+          ∑ z ∈ G.incidenceFinset a, extendPrice price z) +
+        ((∑ z ∈ G.edgeFinset \ G.incidenceFinset a, extendPrice price z) +
+          ∑ z ∈ G.incidenceFinset b, extendPrice price z) =
+      ((∑ z ∈ G.edgeFinset \ G.incidenceFinset b, extendPrice price z) +
+          ∑ z ∈ G.incidenceFinset b, extendPrice price z) +
+        ((∑ z ∈ G.edgeFinset \ G.incidenceFinset a, extendPrice price z) +
+          ∑ z ∈ G.incidenceFinset a, extendPrice price z) := by ring
+    _ = (∑ z ∈ G.edgeFinset, extendPrice price z) +
+        ∑ z ∈ G.edgeFinset, extendPrice price z := by rw [hpartB, hpartA]
+    _ = 2 * ∑ e : Resource G, price e := by rw [htotal]; ring
+
+/-- The objective identity for the two feasible covers used in the copy argument. -/
+theorem coverValue_opposite_pullbacks
+    (G : SimpleGraph X) [DecidableRel G.Adj] {a b : X}
+    (hn : ¬G.Adj a b) (d : FractionalCover G) :
+    coverValue (pullbackCover (Copying.collapseHom (G := G) (s := a) (t := b)) d) +
+        coverValue (pullbackCover (Copying.collapseHom (G := G) (s := b) (t := a)) d) =
+      2 * coverValue d := by
+  change
+    (∑ e : Resource (G.replaceVertex a b),
+        d.price ((Copying.collapseHom G).mapEdgeSet e)) +
+      (∑ e : Resource (G.replaceVertex b a),
+        d.price ((Copying.collapseHom G).mapEdgeSet e)) =
+      2 * ∑ e : Resource G, d.price e
+  exact opposite_collapse_edge_sum G hn d.price
+
+/-- Opposite copied graphs' certified dual optima sum to at most twice the source optimum. -/
+theorem cover_optima_opposite_copy
+    (G : SimpleGraph X) [DecidableRel G.Adj] {a b : X}
+    (hn : ¬G.Adj a b) {w wAB wBA : ℚ}
+    (hG : IsCoverOptimum (G := G) w)
+    (hAB : IsCoverOptimum (G := G.replaceVertex a b) wAB)
+    (hBA : IsCoverOptimum (G := G.replaceVertex b a) wBA) :
+    wAB + wBA ≤ 2 * w := by
+  obtain ⟨d, hd⟩ := hG.1
+  calc
+    wAB + wBA ≤
+        coverValue (pullbackCover
+          (Copying.collapseHom (G := G) (s := a) (t := b)) d) +
+        coverValue (pullbackCover
+          (Copying.collapseHom (G := G) (s := b) (t := a)) d) :=
+      add_le_add (hAB.2 _) (hBA.2 _)
+    _ = 2 * coverValue d := coverValue_opposite_pullbacks G hn d
+    _ = 2 * w := by rw [hd]
+
+/--
+The manuscript's mixed-potential copy inequality, stated for certified dual
+optima.  General existence of those optima is kept as the separate finite-LP
+formalization boundary.
+-/
+theorem potential_opposite_copy_inequality
+    (G : SimpleGraph X) [DecidableRel G.Adj] {a b : X}
+    (hn : ¬G.Adj a b) {w wAB wBA : ℚ}
+    (hG : IsCoverOptimum (G := G) w)
+    (hAB : IsCoverOptimum (G := G.replaceVertex a b) wAB)
+    (hBA : IsCoverOptimum (G := G.replaceVertex b a) wBA) :
+    2 * potential G w ≤
+      potential (G.replaceVertex a b) wAB +
+        potential (G.replaceVertex b a) wBA := by
+  have hcover : wAB + wBA ≤ 2 * w :=
+    cover_optima_opposite_copy G hn hG hAB hBA
+  have hedge :
+      ((G.replaceVertex a b).edgeFinset.card : ℚ) +
+          ((G.replaceVertex b a).edgeFinset.card : ℚ) =
+        2 * (G.edgeFinset.card : ℚ) := by
+    have hsum := opposite_collapse_edge_sum G hn (fun _ ↦ (1 : ℚ))
+    simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at hsum
+    simpa only [SimpleGraph.edgeFinset_card] using hsum
+  unfold potential
+  exact DiscreteConvexity.potential_copy_inequality hedge hcover
+
+end OppositeCopies
 
 end CopyCover
 end Erdos81

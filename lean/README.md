@@ -41,8 +41,10 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   triangle or four-clique, reindexes its incidence sum, and constructs a
   feasible mixed-cover pullback along any graph homomorphism.  In particular,
   applying it to the replacement-collapse homomorphism gives the copied cover
-  used in the manuscript; its global objective identity remains tracked
-  separately.
+  used in the manuscript.  The same module proves the exact two-direction
+  objective identity and the resulting mixed-potential copy inequality for
+  certified dual optima; general optimum existence remains part of the finite
+  LP boundary.
 - `Erdos81/SplitDual.lean` solves the averaged two-variable dual on a
   complete-split graph, proves attainment at one of its three lower-boundary
   vertices, and derives the manuscript's three-branch potential formula.

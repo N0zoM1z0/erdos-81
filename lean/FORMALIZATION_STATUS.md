@@ -38,7 +38,8 @@ because no such theorem is claimed yet.
 | Chordality preservation under the required copy | `Erdos81.Copying.chordal_replaceVertex_of_simplicial_source` | Checked |
 | Replacement-collapse homomorphism and clique-order preservation | `Erdos81.Copying.collapseHom`, `card_finset_image_of_isClique` | Checked |
 | Feasible mixed-dual pullback through the replacement collapse | `Erdos81.CopyCover.pullbackCover` applied to `Copying.collapseHom` | Checked |
-| Pulled-cover objective identity and full copy inequality | — | Pending |
+| Opposite pulled-cover objective identity | `Erdos81.CopyCover.coverValue_opposite_pullbacks` | Checked |
+| Mixed-potential copy inequality | `Erdos81.CopyCover.potential_opposite_copy_inequality` | Checked for certified dual optima; their general existence remains pending with finite LP duality |
 | Copy-potential sign algebra | `Erdos81.DiscreteConvexity.potential_copy_inequality` | Checked |
 | Discrete-convex endpoint propagation | `Erdos81.DiscreteConvexity` | Checked |
 | Complete-split terminal characterization | — | Pending |
