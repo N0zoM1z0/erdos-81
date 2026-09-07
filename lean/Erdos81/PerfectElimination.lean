@@ -197,5 +197,80 @@ theorem edge_bound_of_peo {G : SimpleGraph (Fin n)} [DecidableRel G.Adj]
       rw [sum_fin_reflected_min]
     _ = (p - 1) * n := sum_range_min_pred_add_choose p n hpn
 
+/-- Pascal's recurrence in the orientation convenient for pair counting. -/
+theorem choose_two_succ (n : ℕ) :
+    Nat.choose (n + 1) 2 = Nat.choose n 2 + n := by
+  rw [Nat.choose_succ_succ]
+  simp [Nat.add_comm]
+
+/-- Twice the number of pairs in a `p`-set is `p(p-1)`. -/
+theorem two_mul_choose_two (p : ℕ) :
+    Nat.choose p 2 + Nat.choose p 2 = (p - 1) * p := by
+  have h := Nat.choose_succ_right_eq p 1
+  calc
+    Nat.choose p 2 + Nat.choose p 2 = Nat.choose p 2 * 2 := by omega
+    _ = p * (p - 1) := by simpa using h
+    _ = (p - 1) * p := Nat.mul_comm _ _
+
+/--
+The exact pair-count identity behind the missing-pair consequence of the PEO
+edge bound.  The positivity assumption is necessary because natural-number
+subtraction truncates `p - 1` when `p = 0`.
+-/
+theorem choose_complement_identity (p u : ℕ) (hp : 1 ≤ p) :
+    (p - 1) * (p + u) + Nat.choose (u + 1) 2 =
+      Nat.choose (p + u) 2 + Nat.choose p 2 := by
+  induction u with
+  | zero =>
+      simpa using (two_mul_choose_two p).symm
+  | succ u ih =>
+      rw [← Nat.add_assoc p u 1, Nat.mul_add, Nat.mul_one,
+        choose_two_succ (u + 1), choose_two_succ (p + u)]
+      omega
+
+/-- The edge sets of a graph and its complement partition all vertex pairs. -/
+theorem card_edges_add_card_complement (G : SimpleGraph (Fin n))
+    [DecidableRel G.Adj] :
+    G.edgeFinset.card + Gᶜ.edgeFinset.card = Nat.choose n 2 := by
+  classical
+  calc
+    G.edgeFinset.card + Gᶜ.edgeFinset.card =
+        (G.edgeFinset ∪ Gᶜ.edgeFinset).card := by
+      rw [Finset.card_union_of_disjoint]
+      exact SimpleGraph.disjoint_edgeFinset.mpr disjoint_compl_right
+    _ = (⊤ : SimpleGraph (Fin n)).edgeFinset.card := by
+      congr 1
+      ext e
+      refine Sym2.inductionOn e ?_
+      intro x y
+      simp [SimpleGraph.mem_edgeFinset]
+      constructor
+      · rintro (hxy | ⟨hne, _hnxy⟩)
+        · exact G.ne_of_adj hxy
+        · exact hne
+      · intro hne
+        by_cases hxy : G.Adj x y
+        · exact Or.inl hxy
+        · exact Or.inr ⟨hne, hxy⟩
+    _ = Nat.choose n 2 := by
+      simpa using
+        (SimpleGraph.card_edgeFinset_top_eq_card_choose_two (V := Fin n))
+
+/--
+If a PEO graph on `n` vertices has clique order at most `p`, its complement
+has at least `choose(n-p+1,2)` edges.  In the manuscript, `u = n-p`; these
+complement edges are precisely the missing pairs and give `choose(u+1,2)`.
+-/
+theorem complement_edge_bound_of_peo {G : SimpleGraph (Fin n)}
+    [DecidableRel G.Adj] {p : ℕ} (hp : 1 ≤ p) (hpn : p ≤ n)
+    (hpeo : IsPEO G) (hclique : CliqueOrderAtMost G p) :
+    Nat.choose (n - p + 1) 2 ≤ Gᶜ.edgeFinset.card := by
+  obtain ⟨u, rfl⟩ := Nat.exists_eq_add_of_le hpn
+  have hedge := edge_bound_of_peo (G := G) (p := p) (by omega) hpeo hclique
+  have hpairs := choose_complement_identity p u hp
+  have htotal := card_edges_add_card_complement G
+  simp only [Nat.add_sub_cancel_left] at hedge hpairs htotal ⊢
+  omega
+
 end PerfectElimination
 end Erdos81

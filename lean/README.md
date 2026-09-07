@@ -27,8 +27,10 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
 - `Erdos81/PerfectElimination.lean` defines the exact perfect-elimination-order
   condition on `Fin n`, counts every edge by its earlier endpoint, and proves
   `e(G) + choose(p,2) <= (p-1)n` whenever that order is perfect and every
-  clique has order at most `p`.  The chordal-to-PEO characterization remains
-  separately tracked rather than assumed.
+  clique has order at most `p`.  It also proves the exact complement bound
+  `e(complement G) >= choose(n-p+1,2)` used in local root extraction.  The
+  chordal-to-PEO characterization remains separately tracked rather than
+  assumed.
 - `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
   first principles.
 - `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,

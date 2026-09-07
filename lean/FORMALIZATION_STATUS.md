@@ -30,6 +30,7 @@ because no such theorem is claimed yet.
 | Common-neighbor clique and nonadjacency degree bound | `Erdos81.Chordal.commonNeighbors_isClique_of_chordal`, `root_nonadjacency_degree_bound` | Checked |
 | Perfect-elimination ordering condition | `Erdos81.PerfectElimination.IsPEO` | Modeled exactly for a fixed order on `Fin n` |
 | Edge count from a PEO and clique-order bound | `Erdos81.PerfectElimination.edge_bound_of_peo` | Checked |
+| Missing-pair consequence `e(complement G) >= choose(n-p+1,2)` | `Erdos81.PerfectElimination.complement_edge_bound_of_peo` | Checked under the PEO hypothesis |
 | Every finite chordal graph admits a PEO | — | Pending |
 | Full strict root-regularization lemma | — | Pending |
 | Stability square identity and second-branch square identity | `Erdos81.Arithmetic` | Checked |
