@@ -1,4 +1,4 @@
-import Erdos81.Statement
+import Erdos81.Copying
 import Mathlib.Data.Finset.Interval
 import Mathlib.Data.Finset.Sigma
 import Mathlib.Tactic
@@ -34,6 +34,10 @@ def laterNeighbors (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
 def IsPEO (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] : Prop :=
   ∀ i : Fin n, G.IsClique (laterNeighbors G i : Set (Fin n))
 
+/-- A label-independent perfect-elimination order, represented by relabelling. -/
+def HasPEO (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] : Prop :=
+  ∃ e : Fin n ≃ Fin n, IsPEO (G.comap e)
+
 /-- Every clique in `G` has order at most `p`. -/
 def CliqueOrderAtMost (G : SimpleGraph (Fin n)) (p : ℕ) : Prop :=
   ∀ K : Finset (Fin n), G.IsClique (K : Set (Fin n)) → K.card ≤ p
@@ -47,6 +51,65 @@ theorem mem_orientedEdges {G : SimpleGraph (Fin n)} [DecidableRel G.Adj]
     {e : Σ _i : Fin n, Fin n} :
     e ∈ orientedEdges G ↔ e.1 < e.2 ∧ G.Adj e.1 e.2 := by
   simp [orientedEdges, laterNeighbors]
+
+/--
+A perfect-elimination order excludes every induced cycle of order at least
+four.  This proves directly that the order-theoretic model used here implies
+the project's forbidden-induced-cycle definition of chordality.
+-/
+theorem isChordal_of_peo {G : SimpleGraph (Fin n)} [DecidableRel G.Adj]
+    (hpeo : IsPEO G) : Erdos81.IsChordal G := by
+  intro k hk hcycle
+  obtain ⟨f⟩ := hcycle
+  letI : NeZero k := ⟨by omega⟩
+  obtain ⟨i, _hi, hmin⟩ := Finset.exists_min_image
+    (Finset.univ : Finset (Fin k)) f Finset.univ_nonempty
+  let step : Fin k := Copying.cycleStep hk
+  let left : Fin k := i - step
+  let right : Fin k := i + step
+  have hcycleLeft : (SimpleGraph.cycleGraph k).Adj i left := by
+    rw [SimpleGraph.cycleGraph_adj']
+    left
+    have heq : i - left = step := by
+      dsimp only [left]
+      abel
+    rw [heq]
+    rfl
+  have hcycleRight : (SimpleGraph.cycleGraph k).Adj i right := by
+    rw [SimpleGraph.cycleGraph_adj']
+    right
+    have heq : right - i = step := by
+      dsimp only [right]
+      abel
+    rw [heq]
+    rfl
+  have hleft : G.Adj (f i) (f left) := f.map_adj_iff.mpr hcycleLeft
+  have hright : G.Adj (f i) (f right) := f.map_adj_iff.mpr hcycleRight
+  have hleftLater : f left ∈ laterNeighbors G (f i) := by
+    rw [laterNeighbors, Finset.mem_filter]
+    exact ⟨Finset.mem_Ioi.mpr
+      (lt_of_le_of_ne (hmin left (Finset.mem_univ left)) hleft.ne), hleft⟩
+  have hrightLater : f right ∈ laterNeighbors G (f i) := by
+    rw [laterNeighbors, Finset.mem_filter]
+    exact ⟨Finset.mem_Ioi.mpr
+      (lt_of_le_of_ne (hmin right (Finset.mem_univ right)) hright.ne), hright⟩
+  have hleftRightNe : f left ≠ f right := by
+    exact f.injective.ne (Copying.cycle_predecessor_successor_ne hk i)
+  have hchord : G.Adj (f left) (f right) :=
+    hpeo (f i) hleftLater hrightLater hleftRightNe
+  have hcycleChord : (SimpleGraph.cycleGraph k).Adj left right :=
+    f.map_adj_iff.mp hchord
+  exact Copying.cycle_predecessor_successor_not_adj hk i hcycleChord
+
+/-- The existence of a PEO under any relabelling implies chordality. -/
+theorem isChordal_of_hasPEO {G : SimpleGraph (Fin n)} [DecidableRel G.Adj]
+    (hpeo : HasPEO G) : Erdos81.IsChordal G := by
+  obtain ⟨e, he⟩ := hpeo
+  have hcomap : Erdos81.IsChordal (G.comap e) := isChordal_of_peo he
+  intro k hk hcycle
+  apply hcomap k hk
+  obtain ⟨f⟩ := hcycle
+  exact ⟨(SimpleGraph.Iso.comap e G).symm.toEmbedding.comp f⟩
 
 theorem oriented_pair_injectiveOn (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] :
     Set.InjOn (fun e : Σ _i : Fin n, Fin n ↦ s(e.1, e.2)) (orientedEdges G) := by
@@ -197,6 +260,29 @@ theorem edge_bound_of_peo {G : SimpleGraph (Fin n)} [DecidableRel G.Adj]
       rw [sum_fin_reflected_min]
     _ = (p - 1) * n := sum_range_min_pred_add_choose p n hpn
 
+/-- A clique-order bound is preserved when a graph is relabelled. -/
+theorem cliqueOrderAtMost_comap {G : SimpleGraph (Fin n)} [DecidableRel G.Adj]
+    {p : ℕ} (hclique : CliqueOrderAtMost G p) (e : Fin n ≃ Fin n) :
+    CliqueOrderAtMost (G.comap e) p := by
+  intro K hK
+  let f : G.comap e ≃g G := SimpleGraph.Iso.comap e G
+  have himage : G.IsClique ((K.image f : Finset (Fin n)) : Set (Fin n)) :=
+    Copying.finset_image_isClique_of_hom f.toHom K hK
+  calc
+    K.card = (K.image f).card := (Finset.card_image_of_injective K f.injective).symm
+    _ ≤ p := hclique (K.image f) himage
+
+/-- The PEO edge bound in its label-independent form. -/
+theorem edge_bound_of_hasPEO {G : SimpleGraph (Fin n)} [DecidableRel G.Adj]
+    {p : ℕ} (hpn : p ≤ n) (hpeo : HasPEO G)
+    (hclique : CliqueOrderAtMost G p) :
+    G.edgeFinset.card + Nat.choose p 2 ≤ (p - 1) * n := by
+  obtain ⟨e, he⟩ := hpeo
+  let f : G.comap e ≃g G := SimpleGraph.Iso.comap e G
+  have hbound := edge_bound_of_peo (G := G.comap e) hpn he
+    (cliqueOrderAtMost_comap hclique e)
+  simpa only [f.card_edgeFinset_eq] using hbound
+
 /-- Pascal's recurrence in the orientation convenient for pair counting. -/
 theorem choose_two_succ (n : ℕ) :
     Nat.choose (n + 1) 2 = Nat.choose n 2 + n := by
@@ -267,6 +353,18 @@ theorem complement_edge_bound_of_peo {G : SimpleGraph (Fin n)}
     Nat.choose (n - p + 1) 2 ≤ Gᶜ.edgeFinset.card := by
   obtain ⟨u, rfl⟩ := Nat.exists_eq_add_of_le hpn
   have hedge := edge_bound_of_peo (G := G) (p := p) (by omega) hpeo hclique
+  have hpairs := choose_complement_identity p u hp
+  have htotal := card_edges_add_card_complement G
+  simp only [Nat.add_sub_cancel_left] at hedge hpairs htotal ⊢
+  omega
+
+/-- The missing-pair bound for an arbitrary perfect-elimination ordering. -/
+theorem complement_edge_bound_of_hasPEO {G : SimpleGraph (Fin n)}
+    [DecidableRel G.Adj] {p : ℕ} (hp : 1 ≤ p) (hpn : p ≤ n)
+    (hpeo : HasPEO G) (hclique : CliqueOrderAtMost G p) :
+    Nat.choose (n - p + 1) 2 ≤ Gᶜ.edgeFinset.card := by
+  obtain ⟨u, rfl⟩ := Nat.exists_eq_add_of_le hpn
+  have hedge := edge_bound_of_hasPEO (G := G) (p := p) (by omega) hpeo hclique
   have hpairs := choose_complement_identity p u hp
   have htotal := card_edges_add_card_complement G
   simp only [Nat.add_sub_cancel_left] at hedge hpairs htotal ⊢

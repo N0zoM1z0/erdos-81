@@ -24,12 +24,13 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   that the common neighborhood of two distinct nonadjacent vertices in a
   chordal graph is a clique.  It then proves the full cardinal estimate
   `d_U(u) <= D + w - 2` used in the manuscript's nonadjacency lemma.
-- `Erdos81/PerfectElimination.lean` defines the exact perfect-elimination-order
-  condition on `Fin n`, counts every edge by its earlier endpoint, and proves
-  `e(G) + choose(p,2) <= (p-1)n` whenever that order is perfect and every
-  clique has order at most `p`.  It also proves the exact complement bound
-  `e(complement G) >= choose(n-p+1,2)` used in local root extraction.  The
-  chordal-to-PEO characterization remains separately tracked rather than
+- `Erdos81/PerfectElimination.lean` defines both a fixed
+  perfect-elimination order on `Fin n` and the label-independent existence of
+  one under relabelling.  It proves directly that either condition implies
+  chordality, counts every edge by its earlier endpoint, and establishes
+  `e(G) + choose(p,2) <= (p-1)n` and
+  `e(complement G) >= choose(n-p+1,2)` for a graph admitting such an order.
+  The reverse chordal-to-PEO direction remains separately tracked rather than
   assumed.
 - `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
   first principles.

@@ -45,9 +45,13 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.LocalStability.nat_le_sharpBound_of_le_Q
 #print axioms Erdos81.MixedModel.weak_duality
 #print axioms Erdos81.PerfectElimination.card_edgeFinset_eq_sum_laterNeighbors
+#print axioms Erdos81.PerfectElimination.isChordal_of_peo
+#print axioms Erdos81.PerfectElimination.isChordal_of_hasPEO
 #print axioms Erdos81.PerfectElimination.edge_bound_of_peo
+#print axioms Erdos81.PerfectElimination.edge_bound_of_hasPEO
 #print axioms Erdos81.PerfectElimination.card_edges_add_card_complement
 #print axioms Erdos81.PerfectElimination.complement_edge_bound_of_peo
+#print axioms Erdos81.PerfectElimination.complement_edge_bound_of_hasPEO
 #print axioms Erdos81.RootArithmetic.ceil_seven_quarters_le_nine_fifths
 #print axioms Erdos81.RootArithmetic.final_host_margin_nonnegative
 #print axioms Erdos81.SharpBound.floor_Q_eq_sharpBound
