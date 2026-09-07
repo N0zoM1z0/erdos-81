@@ -1,0 +1,5 @@
+networkx==3.5
+numpy==2.3.2
+scipy==1.16.1
+sympy==1.14.0
+
