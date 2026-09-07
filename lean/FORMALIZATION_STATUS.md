@@ -23,7 +23,9 @@ because no such theorem is claimed yet.
 | Finite primal/dual weak duality | `Erdos81.FiniteLP.weak_duality` | Checked |
 | Triangle/`K_4` mixed LP incidence and gains | `Erdos81.MixedModel` | Modeled exactly; weak duality checked |
 | Strong duality and existence of an optimum | — | Pending (standard finite LP result) |
-| Identity `cp_{<=4}=e-W_4` | — | Pending |
+| Clique-partition edge double count | `Erdos81.CliquePartitionCounting.sum_choose_eq_card_edges` | Checked |
+| Packing-to-partition and partition-to-packing constructions | `Erdos81.IntegralPacking.toCliquePartition`, `ofCliquePartition` | Checked |
+| Identity `cp_{<=4}=e-W_4` for attained extrema | `Erdos81.IntegralPacking.isIntegralOptimum_iff_isRestrictedPartitionMinimum` | Checked |
 | Comparison `Phi <= cp_{<=3}` | — | Pending |
 | Vizing edge colouring | — | External theorem; not yet imported/formalized |
 | Häggkvist--Janssen list edge colouring | — | External theorem; not yet formalized |

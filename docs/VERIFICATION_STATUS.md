@@ -155,8 +155,10 @@ all-order assertion, the exact floor identity (including its modulo-six
 argument), the main rational identities and margins, finite LP weak
 duality, the mixed triangle--four-clique incidence model, and the discrete
 convexity mechanism behind single-vertex copying.  It also verifies the exact
-two-direction copy edge count and solves the averaged complete-split dual LP,
-including the three-branch formula.  The least-index first-entry barrier and
+integral packing/clique-partition transformations and their optimum identity
+`cp_{<=4}(G) = e(G) - W_int(G)`, the exact two-direction copy edge count, and
+the averaged complete-split dual LP, including the three-branch formula.  The
+least-index first-entry barrier and
 its normalized step bound at `n >= 10^32` are machine checked as well.  Its
 root-regularization constant chain and the algebraic local-deficit extraction
 are machine checked as well.  The minimal-separator clique theorem, strong

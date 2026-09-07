@@ -26,6 +26,7 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.ChordalWalk.append_reverse_isCycle
 #print axioms Erdos81.ChordalWalk.inducedCycleEmbedding
 #print axioms Erdos81.ChordalWalk.inducedCycleEmbedding_of_two_arcs
+#print axioms Erdos81.CliquePartitionCounting.sum_choose_eq_card_edges
 #print axioms Erdos81.Separator.exists_minimal_separator
 #print axioms Erdos81.Separator.exists_neighbor_in_component
 #print axioms Erdos81.ChordalSeparator.exists_component_arc
@@ -51,6 +52,9 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.FirstEntry.inverse_order_lt_quarter_radius
 #print axioms Erdos81.FirstEntryGraph.normalized_movement_of_dist_le
 #print axioms Erdos81.FirstEntryGraph.copyPath_barrier_at_manuscript_scale
+#print axioms Erdos81.IntegralPacking.size_toCliquePartition
+#print axioms Erdos81.IntegralPacking.gain_ofCliquePartition
+#print axioms Erdos81.IntegralPacking.isIntegralOptimum_iff_isRestrictedPartitionMinimum
 #print axioms Erdos81.LocalStability.defect_sum_le_nine_delta
 #print axioms Erdos81.LocalStability.root_displacement_squared
 #print axioms Erdos81.LocalStability.nat_le_sharpBound_of_le_Q

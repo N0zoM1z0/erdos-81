@@ -49,6 +49,12 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   first principles.
 - `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,
   triangles and four-cliques as items, and gains `2` and `5`.
+- `Erdos81/CliquePartitionCounting.lean` proves the exact edge double count
+  `sum_K choose(|K|,2) = e(G)` for every clique partition.
+- `Erdos81/IntegralPacking.lean` gives explicit inverse objective
+  transformations between mixed integral packings and clique partitions with
+  blocks of order at most four.  It proves both exact size formulas and the
+  attained-optimum identity `cp_{<=4}(G) = e(G) - W_int(G)`.
 - `Erdos81/DiscreteConvexity.lean` checks the direction choice, propagation to
   an endpoint, and the sign algebra in the single-vertex copying argument.
 - `Erdos81/EditDistance.lean` defines labelled edge-edit distance and the

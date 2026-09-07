@@ -2,6 +2,7 @@ import Erdos81.Arithmetic
 import Erdos81.Chordal
 import Erdos81.ChordalSeparator
 import Erdos81.ChordalWalk
+import Erdos81.CliquePartitionCounting
 import Erdos81.Copying
 import Erdos81.CopyCover
 import Erdos81.DiscreteConvexity
@@ -10,6 +11,7 @@ import Erdos81.EditDistance
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry
 import Erdos81.FirstEntryGraph
+import Erdos81.IntegralPacking
 import Erdos81.LocalStability
 import Erdos81.MixedModel
 import Erdos81.PEOExistence

@@ -75,6 +75,9 @@ The current Lean project machine-checks:
 - the rational stability identities and all decisive numerical margins
   formalized so far, including the complete root-regularization constant chain;
 - finite packing/covering weak duality and its mixed triangle--`K_4` model;
+- the exact clique-partition edge double count and both objective-preserving
+  transformations proving `cp_{<=4}(G) = e(G) - W_int(G)` for attained
+  extrema;
 - the exact two-direction edge-count identity for vertex copying and
   preservation of simpliciality and chordality under the required copy;
 - the discrete-convexity step used by the single-vertex copy path;
