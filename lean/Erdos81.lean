@@ -9,6 +9,7 @@ import Erdos81.FirstEntry
 import Erdos81.FirstEntryGraph
 import Erdos81.LocalStability
 import Erdos81.MixedModel
+import Erdos81.PerfectElimination
 import Erdos81.RootArithmetic
 import Erdos81.SharpBound
 import Erdos81.SplitDual

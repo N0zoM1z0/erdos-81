@@ -24,6 +24,11 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   that the common neighborhood of two distinct nonadjacent vertices in a
   chordal graph is a clique.  It then proves the full cardinal estimate
   `d_U(u) <= D + w - 2` used in the manuscript's nonadjacency lemma.
+- `Erdos81/PerfectElimination.lean` defines the exact perfect-elimination-order
+  condition on `Fin n`, counts every edge by its earlier endpoint, and proves
+  `e(G) + choose(p,2) <= (p-1)n` whenever that order is perfect and every
+  clique has order at most `p`.  The chordal-to-PEO characterization remains
+  separately tracked rather than assumed.
 - `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
   first principles.
 - `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,
@@ -67,8 +72,9 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   step from `Q(n)` to `sharpBound n`.
 - `Erdos81/AxiomAudit.lean` prints the assumptions of the principal theorems.
 
-The long chordal symmetrization, the full root and local structural lemmas, and
-the applications of Vizing, Häggkvist--Janssen, and
+The chordal-to-perfect-elimination-order characterization, the long chordal
+symmetrization, the full root and local structural lemmas, and the applications
+of Vizing, Häggkvist--Janssen, and
 Rohatgi--Urschel--Wellens are **not yet fully formalized**.  No placeholder
 axiom or `sorry` is used to hide this boundary.  Accordingly, the Lean project
 is not yet a kernel proof of the complete result.

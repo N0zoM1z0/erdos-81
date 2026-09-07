@@ -28,6 +28,9 @@ because no such theorem is claimed yet.
 | Terminal host construction | — | Pending |
 | Demotion/promotion numerical chain | `Erdos81.RootArithmetic` | Checked |
 | Common-neighbor clique and nonadjacency degree bound | `Erdos81.Chordal.commonNeighbors_isClique_of_chordal`, `root_nonadjacency_degree_bound` | Checked |
+| Perfect-elimination ordering condition | `Erdos81.PerfectElimination.IsPEO` | Modeled exactly for a fixed order on `Fin n` |
+| Edge count from a PEO and clique-order bound | `Erdos81.PerfectElimination.edge_bound_of_peo` | Checked |
+| Every finite chordal graph admits a PEO | — | Pending |
 | Full strict root-regularization lemma | — | Pending |
 | Stability square identity and second-branch square identity | `Erdos81.Arithmetic` | Checked |
 | Exact floor identity for `Q(n)` | `Erdos81.SharpBound.floor_Q_eq_sharpBound` | Checked |

@@ -44,6 +44,8 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.LocalStability.root_displacement_squared
 #print axioms Erdos81.LocalStability.nat_le_sharpBound_of_le_Q
 #print axioms Erdos81.MixedModel.weak_duality
+#print axioms Erdos81.PerfectElimination.card_edgeFinset_eq_sum_laterNeighbors
+#print axioms Erdos81.PerfectElimination.edge_bound_of_peo
 #print axioms Erdos81.RootArithmetic.ceil_seven_quarters_le_nine_fifths
 #print axioms Erdos81.RootArithmetic.final_host_margin_nonnegative
 #print axioms Erdos81.SharpBound.floor_Q_eq_sharpBound
