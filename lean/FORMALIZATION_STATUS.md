@@ -26,7 +26,9 @@ because no such theorem is claimed yet.
 | Clique-partition edge double count | `Erdos81.CliquePartitionCounting.sum_choose_eq_card_edges` | Checked |
 | Packing-to-partition and partition-to-packing constructions | `Erdos81.IntegralPacking.toCliquePartition`, `ofCliquePartition` | Checked |
 | Identity `cp_{<=4}=e-W_4` for attained extrema | `Erdos81.IntegralPacking.isIntegralOptimum_iff_isRestrictedPartitionMinimum` | Checked |
-| Comparison `Phi <= cp_{<=3}` | — | Pending |
+| Attainment of the integral maximum and restricted partition minimum | `Erdos81.IntegralPacking.exists_integralOptimum_and_restrictedPartitionMinimum` | Checked |
+| Integral packing embeds in the mixed fractional LP with equal objective | `Erdos81.IntegralFractional.toFractional`, `packingValue_toFractional` | Checked |
+| Comparison `Phi <= cp_{<=3}` | `Erdos81.IntegralFractional.potential_le_size_of_orderAtMost_three` | Checked conditional on a certified fractional primal optimum |
 | Vizing edge colouring | — | External theorem; not yet imported/formalized |
 | Häggkvist--Janssen list edge colouring | — | External theorem; not yet formalized |
 | Rohatgi--Urschel--Wellens uniform transfer | — | External theorem; not yet formalized |
@@ -68,6 +70,31 @@ because no such theorem is claimed yet.
 | Far-case closing arithmetic | `Erdos81.Arithmetic.far_case_closure` | Checked |
 | Full eventual sharp upper bound | — | Pending |
 | Rigidity addendum | Python exact certificates only | Pending in Lean |
+
+## Progress estimate
+
+The current engineering estimate is **60% of the local conditional-proof
+formalization**.  This percentage is a weighted dependency-block estimate,
+not a theorem and not a count of source lines.  It excludes proofs of the
+three published external inputs: those remain separate projects and will be
+represented by explicit hypotheses at the first end-to-end milestone.
+
+| Dependency block | Weight | Checked contribution |
+|---|---:|---:|
+| Statements, fallback partition, floor and numerical arithmetic | 10 | 10 |
+| Chordal infrastructure: induced cycles, separators, Dirac, and PEOs | 15 | 15 |
+| Mixed LP, integral identity, and the `Phi <= cp_{<=3}` interface | 15 | 12 |
+| Copying, edit distance, discrete convexity, and first-entry kernel | 18 | 13 |
+| Terminal construction and strict root regularization | 18 | 4 |
+| Local/terminal stability and complete-split analysis | 14 | 4 |
+| Full symmetrization and final conditional assembly | 10 | 2 |
+| **Total** | **100** | **60** |
+
+The unearned portions correspond to named pending rows in the ledger above.
+Reaching 100% on this metric will mean a sorry-free theorem deriving
+`EventualSharpUpperBound` from explicit statements of Vizing,
+Häggkvist--Janssen, and the finite-family transfer theorem.  It will still not
+mean that those three external results themselves have been proved in Lean.
 
 ## Honest theorem boundary
 

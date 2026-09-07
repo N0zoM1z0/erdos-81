@@ -136,5 +136,17 @@ theorem sum_choose_eq_card_edges {G : SimpleGraph V} [DecidableRel G.Adj]
   intro K hK
   exact (card_blockEdges K (P.isClique K hK)).symm
 
+/-- Every nontrivial partition block contains an edge, so a clique partition
+has no more blocks than the graph has edges. -/
+theorem size_le_card_edges {G : SimpleGraph V} [DecidableRel G.Adj]
+    (P : CliquePartition G) : P.size ≤ G.edgeFinset.card := by
+  rw [← sum_choose_eq_card_edges P]
+  change P.blocks.card ≤ ∑ K ∈ P.blocks, Nat.choose K.card 2
+  rw [Finset.card_eq_sum_ones]
+  apply Finset.sum_le_sum
+  intro K hK
+  have hTwo := P.nontrivial K hK
+  exact Nat.choose_pos hTwo
+
 end CliquePartitionCounting
 end Erdos81

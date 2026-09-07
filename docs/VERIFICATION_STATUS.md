@@ -156,8 +156,11 @@ argument), the main rational identities and margins, finite LP weak
 duality, the mixed triangle--four-clique incidence model, and the discrete
 convexity mechanism behind single-vertex copying.  It also verifies the exact
 integral packing/clique-partition transformations and their optimum identity
-`cp_{<=4}(G) = e(G) - W_int(G)`, the exact two-direction copy edge count, and
-the averaged complete-split dual LP, including the three-branch formula.  The
+`cp_{<=4}(G) = e(G) - W_int(G)`, attainment of the finite integral extrema,
+and the zero--one embedding into the fractional mixed LP.  The latter yields
+the comparison `Phi(G) <= cp_{<=3}(G)` relative to a certified fractional
+optimum.  It also checks the exact two-direction copy edge count and the
+averaged complete-split dual LP, including the three-branch formula.  The
 least-index first-entry barrier and
 its normalized step bound at `n >= 10^32` are machine checked as well.  Its
 root-regularization constant chain and the algebraic local-deficit extraction

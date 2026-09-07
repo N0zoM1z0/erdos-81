@@ -52,9 +52,13 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.FirstEntry.inverse_order_lt_quarter_radius
 #print axioms Erdos81.FirstEntryGraph.normalized_movement_of_dist_le
 #print axioms Erdos81.FirstEntryGraph.copyPath_barrier_at_manuscript_scale
+#print axioms Erdos81.IntegralFractional.toFractional
+#print axioms Erdos81.IntegralFractional.packingValue_toFractional
+#print axioms Erdos81.IntegralFractional.potential_le_size_of_orderAtMost_three
 #print axioms Erdos81.IntegralPacking.size_toCliquePartition
 #print axioms Erdos81.IntegralPacking.gain_ofCliquePartition
 #print axioms Erdos81.IntegralPacking.isIntegralOptimum_iff_isRestrictedPartitionMinimum
+#print axioms Erdos81.IntegralPacking.exists_integralOptimum_and_restrictedPartitionMinimum
 #print axioms Erdos81.LocalStability.defect_sum_le_nine_delta
 #print axioms Erdos81.LocalStability.root_displacement_squared
 #print axioms Erdos81.LocalStability.nat_le_sharpBound_of_le_Q

@@ -78,6 +78,9 @@ The current Lean project machine-checks:
 - the exact clique-partition edge double count and both objective-preserving
   transformations proving `cp_{<=4}(G) = e(G) - W_int(G)` for attained
   extrema;
+- existence of the finite integral extrema, the zero--one embedding into the
+  rational mixed LP, and the certified-optimum comparison
+  `Phi(G) <= cp_{<=3}(G)`;
 - the exact two-direction edge-count identity for vertex copying and
   preservation of simpliciality and chordality under the required copy;
 - the discrete-convexity step used by the single-vertex copy path;

@@ -54,7 +54,12 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
 - `Erdos81/IntegralPacking.lean` gives explicit inverse objective
   transformations between mixed integral packings and clique partitions with
   blocks of order at most four.  It proves both exact size formulas and the
-  attained-optimum identity `cp_{<=4}(G) = e(G) - W_int(G)`.
+  attained-optimum identity `cp_{<=4}(G) = e(G) - W_int(G)`, as well as
+  existence of the two finite extrema.
+- `Erdos81/IntegralFractional.lean` embeds each integral packing as a zero--one
+  feasible point of the rational mixed LP, proves exact objective preservation,
+  and derives `Phi(G) <= |P|` for every order-at-most-three partition relative
+  to a certified fractional optimum.
 - `Erdos81/DiscreteConvexity.lean` checks the direction choice, propagation to
   an endpoint, and the sign algebra in the single-vertex copying argument.
 - `Erdos81/EditDistance.lean` defines labelled edge-edit distance and the

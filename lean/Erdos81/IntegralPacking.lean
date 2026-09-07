@@ -1,5 +1,6 @@
 import Erdos81.CliquePartitionCounting
 import Erdos81.MixedModel
+import Mathlib.Data.Fintype.Lattice
 import Mathlib.Tactic
 
 /-!
@@ -30,6 +31,33 @@ structure Packing (G : SimpleGraph V) where
   items : Finset (Item G)
   exclusive : ∀ ⦃i j : Item G⦄, i ∈ items → j ∈ items →
     ∀ e : Resource G, Uses i e → Uses j e → i = j
+
+/-- The packing with no selected items. -/
+def empty (G : SimpleGraph V) : Packing G where
+  items := ∅
+  exclusive := by simp
+
+omit [Fintype V] in
+/-- A packing is determined by its finset of selected items. -/
+theorem items_injective {G : SimpleGraph V} :
+    Function.Injective (Packing.items : Packing G → Finset (Item G)) := by
+  intro p q hpq
+  cases p with
+  | mk pItems pExclusive =>
+      cases q with
+      | mk qItems qExclusive =>
+          simp only at hpq
+          subst qItems
+          rfl
+
+/-- There are only finitely many integral mixed packings in a finite graph. -/
+noncomputable instance packingFintype (G : SimpleGraph V) :
+    Fintype (Packing G) :=
+  Fintype.ofInjective Packing.items items_injective
+
+/-- The empty packing makes the finite packing type nonempty. -/
+instance packingNonempty (G : SimpleGraph V) : Nonempty (Packing G) :=
+  ⟨empty G⟩
 
 /-- Integral gain: `2` for a triangle and `5` for a four-clique. -/
 def itemGain {G : SimpleGraph V} : Item G → ℕ
@@ -560,6 +588,13 @@ def IsRestrictedPartitionMinimum (G : SimpleGraph V) (c : ℕ) : Prop :=
   (∃ P : CliquePartition G, P.OrderAtMost 4 ∧ P.size = c) ∧
     ∀ P : CliquePartition G, P.OrderAtMost 4 → c ≤ P.size
 
+/-- The integral mixed-packing objective attains a maximum because the item
+set, and hence the type of feasible integral packings, is finite. -/
+theorem exists_isIntegralOptimum (G : SimpleGraph V) :
+    ∃ w : ℕ, IsIntegralOptimum G w := by
+  obtain ⟨p, hp⟩ := Finite.exists_max (gain : Packing G → ℕ)
+  exact ⟨gain p, ⟨⟨p, rfl⟩, hp⟩⟩
+
 /-- Exact optimization identity
 `cp_{≤4}(G) = e(G) - (maximum integral mixed gain)`.
 
@@ -591,6 +626,20 @@ theorem isIntegralOptimum_iff_isRestrictedPartitionMinimum
       rw [size_toCliquePartition] at hMin
       have hGainBound := gain_le_card_edges p
       omega
+
+/-- The two finite optimization problems attain corresponding extrema.  This
+is the existence form of the exact restricted clique-partition identity. -/
+theorem exists_integralOptimum_and_restrictedPartitionMinimum
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    ∃ w : ℕ, IsIntegralOptimum G w ∧
+      IsRestrictedPartitionMinimum G (G.edgeFinset.card - w) := by
+  obtain ⟨w, hOpt⟩ := exists_isIntegralOptimum G
+  obtain ⟨p, hp⟩ := hOpt.1
+  have hw : w ≤ G.edgeFinset.card := by
+    rw [← hp]
+    exact gain_le_card_edges p
+  exact ⟨w, hOpt,
+    (isIntegralOptimum_iff_isRestrictedPartitionMinimum w hw).mp hOpt⟩
 
 end IntegralPacking
 end Erdos81

@@ -11,6 +11,7 @@ import Erdos81.EditDistance
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry
 import Erdos81.FirstEntryGraph
+import Erdos81.IntegralFractional
 import Erdos81.IntegralPacking
 import Erdos81.LocalStability
 import Erdos81.MixedModel
