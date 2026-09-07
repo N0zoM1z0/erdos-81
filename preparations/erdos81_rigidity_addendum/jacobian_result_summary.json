@@ -1,0 +1,25 @@
+{
+  "note": "Summary of the successful live Jacobian responses; input payloads are included separately.",
+  "partition_check": {
+    "operation_id": "graph.edge_clique_partition.check",
+    "verdict": "VALID",
+    "is_partition": true,
+    "runtime_ms": 1
+  },
+  "dual_check": {
+    "operation_id": "graph.signed_clique_weight.maximum.compute",
+    "optimum_value": {
+      "num": "1",
+      "den": "1"
+    },
+    "clique": [
+      "v000",
+      "v001",
+      "v002",
+      "v004",
+      "v005"
+    ],
+    "runtime_ms": 15
+  },
+  "total_signed_weight": 23
+}

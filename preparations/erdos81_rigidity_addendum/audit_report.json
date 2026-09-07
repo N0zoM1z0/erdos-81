@@ -1,0 +1,32 @@
+{
+  "verdict": "PASS",
+  "counts": {
+    "graph_instances": 1643,
+    "partition_certificates": 3286,
+    "edge_incidences_replayed": 815824,
+    "chordal_instances": 1637,
+    "deficit_at_most_three_split_certificates": 1363,
+    "all_clique_dual_checks": 60594,
+    "nonchordal_instances": 6,
+    "clique_type_checks": 10198,
+    "near_window_scalar_cases": 226457,
+    "root_displacement_checks": 104775,
+    "saved_partition_certificates": 94
+  },
+  "seed": {
+    "vertices": 12,
+    "edges": 38,
+    "cp": 23,
+    "cp_at_most_3": 24,
+    "parts_by_size": {
+      "4": 1,
+      "3": 5,
+      "2": 17
+    }
+  },
+  "limits": [
+    "The asymptotic closure theorem is a supplied session proof, not inferred from these finite checks.",
+    "Large clique-type inequalities are checked algebraically; exhaustive clique enumeration is only performed on the stated small instances.",
+    "The root-window scalar checks run only through n=3000; the proof handles all n."
+  ]
+}

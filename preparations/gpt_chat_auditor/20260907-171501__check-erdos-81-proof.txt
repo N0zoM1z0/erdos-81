@@ -1,0 +1,481 @@
+Title: Check Erdos 81 Proof
+Source: chatgpt_web_dom
+Thread URL: https://chatgpt.com/c/6a9e730d-b76c-83ea-a17d-34019cdbf50c
+Exported At: 2026-09-07T17:15:01+08:00
+Message Count: 6
+Schema Version: 1.1
+Time Zone: Asia/Shanghai
+
+=== 1. USER ===
+
+erdos81_rigidity_addendum.zipZip Archive20260907-160944__1-keep-the-actual-spoke-capacities.txtDocument20260907-160937__1-a-completion-theorem-for-an-arbitrary-deficient-graph.txtDocument20260907-160858__1-statement-and-the-absolute-constant.txtDocument20260907-160833__1-the-exact-price-of-a-larger-reserve-part.txtDocument20260907-160813__1-every-small-batch-in-a-smallest-counterexample-is-host-colourable.txtDocument20260907-160656__1-inputs-notation-and-the-constant.txtDocument20260907-160626__verdict.txtDocumenthi , i'd like you to check our proof for Erdos 81 : http://erdosproblems.com/81
+「Let 𝐺 be a chordal graph on 𝑛 vertices - that is, 𝐺 has no induced cycles of length greater than 3. Can the edges of 𝐺 be partitioned into 𝑛2/6 +𝑂⁡(𝑛) many cliques?」
+
+gpt's conversations/proof are attached, please check them carefully (the session is too long so i sampled some context , might ignore some part)
+
+=== 2. ASSISTANT ===
+
+## Verdict
+
+I find the final closure proof sound under its stated standard inputs. I did not identify a fatal mathematical gap in either the main proof or the rigidity addendum.
+
+The important distinction is between the earlier exploratory arguments—which repeatedly leave a selection or completion problem unresolved—and the final argument in closure_PROOF.md. The latter takes a different route and supplies the missing local-to-global stability implication. It does not depend on resolving all the earlier reservoir constructions.
+
+On my reading, that final argument proves the stronger eventual statement
+
+for every sufficiently large chordal graph, with the absolute threshold specified in the manuscript. Its small-order argument then gives the requested n2/6+Cn bound with one absolute C.
+
+This is my mathematical assessment, not a formal proof-assistant verification or confirmation of priority or public acceptance. Below I explain the critical checks and the remaining documentation issues.
+
+·
+
+### What I actually reviewed
+
+The TXT exports lose many displayed equations. Fortunately, the ZIP contains complete versions of both closure_PROOF.md and PROOF.md, so I used those for the mathematical review. In particular, the large numerical threshold is 1032, not 1032.
+
+I checked the final proof’s dependencies and numerical estimates, reran the supplied addendum scripts, and wrote a separate audit of the main copying mechanism. This is not a blanket endorsement of every earlier sampled argument.
+
+## 1. The external inputs match their uses
+
+The three required external results are appropriate.
+
+Vizing supplies a proper edge-colouring using at most Δ+1 colours. The cited modern paper restates that classical theorem. arXiv
+
+Häggkvist–Janssen really does establish
+
+The proof uses p, not an unjustified p−1. This matters because the root-hosting arguments require arbitrary lists, not merely an ordinary factorization. 剑桥大学出版社
+
+Rohatgi–Urschel–Wellens defines the weighted clique-packing objective with gain (2i​)−1 for Ki​. Its Theorem 3.4 supplies the fractional-to-integral o(n2) difference; the application in Theorem 3.6 explicitly uses a threshold uniform over all graphs of the given order. For r=4, the gains are exactly 2 and 5, as required here. arXiv+1
+
+Thus, with
+
+the identity
+
+is legitimate.
+
+The final proof does not assume a universal O(n) rounding error. It also does not need the earlier split-graph theorem as an additional unproved input.
+
+## 2. The terminal construction accounts for every edge
+
+This is Lemma 2.1 in the complete Markdown proof, corresponding to the “Quantitative terminal construction” in the transcript. The transcript describes both stages: outside-edge triangles first, followed by root-edge triangles from the remaining host lists.
+
+Write
+
+and distinguish the missing-incidence count from M(n) by writing
+
+Set
+
+The claimed bound, assuming q−2D−4t≥p, is
+
+I checked the potentially problematic points:
+
+Balancing the colour classes works. Alternating-path swaps give class sizes differing by at most one, including when some colours are initially unused. The p largest classes contain at least pm/c edges, and each class has at most t edges.
+
+The invalid-host count is correct. Take a perfect elimination ordering ending with P. For an outside edge uv, with u earlier,
+
+Its number of invalid root hosts is therefore exactly
+
+Because u has at most w−1 later outside neighbours, the total invalid-host count is at most (w−1)M. Consequently some assignment of the selected matching classes to root vertices retains
+
+outside-edge triangles.
+
+The second stage uses actual unused spokes. Each root vertex has used at most 2t outside spokes. Every root pair retains at least q−2D−4t unused common hosts. Proper list-edge-colouring of Kp​ therefore creates compatible root triangles without colliding with the first stage.
+
+The exact completed count is
+
+which gives (A). No residual separator graph is being silently assumed chordal, and no root or outside edge is left unpaid.
+
+In particular, the additional inequalities
+
+really yield
+
+Those strict negative defect coefficients are what the later stability argument needs.
+
+## 3. Strict root regularization checks out
+
+This is the most important local structural step. The transcript explicitly changes the promotion threshold from 2p to 7p/4, retains all newly outside edges, and only constructs the final partition after changing the root.
+
+Under
+
+moving the bad root columns outside gives
+
+The new outside edge count is correctly recorded as
+
+The numerical estimate is exact:
+
+Thus w0​−1<p/10.
+
+The legality of promotions is also proved, rather than assumed. If an outside vertex u misses a root vertex x, chordality forces their common neighbours to form a clique: two nonadjacent common neighbours would give an induced C4​. Splitting NH​(u) according to adjacency to x gives
+
+Meanwhile, the missing-column invariant satisfies
+
+Therefore an outside vertex with degree at least 7pi​/4 must be complete to the current root. Promoting it is legal, and its new missing-column size preserves the same invariant.
+
+The remaining estimates are consistent:
+
+Finally,
+
+So the final root really satisfies the hypotheses needed for (B).
+
+There is no missing “cost of moving vertices” here. The graph itself is unchanged; only the designated root changes. All edges affected by that designation enter the final accounting.
+
+## 4. The copying argument supplies the required fine monotone path
+
+The final proof uses monotonicity of Φ, not monotonicity of cp. It expressly avoids transporting an integral partition through the copying operations.
+
+For nonadjacent u,v, copying an optimal mixed dual cover gives feasible covers of the two copied graphs with costs
+
+Every new triangle or K4​ through the changed vertex maps to an old clique through its model; no clique contains both u and v. Combined with the edge-count identity, this gives the correct inequality direction:
+
+For two nonadjacent simplicial false-twin classes, keep the two clique neighbourhoods fixed and vary their class sizes. The resulting sequence f(j)=Φ(Hj​) satisfies
+
+Hence it is discretely convex.
+
+At least one adjacent step is nondecreasing. Once that direction is chosen, convexity makes all subsequent steps toward that endpoint nondecreasing. This justifies the part that would otherwise be dangerous: a whole-class merge is implemented by individually monotone single-vertex copies.
+
+I also checked termination and chordality. Each copied vertex is reinserted with a clique neighbourhood, and at the endpoint two false-twin classes merge without splitting another old false-twin class. There are therefore at most n−1 full-class rounds.
+
+The terminal characterization is valid. In a connected noncomplete terminal graph, private vertices in distinct leaf bags share a neighbourhood K. There is exactly one private vertex per leaf; running intersection makes K universal. An edge in G−K would provide another simplicial vertex with neighbourhood strictly larger than K, a contradiction. Thus G−K is independent.
+
+This produces precisely the path needed later: chordal throughout, Φ nondecreasing throughout, and at most n−2 changed pairs per step.
+
+## 5. The first-entry argument really closes global stability
+
+This is the decisive difference from the earlier incomplete approaches. The transcript does not merely infer stability from the shape of the terminal maximizer; it uses quantitative local stability at the first entry into a fixed neighbourhood.
+
+Let dsplit​(G) be distance from the balanced complete-split templates, and put
+
+Inside the local neighbourhood, strict regularization gives
+
+Consequently,
+
+The entry to regularization is also justified: if a balanced template root A is almost a clique, a maximum clique P of the chordal graph G[A] omits at most 2E​ vertices, where E is the edit count. The stated constants then put P inside the regularization hypotheses. This is the content behind the local stability lemma, not an assumed stability theorem.
+
+I checked the complete-split terminal calculation as well. The reduced dual constraints are
+
+giving
+
+The second and third branches have a fixed quadratic separation from n2/6. Thus only the first branch can occur at the near-maximum level used in the proof.
+
+Now take
+
+Along the monotone path from a graph satisfying
+
+every path graph has Δ≤2δn2, and the terminal graph lies inside the ρn2/4 ball.
+
+Suppose the original graph lies outside the ρn2/2 ball. At the first entry Gi​,
+
+But (C) applies there and gives
+
+whereas
+
+That is a genuine contradiction.
+
+I do not see a missing implication in this step. It neither charges the total number of copying edits nor assumes that endpoint uniqueness alone implies global stability.
+
+## 6. The absolute constant and the final rounding step are legitimate
+
+The manuscript chooses
+
+This is an absolute finite constant: T comes from the independently stated uniform packing theorem, not from the desired chordal assertion.
+
+For n≥N, the two cases are correctly separated:
+
+Near the fractional maximum, global stability puts G in the local neighbourhood, where the construction directly gives
+
+Away from it,
+
+Thus the subquadratic transfer error is spent only against a fixed quadratic deficit. There is no substitution of o(n2) for O(n). For n<N, individual-edge partitions fit the budget with C=N. This matches the final assembly in the supplied proof.
+
+The complete-split lower construction also checks out, so the eventual exact extremal value M(n), not just an upper bound, follows.
+
+## 7. The rigidity addendum is supported by its finite repair lemma
+
+The elementary repair lemma is valid independently of chordality. Let
+
+and assume
+
+There are at least q−a−2m≥p clean outside hosts. Each outside edge can receive two previously unused common root neighbours; the resulting K4​'s are edge-disjoint. The remaining root edges can then be factorized and hosted on the clean vertices. This gives the claimed count
+
+The construction and the matching signed lower certificate are both present in the supplied addendum.
+
+Importantly, the lower certificate works against every clique size. With weights −1 on root edges, +1 on crossing edges, and −2 on outside edges, a clique having x root and y outside vertices satisfies
+
+Both terms are nonnegative for integer arguments. Thus a larger clique cannot evade the certificate.
+
+The passage from a near-extremizer to this finite lemma is also valid. Strict regularization gives
+
+Hence a+2m≤18s. The root-displacement estimate gives
+
+so
+
+for s≤n/100. The finite lemma applies and improves the initial estimate to the exact identity
+
+The canonical-root conclusion then follows from the stated degree gap.
+
+I also checked the resulting rigidity, unique complete-split approximation, and the eventual nonsplit maximum M(n)−4. The distinction between a bounded number of edge defects and a change in root order is correctly retained.
+
+## 8. Computational verification and remaining corrections
+
+Here is what I actually reproduced—not merely what the transcripts report.
+
+| Check | Result |
+| --- | --- |
+| Supplied addendum replay | PASS: 94 saved partition certificates |
+| Supplied addendum audit | PASS: 1,643 instances, 3,286 partitions, 815,824 edge incidences |
+| New independent copying audit | PASS: all 531 nonempty chordal atlas graphs through seven vertices |
+| Nonadjacent-pair copy inequalities | PASS: 5,394 |
+| Monotone copying paths | PASS: 1,224 class merges and 1,889 single-vertex steps |
+| New standard-library rational replay | PASS: 6,169 nontrivial LP certificates plus 1,626 triangle-free values |
+
+The new LP replay reconstructs every triangle and K4​ from the source graph, verifies packing capacities and dual inequalities with exact fractions, and checks equality of the primal and dual objectives. It then rebuilds the tested copying paths.
+
+These are finite regression checks, not an enumeration proof of the infinite theorem. My assessment of the theorem rests on the general arguments above.
+
+I found three things to correct or clarify before circulation:
+
+1. Use the complete Markdown manuscripts. The equation-damaged TXT exports are unsuitable as the definitive proof.
+2. State p>0 explicitly in Lemma 2.1. Its formula divides by p. All actual applications have p≥128, so this is a harmless domain clarification.
+3. Separate the two computational archives. The uploaded ZIP does not contain the original main-proof LP archive; it contains only a report of that earlier replay. Its audit.py and replay.py are addendum scripts. My new checks are separately supplied and should not be described as a rerun of the unavailable original certificates.
+
+Bottom line: the final closure argument is substantially stronger than the earlier conditional constructions, and I find its decisive mathematical steps valid. I recommend circulating the standalone closure proof and rigidity addendum for specialist review, with the computational evidence clearly distinguished from the proof itself.
+
+Citations:
+- arXiv: https://arxiv.org/abs/2410.05240
+- 剑桥大学出版社: https://www.cambridge.org/core/journals/combinatorics-probability-and-computing/article/new-bounds-on-the-listchromatic-index-of-the-complete-graph-and-other-simple-graphs/18498E8F4291D12FA5D03FF011F3D2E2
+- arXiv+1: https://arxiv.org/html/2005.02529v1
+
+=== 3. USER ===
+
+ok, so do we/gpt actually solve this Erdos problem (by giving a correct proof) or there're residual gaps/bottlenecks/todos?
+i mean are we just formalizing this proof and publish it or need some further work/proof/check 🤔
+
+=== 4. ASSISTANT ===
+
+My current mathematical judgment is yes: the final closure manuscript appears to contain a complete solution to Erdős #81, and I have not identified a substantive missing lemma, unresolved case, or unpaid error term.
+
+But I would not turn that into “the proof is definitively verified, so only formatting remains.” The appropriate next phase is independent verification and preparation of a standalone paper, rather than searching for another mathematical breakthrough.
+
+The distinction is between a known gap in the argument and the possibility that our reviews have missed an error. I currently see the latter risk, not the former.
+
+## What my positive verdict actually means
+
+I am endorsing the final closure_PROOF.md argument, not every argument in the conversation.
+
+The earlier work genuinely had unresolved reservoir-selection and completion problems. The final proof takes a different route: it proves quantitative local stability, propagates that stability through single-vertex copying, and then separates the near-extremal and non-near-extremal cases. Those earlier selection problems are therefore not outstanding dependencies of this proof.
+
+The final conclusion I believe follows is
+
+for one absolute finite N. Small orders are then handled by individual-edge partitions, giving one absolute C for
+
+That is the original problem’s requested conclusion, not just an asymptotic n2/6+o(n2) substitute. The manuscript explicitly completes both cases and the small-order argument.
+
+Also, my earlier phrase “under the stated standard inputs” does not mean “conditional on another conjecture.” Vizing’s theorem and the Häggkvist–Janssen list-colouring bound are established results. The weighted packing-transfer statement is explicitly given as Theorem 3.4 of Rohatgi–Urschel–Wellens, with the uniform application used here made explicit in their proof of Theorem 3.6. I rechecked those sources in this follow-up. arXiv+2剑桥大学出版社+2
+
+Computing the enormous constant numerically is not a missing mathematical step. An independently established finite threshold suffices for an existence theorem about an absolute C. The manuscript does not define that threshold circularly through the assertion it is trying to prove.
+
+## What still needs to happen
+
+### 1. Independent mathematical review—not merely another approval from GPT
+
+This is the most important remaining check I recommend.
+
+A specialist should read the standalone proof without relying on my verdict, particularly these three places:
+
+| Part of the final manuscript | What the reader should independently establish |
+| --- | --- |
+| Lemma 3.2: strict root regularization | Every promotion is legal, every affected edge remains accounted for, and the final host lists satisfy the required bounds. |
+| Proposition 5.3: fine monotone symmetrization | Every individual copy preserves chordality and does not decrease Φ; the process terminates at a complete-split graph. |
+| Theorem 7.1: first-entry stability | The quantitative local inequality really rules out crossing the edit-distance boundary while remaining near-extremal. |
+
+These are proved steps in the manuscript that deserve independent scrutiny, not placeholders awaiting proofs. Their corresponding arguments are present in the supplied transcript.
+
+I checked these steps and presently believe them correct. Nevertheless, I would not treat repeated GPT approvals—including mine—as equivalent to independent specialist validation. Another reader could discover an error that requires genuine mathematical repair. I cannot promise that any such repair would be cosmetic.
+
+That is a limitation of our verification so far, not an identified bottleneck.
+
+### 2. Prepare a definitive, self-contained manuscript
+
+My recommendation is to use the final closure proof as the main paper, with the rigidity addendum following it or placed separately. Do not ask readers to reconstruct the theorem from the long conversation.
+
+The concrete corrections from my review remain modest: explicitly exclude p=0 in Lemma 2.1; distinguish the missing-incidence variable from M(n); preserve the correct 1032 threshold; and make the references and hypotheses precise. These are recorded in the .
+
+The computational documentation also needs to distinguish the original main-proof audit, the supplied addendum audit, and the new checks in my review. The uploaded archive contains a report of the original main-proof replay, not that entire original certificate collection. This affects reproducibility of the historical computational claims, not the logical completeness of the written general proof.
+
+The manuscript itself correctly says that finite checks do not establish the infinite theorem by enumeration. That distinction should remain explicit in the paper.
+
+### 3. Establish the publication and attribution record
+
+Before a definitive announcement, I recommend checking current related work and documenting which arguments were inherited, which were developed in your sessions, and what the user, model, and computational tools contributed.
+
+My correctness review does not establish priority or allocate discovery credit. The attached source explicitly describes the argument as session-derived and not independently reviewed; it does not provide evidence of external acceptance.
+
+I also could not reconfirm the live status of the official #81 page during this follow-up because it blocked access. Consequently, I am not claiming that its public status has changed.
+
+## Is proof-assistant formalization necessary?
+
+Not as a mathematical prerequisite. A correct conventional proof solves the problem whether or not it has been translated into a proof assistant or published.
+
+However, proof-assistant formalization is a separate verification project—not just converting the text into a different format. Its value would come from checking the new lemmas and their composition. Formalizing only the final implication while assuming the crucial stability or copying lemma would leave the central verification task untouched. Any external theorems assumed rather than formally proved should also be clearly identified.
+
+For your immediate decision, I recommend a clean conventional manuscript and independent specialist review first, rather than making full formalization a prerequisite for circulating the result.
+
+## The status I would use now
+
+> We have a proposed complete proof of Erdős #81, including a stronger eventual sharp bound. A detailed GPT-assisted review has found no substantive gap. The proof is ready for independent mathematical scrutiny and preparation as a preprint; it has not yet been independently validated.
+
+That is stronger than “we have promising partial progress,” and more defensible than “GPT has certified it; only typesetting remains.”
+
+So: no further breakthrough is currently indicated by the proof review. Further serious checking is warranted before treating the solution as settled. Your next step is verification and write-up—not returning to the earlier unresolved reservoir arguments.
+
+Citations:
+- arXiv+2剑桥大学出版社+2: https://arxiv.org/abs/2410.05240?utm_source=chatgpt.com
+
+=== 5. USER ===
+
+ok.i see there're some partial proof for this problem 「There are 2 proof claims (partial or full) for this problem.
+
+Appearing on this page is no guarantee of proof correctness, and does not mean that anyone associated with this site has examined any part of the proof.
+
+Submit your own proof claim
+
+- 
+
+A partial proof claimed by Juan Pablo Traverso (using GPT, Claude, Gemini, Aristotles.).
+
+Summary: I have proved that cp(G) ≤ n²/6 + Cn for every split graph G on n vertices, the result is accompanied by a Lean 4 Proof, final unconditional, sorry-free, axiom-clean theorem. (Proved on Paper III on the Zenodo link provided).
+
+Split graphs are a chordal subclass, Chen–Erdős–Ordman had 3n²/16 + O(n); my research improves the quadratic coefficient to the sharp value 1/6, matching the complete-split lower-bound family K_p ∨ K̄_2p, with the exact value n²/6 + n/6 (the linear term is necessary).
+
+While this settles Problem #81 at the n²/6 + O(n) for split graphs; the general chordal case remains open.
+
+Main proof ideas: given cp(G) ≤ |E| − 2ν₃(G), we can pack triangles at the right rate. In a split graph every triangle uses a clique edge, so clique edges are an scarce resource, cross edges are paired at common endpoints and assigned to free clique edges by factorization and a list edge coloring argument.
+
+This solution was developed with AI assistance.
+
+Notes: This is Paper III of a series.
+Paper I proves the fractional split bound |E| − 2ν₃* ≤ n²/6 + n/2;
+Paper II determines the exact finite maximum of the fractional cover functional over all chordal graphs, ⌊(2n+1)²/24⌋, attained by complete split graphs.
+Both Papers with Lean 4 Proof, final unconditional, sorry-free, axiom-clean theorem.
+
+| External link to proof | External link to formalisation |
+
+Submitted 2026-08-29 22:02:21 by jpt
+
+▼ Comments (1)
+
+- GPT also gave me the same split graph result 2 weeks ago, so this is very likely valid! On the other hand the arguments themselves are different but the same resolution nonetheless. rickyc—10:30 on 30 Aug 2026 👍2📝0🤖0 Log in to add a comment
+- 
+
+A partial proof claimed by Ricky Cipollini.
+
+Summary: We prove that the edges of G can be partitioned into 𝑛26 +𝑜⁡(𝑛2) many cliques. The gap between o(n^2) and O(n) is the remaining difficulty.
+
+Notes: The paper was written by me with LaTeX assistance and minor polishing by GPT-5.6 Sol.
+
+| External link to proof |
+
+Submitted 2026-08-10 17:06:33 by rickyc
+
+▼ Comments (2)
+
+- Congrats! The twin-compression part is clever. But I want to point out that the fractional bound, your claim (2), was already publicly available from my research... It's a weaker version of Theorem 1.1 from my Paper II, which has been on GitHub since July 10 and archived on Zenodo (DOI: 10.5281/zenodo.21273143) and it's fully formalized in Lean 4 (PaperII.theorem_1_2). Your final paragraph combines Theorem 1.1 with Haxell, Rödl. I left that out of Paper II because I am pursuing the O(n) version. Would you be willing to add a citation?. The repository is: https://github.com/jtraverso/erdos-81-chordal-clique-partitions. My best. jpt—21:34 on 29 Aug 2026 👍0📝0🤖0 Added the citation, will note that GPT also gave me the exact stronger result from Paper II. rickyc—10:40 on 30 Aug 2026 👍1📝0🤖0 Log in to add a comment」
+
+===
+
+so our's proof is full proof right ? not just partial proof?
+and it's time to formalize the proof into lean and make it public manuscripts for independently check right
+
+Citations:
+- Submit your own proof claim: https://www.erdosproblems.com/forum/thread/81/submit-proof
+- External link to proof: https://doi.org/10.5281/zenodo.21273143
+- External link to formalisation: https://github.com/jtraverso/erdos-81-chordal-clique-partitions/tree/main/preprints/PAPER_III/05_formalization/lean_v1.4_freeze
+- jpt: https://www.erdosproblems.com/forum/user/jpt
+- rickyc: https://www.erdosproblems.com/forum/user/rickyc
+- 10:30 on 30 Aug 2026: https://www.erdosproblems.com/forum/thread/proof-claim:cfab6d6d418d4c0586fdfb2a4f31735d#post-8647
+- Log in to add a comment: https://www.erdosproblems.com/forum/login?next=%2Fforum%2Fthread%2F81%2Fproof-claims
+- External link to proof: https://www.overleaf.com/read/thjptfhgnmxc#cc1388
+- https://github.com/jtraverso/erdos-81-chordal-clique-partitions: https://github.com/jtraverso/erdos-81-chordal-clique-partitions
+- 21:34 on 29 Aug 2026: https://www.erdosproblems.com/forum/thread/proof-claim:51a44f71bfc44d2991eb826e50df0b87#post-8642
+- 10:40 on 30 Aug 2026: https://www.erdosproblems.com/forum/thread/proof-claim:51a44f71bfc44d2991eb826e50df0b87#post-8648
+
+=== 6. ASSISTANT ===
+
+Yes: the appropriate classification is “proposed full proof of Erdős #81,” not merely a partial result. My assessment remains that the final closure argument appears complete, with no substantive missing lemma identified in the review so far. It addresses all chordal graphs and the required O(n) error, rather than stopping at either of the two partial conclusions you quoted. Its final section explicitly handles both the near-extremal and non-near-extremal cases, then handles small orders with one absolute constant.
+
+And yes: preparing a public, standalone manuscript for independent checking and beginning Lean formalization are appropriate next steps. The important qualification is that beginning formalization and having a completely verified Lean proof are different milestones.
+
+## 1. How your result differs from the two partial claims
+
+Taking the other results as described in the excerpts you supplied:
+
+| Work | Scope of its stated conclusion | Why it is partial or full |
+| --- | --- | --- |
+| Traverso’s Paper III | cp(G)≤n2/6+O(n) for split graphs | The required error term, but only a subclass of chordal graphs. |
+| Cipollini’s claim | cp(G)≤n2/6+o(n2) for all chordal graphs | The required graph class, but not the required linear error term. |
+| Your final closure manuscript | cp≤4​(G)≤⌊n(n+1)/6⌋ for all sufficiently large chordal graphs, followed by one absolute-C bound for every order | A full resolution, provided the proof withstands verification. |
+
+The distinction between the errors is genuine: for example, n3/2=o(n2), but n3/2 cannot be absorbed into Cn for one fixed C.
+
+I could not successfully retrieve the live claim pages or the linked repository in this check. Accordingly, the first two rows compare your supplied descriptions, not newly verified versions of those papers or their Lean projects.
+
+## 2. Why the final manuscript is not still waiting for the “last step”
+
+Your final proof does not simply establish a fractional bound and leave the integral rounding problem unresolved. It supplies a local integral construction, proves that near-extremal graphs fall within its scope, and uses asymptotic packing transfer only for graphs with enough quadratic slack to pay for the transfer error. That final division into cases is present in the manuscript.
+
+The stated stronger conclusion implies the original problem:
+
+The finitely many smaller orders are absorbed by increasing the absolute linear constant. Thus, “sufficiently large n” is not a residual gap in the original n2/6+O(n) question.
+
+The present distinction is therefore:
+
+> No remaining mathematical gap has been identified—not “no mathematical error could remain.”
+
+The manuscript itself correctly records that it has not received independent mathematical review or formal verification. My favorable review does not change that into independent acceptance.
+
+## 3. Lean formalization is the right verification project—but not just transcription
+
+One point deserves more emphasis than I gave it previously: a complete conventional proof can still require substantial work to obtain a complete Lean proof.
+
+Your paper invokes Vizing’s theorem, the Häggkvist–Janssen list-edge-colouring theorem, and the weighted packing-transfer theorem. Those are explicit mathematical dependencies of the proposed proof.  I have not established that all their required formulations are already available as verified theorems in a suitable Lean dependency set.
+
+There are two legitimate formalization milestones:
+
+A formalized reduction. Prove your new argument in Lean while taking the external theorems as explicit hypotheses. This would be valuable verification of the new contribution, but it would not yet be an end-to-end Lean verification of Erdős #81.
+
+An end-to-end formal proof. Supply checked proofs of those inputs—or import existing checked versions—and discharge them in the final theorem.
+
+This distinction matters even for the phrase “sorry-free, axiom-clean.” A theorem of the form
+
+can have a completely valid, axiom-clean proof while still requiring those hypotheses to be established. An axiom audit does not eliminate assumptions in the theorem statement. Lean’s verification guidance explicitly distinguishes proving a formal statement from checking that it expresses the intended mathematical claim. Lean Language+1
+
+For this project, I would make the final statement and its definitions the first checkpoint. They must express:
+
+In particular, the same C must precede the quantifiers over n and G; “partition” must mean every edge occurs exactly once; and there must be no extra splitness or near-extremality assumption. These are specific checks I recommend to ensure that the formal target matches your problem.
+
+For the completed project, require a reproducible build that actually includes the main theorem, a transitive #print axioms audit, and independent inspection of its statement and definitions. Standard foundational axioms are not the concern; missing proofs, additional mathematical axioms, and an unintentionally weakened statement are. These checks follow the Lean community’s verification guidance. Lean Community
+
+For additional assurance, Lean’s official reference also describes replaying the built proofs with lean4checker and stronger external-checker workflows. Lean Language
+
+None of this is an identified new obstacle to the paper proof. It is work required to substantiate a separate claim of complete machine verification.
+
+## 4. Make the manuscript public for checking; do not wait for every Lean dependency
+
+My recommendation is to proceed with the conventional manuscript and formalization in parallel.
+
+Use the final closure proof as the main manuscript, with stable theorem numbering, complete equations, precise external inputs, and an explicit dependency map. Keep the exploratory conversation separate. I would make the full chordal bound the central result and put the rigidity addendum afterward, so readers can check the solution without first checking every stronger corollary.
+
+The related-work section also needs care. Your original attached research prompt explicitly supplied the fractional chordal bound and the split-graph result as working inputs. Acknowledge that provenance and compare the relevant arguments, even where the final proof no longer invokes those results as black-box assumptions. Logical independence of the final derivation is not the same thing as independent discovery.
+
+A suitable public description now would be:
+
+> This manuscript proposes a complete solution to Erdős Problem #81, establishing the stronger eventual bound cp≤4​(G)≤⌊n(n+1)/6⌋ for chordal graphs. Independent verification is invited. A complete Lean verification is not yet available.
+
+That is a full-proof claim with an accurate verification status, not a partial-proof claim. There is no need to describe the mathematical result as partial merely because review is pending; equally, there is no basis yet to advertise it as fully Lean-verified.
+
+So yes: move to a public manuscript, independent review, and formalization. The current task is to verify and communicate a proposed complete solution—not to fill one of the two mathematical gaps left by the partial results you quoted.
+
+Citations:
+- Lean Language+1: https://lean-lang.org/doc/reference/latest/ValidatingProofs/
+- Lean Community: https://leanprover-community.github.io/did_you_prove_it.html
+- Lean Language: https://lean-lang.org/doc/reference/latest/ValidatingProofs/

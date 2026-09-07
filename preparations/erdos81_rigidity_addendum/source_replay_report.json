@@ -1,0 +1,8 @@
+{
+  "verdict": "PASS",
+  "source": "erdos81_stability_closure.zip; replay.py re-executed without modification",
+  "LP_certificates_replayed": 7964,
+  "positive_packing_entries": 14134,
+  "all_triangle_K4_dual_constraints": 36743,
+  "copy_steps_replayed": 1889
+}

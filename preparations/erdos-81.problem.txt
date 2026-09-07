@@ -1,0 +1,1 @@
+Let 𝐺 be a chordal graph on 𝑛 vertices - that is, 𝐺 has no induced cycles of length greater than 3. Can the edges of 𝐺 be partitioned into 𝑛2/6 +𝑂⁡(𝑛) many cliques?

@@ -1,0 +1,1291 @@
+Title: 1. A completion theorem for an arbitrary deficient graph
+Source: chatgpt_web_dom
+Thread URL: https://chatgpt.com/share/6a9e6fb8-5d84-83e9-a725-61f885a52067
+Exported At: 2026-09-07T16:09:37+08:00
+Message Count: 7
+Schema Version: 1.1
+Time Zone: Asia/Shanghai
+
+=== 1. ASSISTANT ===
+
+## The saturation cost can be paid by reserving a clique in the outside graph
+
+The host-deficiency credit now yields an actual integral budget theorem, rather than only a lower bound on an auxiliary completion cost.
+
+The key tradeoff is:
+
+I combined this with a completion bound valid for every deficient graph, including nonbipartite graphs. The result closes a substantial saturation regime with explicit constants:
+
+> Finite saturation theorem. Let P be a maximum clique of a chordal graph G, with
+> p=∣P∣≥1200,p≤q=∣G−P∣≤2p.
+> Split P=N⊔R, where
+> 2≤r=∣R∣≤p/200,d=∣N∣=p−r.
+> Form the deficient graph B after any admissible outside-first packing described below. If
+> Δ(B)≤randνf​(B)=d/2,
+> then
+> cp(G)≤6n2​−600p2​.​(1)
+> Here νf​(B) is the fractional matching number with vertex capacities one.
+
+In particular, this applies whenever B is r-regular on all of N, whether bipartite or not. The Θ(r2) reservoir surcharge from the previous round is therefore not an obstruction to the original budget in this regime, even when r2 is superlinear.
+
+The full chordal problem remains unproved. Below I also obtain a finite alternative: when this completion test fails despite Δ(B)≤r, the deficient edges have a vertex cover of order O(pr​). That cover cannot yet be moved or completed for free.
+
+# 1. A completion theorem for an arbitrary deficient graph
+
+Keep
+
+For any graph B on N, let
+
+and define
+
+This is a degree-capacity relaxation, not the full-clique fractional partition LP.
+
+### Lemma 1 — General residual completion
+
+For every B, without a bipartiteness or maximum-degree assumption,
+
+Equivalently, there is an explicit partition of KR​∨B with at most
+
+parts. No optional N-edges need to be added.
+
+## Proof
+
+Choose an extreme optimum of the programme defining βr−1∗​. Its fractional edges form vertex-disjoint odd cycles, with weight 1/2 on every such edge.
+
+Here is the relevant argument. In a fractional-support component, extremality requires at least as many independent tight degree rows as fractional edges. A tree has at least two leaves whose degree rows cannot be tight: one nonintegral entry plus integral entries cannot equal the integer r−1. A component with more than one cycle has more edges than available rows. A remaining unicyclic component must be a cycle with every row tight. An even cycle has an alternating perturbation, while an odd cycle forces all its entries to be 1/2.
+
+Round each odd cycle to a maximum matching and retain every unit-weight edge. If there are c odd cycles, the resulting graph B0​ satisfies
+
+By Vizing’s theorem, B0​ has a proper edge colouring with r colours. Use the vertices of R as these colours and turn every coloured edge into an internally hosted triangle. Vizing’s theorem is constructive; only its classical Δ+1 conclusion is needed here. arXiv
+
+Retain R as one clique. Cover all remaining N-R edges and all edges of B−B0​ individually.
+
+The exact part count is
+
+This proves (4). Adding the residual edge count and subtracting the baseline 2dr−(2r​) proves (3). ∎
+
+The sharper error for a computed extreme solution is the actual number c of fractional odd cycles, not d/3.
+
+### The capped-degree specialization
+
+If Δ(B)≤r, giving every edge weight (r−1)/r is feasible. Consequently,
+
+Thus nonbipartiteness and odd-cycle rounding cost only O(d) beyond the already explicit quadratic reservoir term.
+
+### The fractional value has an exact flow certificate
+
+Make left and right copies of N. Give every source–left and right–sink arc capacity r−1. For each xy∈E(B), include both arcs
+
+with capacity one.
+
+Its maximum flow equals 2βr−1∗​(B). Symmetrizing an integral flow gives a feasible half-integral solution; conversely, send every fractional edge value in both directions.
+
+In particular,
+
+So μ is computable with an exact integral min-cut certificate. The proof does not require solving an unrestricted clique-partition problem.
+
+# 2. Protect one outside clique before choosing the outside triangles
+
+Let P now be a maximum clique of G, and put
+
+Choose a maximum clique Q in the original induced graph J, and write
+
+Choose any outside-edge set
+
+with a proper colouring by common root neighbours. Write f=∣F∣, and insert its outside-first triangles. The empty choice F=∅ is allowed.
+
+For xy∈E(KN​), let L(xy) be its actual remaining outside-host list. Define
+
+Complete KR​∨B internally by Lemma 1. Every other N-edge has at least d available hosts, so Häggkvist–Janssen’s theorem properly colours those edges from their lists. The theorem states χℓ′​(Kd​)≤d; the subgraph version follows by extending lists to omitted edges and restricting a colouring of Kd​. Cambridge University Press
+
+Retain Q as one outside part and use every other edge of J−F individually. The outside completion costs at most
+
+When w=1, the singleton is simply omitted and this remains a valid upper bound.
+
+Every remaining root–outside edge is a K2​. The completed count is
+
+All root edges and outside edges have been accounted for. In particular:
+
+- the outside clique Q is never damaged;
+- J−F need not be chordal;
+- B need not be chordal or bipartite;
+- the retained parts Q and R may be arbitrarily large.
+
+The protected outside clique is the new source of integral savings.
+
+# 3. Host deficiency pays either PEO slack or that outside clique
+
+Let
+
+Because P is maximum, a PEO ending with P gives
+
+Indeed, an outside vertex missing a root vertices has at most a−1 later outside neighbours.
+
+Let
+
+be the fractional matching number of the deficient graph. Put
+
+For a deficient pair xy, the union of its unavailable outside hosts has size at least L. If ℓx​ is the number of unavailable hosts at x, then
+
+Multiply by a fractional matching and sum:
+
+There is also the upper bound
+
+The 2f consumed spokes are distinct actual edges, whereas the original M missing incidences are nonedges.
+
+Now use chordality of the original outside graph J. Its PEO has forward degrees at most w−1, so
+
+It follows that
+
+Define
+
+For q≥p, equations (10) and (12) give
+
+The following identity is exact:
+
+Finally put
+
+By (11), A≤T. Combining (13)–(15) proves
+
+This is the budget conversion that was missing from the previous saturation calculation.
+
+If M is large but e(J) is small, much of the credit remains in η. If e(J) is large, chordality forces a sufficiently large Q, and retaining Q supplies the saving in (13). There is no appeal to qualitative structural stability.
+
+# 4. A completed-budget inequality for every deficient graph
+
+Substitute (16) into (9). Using
+
+gives the finite bound
+
+Its hypotheses are only:
+
+- G is chordal and P is maximum;
+- q≥p, r≥2, and d≥1;
+- the chosen outside-first edges avoid the protected maximum clique Q.
+
+The quantities B,μ,ν,A are then calculated from the actual remaining host lists.
+
+Equation (17) retains every cost. In particular, 2dr+(2r​) has not been discarded merely because r=o(p), and μ explicitly prices overloaded deficient demand.
+
+No fractional-to-integral transfer theorem is used. The only rounding is the finite odd-cycle rounding in Lemma 1.
+
+# 5. Proof of the finite saturation theorem
+
+Assume
+
+and
+
+By (6), 2μ≤d. Thus the linear terms in (17) satisfy
+
+Also,
+
+## Case 1: q≤3p/2
+
+Then
+
+Even discarding the matching credit in (17),
+
+This case does not need the assumption ν=d/2.
+
+## Case 2: q≥3p/2
+
+Because ν=d/2,
+
+The last inequality uses d≥199p/200 and p≥1200.
+
+Consequently,
+
+Equation (17) now gives
+
+This proves (1).
+
+### What this resolves
+
+The preceding K6​ examples showed that a triangle-free r-regular deficient graph can force
+
+That local expense is real. But when such a graph occurs on all d retained root vertices, with a small reservoir and the maximum-clique hypotheses above, its host deficiency also forces the stronger global credit (16).
+
+The theorem therefore pays the saturation expense rather than trying to prove it absent.
+
+It does not assert that an arbitrary residual graph from the previous round can be embedded into a near-extremal chordal graph without bringing this credit with it.
+
+# 6. If the capped-degree case still fails, the deficient edges are concentrated
+
+There is a useful alternative when Δ(B)≤r but B does not have a fractional perfect matching.
+
+Retain
+
+If the certificate (17) does not already establish
+
+then necessarily
+
+The first assertion follows from Case 1. For the second, in the remaining range,
+
+If
+
+then
+
+and the matching credit in (17) is at least
+
+By (18)–(19), this pays every positive term.
+
+The endpoints of a maximum ordinary matching form a vertex cover of B, and its matching number is at most νf​(B). Hence the remaining deficient graph has a vertex cover Z with
+
+This is a structural restriction on the actual deficient pairs, not just an edge-density limit. When r=o(p), it gives ∣Z∣=o(p).
+
+But it is not yet a linear-cost reduction. Moving Z into the reservoir or changing its ownership can cost order p∣Z∣, which may be superlinear. The argument has localized that cost; it has not paid it automatically.
+
+# 7. Exact verification
+
+The audit separates the local completion checks from the full original-graph checks.
+
+Residual completion. It checked 821 graph/capacity instances, including nonbipartite and overloaded deficient graphs. The reconstructed LP objectives were verified against integral double-cover max-flow/min-cut certificates. The fractional supports contained 73 odd cycles, all explicitly rounded. The resulting partitions covered 25,811 graph edges exactly.
+
+Original chordal graphs. It replayed 1,908 small atlas-rooted instances and 240 larger generated chordal instances, through order 24. The larger cases included 163 nonempty deficient graphs and 130 nonempty outside-first packings. Every outside packing avoided the protected clique, and every resulting whole-graph partition was checked edge by edge.
+
+The atlas instances have d=1 and therefore empty deficient graphs; they check the boundary accounting, not the new nontrivial-deficiency case. The larger instances provide that separate check.
+
+Budget algebra. It checked 10,000 exact slack/clique tradeoffs and 10,908 finite saturation parameter choices. The uniform proof with constants 1200,200,600 is Sections 3–5, not an extrapolation from these tests.
+
+Jacobian independently certified the capacity optimum
+
+for B=K5​ with one pendant vertex attached to each core vertex. Its symmetric certificate has core-edge weight 1/4 and pendant-edge weight one.
+
+For the actual rounding, an extreme solution consists of the five pendant edges and a half-weight five-cycle. It rounds to seven edges. The resulting K3​∨B has a verified 32-part partition on 13 vertices and 48 edges. Jacobian returned VALID.
+
+That 32-part partition is an upper certificate; it is not asserted optimal.
+
+.
+
+## Remaining obligation
+
+The new result connects the local reservoir analysis to the original problem:
+
+It removes the bipartite restriction from the degree-capacity completion and proves that a spanning, bounded-degree saturation cannot be the remaining hard case when the reservoir is sufficiently small.
+
+The unresolved cases include large degree-capacity deficits μ, reservoirs outside the stated size range, and the concentrated deficient graphs in (24). There is still no theorem guaranteeing a root split and outside-first packing for which all those costs are affordable.
+
+I have not proved one absolute C for every chordal graph, nor found a counterexample to that bound. This round pays a previously genuine intermediate-scale saturation cost under explicit finite hypotheses and narrows the surviving capped-degree obstruction to a quantitatively small vertex cover. It does not treat that final cover, or overlapping applications of the construction, as a routine O(n) expense.
+
+Citations:
+- arXiv: https://arxiv.org/abs/2410.05240
+- Cambridge University Press: https://www.cambridge.org/core/journals/combinatorics-probability-and-computing/article/abs/new-bounds-on-the-listchromatic-index-of-the-complete-graph-and-other-simple-graphs/18498E8F4291D12FA5D03FF011F3D2E2?utm_source=chatgpt.com
+
+=== 2. USER ===
+
+Keep going, you can do it. Use tools Jacobian
+
+=== 3. ASSISTANT ===
+
+## Concentrated deficiency can be completed without moving its vertex cover
+
+The O(p∣Z∣) cost of moving a deficient-pair cover into the reservoir can be avoided.
+
+I obtained two complementary constructions:
+
+The second construction gives a finite dichotomy for the remaining capped-degree case:
+
+> Let P=N⊔R be a maximum clique, with
+> p≥6000,p≤q≤2p,2≤r=∣R∣≤p/2000.
+> If the actual deficient graph B on N satisfies Δ(B)≤r, then either
+> cp(G)≤6n2​−2000p2​,
+> or its internal root-completion surcharge satisfies
+> Γr​(B)≤2⌊r+1e(B)​⌋≤2νf​(B)<52p​.​
+
+Thus, in this regime, a superlinear completion surcharge is either paid by the existing budget argument or avoided by an explicit linear-cost construction. No root vertices are transferred.
+
+The full chordal theorem is still not proved. The absolute reservoir cost remains, separately from this surcharge. I give its exact remaining inequality below.
+
+# 1. Pay for the depth of a shortage, not every deficient pair
+
+Let P be a clique of order p≥2, and put J=G−P.
+
+Choose f compatible outside-first triangles, each containing one root vertex and an edge of J. Let cJ​ be the number of parts in a supplied clique partition of the remaining outside graph. All clique sizes are allowed there.
+
+For a root edge xy, retain its actual remaining host list
+
+Define its shortage depth
+
+Consider the weighted vertex-cover programme
+
+Its dual is
+
+So this is a fractional matching objective weighted by the actual shortage depths.
+
+### Theorem 1 — Star-supported virtual-colour completion
+
+For arbitrary G,
+
+More precisely, any integral feasible vector a in (2) gives the bound
+
+No chordality assumption is needed for this completion theorem.
+
+## Proof
+
+For each root vertex x, introduce ax​ distinct virtual colours, available only on edges incident with x. These are colour labels, not graph vertices.
+
+Augment the list of xy by the virtual colours attached to x and y. The augmented list has size at least p. Häggkvist–Janssen’s theorem therefore gives a proper list-edge-colouring of Kp​. Their theorem states that the list-chromatic index of Kp​ is at most p. Cambridge University Press
+
+A virtual colour attached to x can occur on at most one edge: all edges on which it is available meet x, and the colouring is proper.
+
+Consequently, at most ∑x​ax​ root edges receive virtual colours. Use real-coloured edges as mixed triangles. Use virtual-coloured root edges as K2​’s, and cover the remaining spokes individually.
+
+If z root edges received virtual colours, the exact count is
+
+The factor two includes the two prospective host spokes that remain uncovered. This proves (5).
+
+Finally, (2) has a half-integral optimal extreme point. In a connected component of tight equations
+
+an integral active bound forces integral values; otherwise an odd cycle forces half-integral values. A component with neither has a nonzero alternating perturbation and cannot determine an extreme point. One may first impose the redundant integral upper bound ax​≤maxhuv​.
+
+Rounding every coordinate up increases ∑x​ax​ by at most p/2. Equation (4) follows. ∎
+
+## 1.1 A large deficient graph can be cheap
+
+Let
+
+If Z is a vertex cover of Bdef​, putting a virtual colours at every vertex of Z gives
+
+Likewise, the dual gives
+
+Thus a cover of order k and shortage depth a can cost O(ak), rather than O(pk).
+
+This distinction matters for the previous reserve examples: having a large number of pairs with lists of size d−1 or d−2 does not mean that all those pairs must be put into the internal reserve. Most may still be hosted after the augmented colouring; only the edges actually assigned virtual colours require individual completion.
+
+## 1.2 A direct original-budget consequence
+
+When P is maximum and G is chordal, write
+
+The inequality η≥0 follows from a PEO ending with P.
+
+Let
+
+Equation (4) becomes
+
+For an explicitly supplied cover Z, use (5) instead:
+
+For example,
+
+implies the uniform finite bound
+
+This closes a shallow, concentrated-deficiency regime without changing the root, assuming a damaged separator is chordal, or using a fractional clique-partition benchmark.
+
+It does not assert that a∣Z∣=O(p) always holds.
+
+# 2. Host the deficient edges before placing the reservoir K4​’s
+
+For deeper shortages, retain the internal completion objective
+
+where
+
+Write
+
+The previous construction installed the K4​-reserve first. Its consumed spokes could then obstruct an internal colouring of B.
+
+Reverse that order.
+
+Choose F⊆B with a supplied proper edge-colouring by the r vertices of R. Let Fu​ be colour class u, and use the triangles
+
+Define
+
+### Theorem 2 — Internal-first reserve extension
+
+If
+
+then these triangles extend to a compatible family of K4​’s covering every edge of R.
+
+If A0​ is the resulting set of (2r​) reserved N-pairs, the final internal completion has exact surcharge
+
+In particular,
+
+A convenient sufficient condition for (14) is
+
+## Proof
+
+Process an unassigned reservoir edge uv.
+
+First exclude V(Fu​)∪V(Fv​). Next exclude the N-vertices used by previously assigned reserve pairs whose R-edges meet u or v.
+
+At each endpoint there are at most r−2 such previously assigned edges, each using two N-vertices. Thus at least s candidates remain.
+
+Inside this candidate set, neither colour u nor colour v occurs in F. Therefore its F-degree is at most r−2. A candidate set of order t≥s contains at least
+
+pairs outside F.
+
+Only reserve pairs assigned to edges entirely inside
+
+can already lie in the candidate set. There are at most
+
+of them. Condition (14) therefore leaves an unused candidate pair. Combine it with uv to form a K4​, and continue.
+
+No old hosted triangle is disturbed. No N-pair, R-pair, or N-R edge is repeated.
+
+After all reservoir edges are covered, use pure N-K2​’s for
+
+and use individual edges for all remaining N-R edges.
+
+For the exact count, give weights
+
+A clique with x vertices in N and y in R has weight at most one, since
+
+The hosted triangles, reserved K4​’s, and remaining cross K2​’s all have weight one. Each leftover pure N-edge has weight −1, and therefore contributes exactly two units of surcharge. This proves (15).
+
+Finally, θ≤4ℓ, so (17) gives s≥2r+8, which satisfies (14). ∎
+
+The proof permits the reserve to absorb some edges of B−F. Such edges improve the count; they are not forbidden or charged twice.
+
+# 3. Concentration now gives a linear surcharge
+
+Suppose
+
+By Vizing’s theorem, B has a proper (r+1)-edge-colouring. The classical theorem gives the Δ+1 bound constructively. arXiv
+
+Balance the colour-class sizes using alternating-path swaps. If two classes differ in size by at least two, their union contains an alternating path with one more edge of the larger colour. Swapping along that path decreases the sum of squared class sizes. Hence the class sizes can be made to differ by at most one.
+
+Delete a smallest class and call the remaining r-coloured graph F. Then
+
+### Corollary 3 — Concentrated-deficiency completion
+
+If
+
+then
+
+For the last inequality, assigning weight 1/r to every edge of B is a feasible fractional matching:
+
+This replaces the earlier upper bound
+
+by a bound with no additive r2 term.
+
+If B already has a proper r-edge-colouring, we may use all its edges. In that case Theorem 2 gives
+
+whenever its compatibility condition holds. This includes bipartite graphs, but does not require bipartiteness when an r-colouring is supplied.
+
+# 4. The original-graph budget or linear-completion dichotomy
+
+Here is the promised combination with the previous saturation-to-budget inequality.
+
+Let P=N⊔R be a maximum clique of a chordal graph G, and write
+
+Protect a maximum clique Q in the original induced graph J, of order w. Choose the outside-first edge set Fout​ disjoint from E(Q), and write f=∣Fout​∣.
+
+After inserting those triangles, let B be the actual deficient graph on N, at host threshold d.
+
+For any supplied internal completion of surcharge Γ, the full partition cost is at most
+
+This follows by colouring every unconsumed N-edge from its at least d actual hosts, retaining Q, and covering the remaining outside edges individually.
+
+The internal-first construction changes no outside spoke. It therefore preserves those host lists, the protected clique, and the outside-first triangles.
+
+### Theorem 4 — Budget or linear internal completion
+
+Assume
+
+Then at least one of the following holds:
+
+or
+
+## Proof of the budget branch
+
+Put ν=νf​(B) and
+
+The previous host-deficiency argument gives
+
+For completeness, its conversion into actual integral savings is short. Write
+
+Since the outside graph is chordal,
+
+and therefore
+
+Also 0≤T≤q2−q, and
+
+Thus
+
+Using the previous degree-capacity completion bound and Δ(B)≤r, equation (22) yields
+
+If q≤3p/2, the first square is at least p2/24, proving (24).
+
+Otherwise, if ν≥p/5,
+
+The last term in (28) is at least p2/512. For p≥6000,
+
+Again (24) follows.
+
+## Proof of the remaining branch
+
+Otherwise ν<p/5. Since e(B)≤rν,
+
+The hypotheses imply
+
+Therefore Corollary 3 applies and gives (25). ∎
+
+This replaces the earlier conclusion “the deficient graph has a small vertex cover” by an actual completed reserve of linear excess, without promoting that cover into R.
+
+It does not yet pay the absolute term 2dr−(2r​) in (22).
+
+# 5. Zero surcharge with spanning, superlinear deficient demand
+
+The compatibility theorem is not confined to graphs with many isolated vertices.
+
+For an integer s≥8, set
+
+and let B be the disjoint union of s copies of Ks,r​. Then
+
+Every vertex of N belongs to the required deficient graph.
+
+Within each component, label the small side by i=0,…,s−1 and the large side by j∈Z/rZ. Give edge ij colour
+
+This is a proper r-edge-colouring.
+
+Every colour class has r edges. All classes meet every vertex on the small sides, so
+
+Consequently,
+
+Theorem 2 applies with F=B, and
+
+If A is the resulting filled graph on N, the exact values are
+
+The signed certificate in (18) proves optimality against every clique size.
+
+Examples checked edge by edge are:
+
+| d+r | Required deficient edges | Completed graph edges | Exact partition number | Γr​(B) |
+| --- | --- | --- | --- | --- |
+| 640 | 4,096 | 44,992 | 26,720 | 0 |
+| 891 | 6,561 | 78,651 | 49,329 | 0 |
+| 1,200 | 10,000 | 129,900 | 85,150 | 0 |
+| 1,573 | 14,641 | 204,853 | 139,271 | 0 |
+| 2,016 | 20,736 | 310,896 | 217,944 | 0 |
+
+Here
+
+That entire required edge set is completed with zero excess over the reservoir baseline.
+
+These are conditional root-completion examples. They are not being presented as original chordal counterexamples, or as a proof that every such B arises from affordable outside-host data.
+
+# 6. Shallow leftovers can be combined with the internal-first reserve
+
+There is no need to force every remaining deficient pair into the internal completion.
+
+After hosting F internally and placing the K4​-reserve, let A0​ be the N-pairs already covered by these parts. For each remaining N-edge, define
+
+Let τN∗​ be the shortage-cover LP on these remaining edges.
+
+Apply the virtual-colour construction to this subgraph of KN​, extending the lists of already covered edges by private dummy colours and discarding those edges afterward.
+
+The resulting completed bound is
+
+The already covered pairs are not recoloured in the actual partition. The only new internal K2​’s are those root edges that genuinely receive virtual colours.
+
+Thus there are now two explicit ways to handle an edge below the host threshold:
+
+- cover it internally with a reservoir-hosted triangle or reserve K4​;
+- leave it in the list-colouring problem, paying only for the virtual colours actually needed.
+
+A large binary deficient graph need not be a large internal reserve. Its shortage depths matter.
+
+# 7. Exact verification
+
+The archive contains two separate audits.
+
+Internal-first reserves. From all 209 graph-atlas graphs through order six, the code constructed 418 completions, including nonchordal required graphs. Every construction was replayed with exact edge multiplicities. There were 249 zero-surcharge outputs and 169 outputs with the explicitly charged positive surcharge; none was silently treated as zero.
+
+The five larger spanning-demand examples above account for 769,292 checked graph-edge incidences. There are also 22,499 scalar extension checks and 365 exact finite-budget parameter checks, supplementing the uniform proofs.
+
+Virtual-colour completion. The code generated 600 maximum-clique-rooted chordal examples, including outside-first triangles and protected outside cliques. Every shortage-cover LP was reconstructed and verified with exact rational primal and dual certificates. The completed partitions covered 21,742 edges, including 602 outside-first triangles and 1,504 root-hosted triangles. These tests verify feasibility and accounting; they do not assert that every chosen certificate meets the conjectured budget.
+
+Jacobian independently returned:
+
+- OPTIMAL, value 7/2, for min{a+b+c:a+b≥3, a+c≥2, b+c≥2, a,b,c≥0}, with primal (3/2,3/2,1/2) and matching dual (1/2,1/2,1/2);
+- VALID for a 13-vertex, 39-edge, 18-part internal-first completion.
+
+The partition checker certifies coverage. Its optimality follows independently from the all-clique signed weights in (18), whose total is 18.
+
+.
+
+## The remaining obligation
+
+The concentrated-cover bottleneck has a more precise resolution now:
+
+Within the small-reservoir, degree-capped regime, this yields either a completed partition below n2/6 or an internal completion surcharge of at most 2p/5. The potential O(r2) surcharge is no longer unavoidable there.
+
+The full absolute reservoir term remains visible in (22). To finish the chordal theorem, one still needs a root and outside-first choice for which
+
+is paid by the PEO slack, the outside switches, protected outside cliques, the quadratic ratio margin, or another affordable construction. The new results do not establish that selection universally. Large degree-capacity deficits and large weighted shortage depths also remain possible.
+
+I have not proved one absolute C for all chordal graphs, nor found a counterexample to that bound. This continuation replaces the previous small-cover localization by a quantitative, globally compatible completion mechanism, while keeping the unresolved absolute budget charge explicit.
+
+Citations:
+- Cambridge University Press: https://www.cambridge.org/core/journals/combinatorics-probability-and-computing/article/abs/new-bounds-on-the-listchromatic-index-of-the-complete-graph-and-other-simple-graphs/18498E8F4291D12FA5D03FF011F3D2E2
+- arXiv: https://arxiv.org/abs/2410.05240
+
+=== 4. ASSISTANT ===
+
+The missing stability step can be supplied. Strengthening the root-regularization argument gives a quantitative local stability inequality. A monotone sequence of single-vertex copies then propagates that inequality globally.
+
+The resulting argument proves the stronger eventual bound
+
+In particular, there is one absolute C valid for every order:
+
+This is a new proof assembled here, not an independently reviewed or machine-verified theorem. The proof below states its external inputs and its absolute constant explicitly. The accompanying exact computations check the copying mechanism, the finite LP certificates, and the numerical inequalities; they do not substitute for the general argument.
+
+# 1. Inputs, notation, and the constant
+
+Let W4∗​(G) be the maximum fractional packing gain with gain 2 for each triangle and gain 5 for each K4​. Let W4​(G) be its integral counterpart, and put
+
+Then
+
+The proof uses three standard results: Vizing’s Δ+1 edge-colouring theorem; Häggkvist–Janssen’s bound χℓ′​(Kp​)≤p; and weighted finite-family packing transfer, which gives
+
+uniformly over n-vertex graphs. The last assertion is exactly the r=4 case of Rohatgi–Urschel–Wellens, Theorem 3.4. arXiv+2Cambridge University Press+2
+
+Fix
+
+Let T(ε) be the least integer such that the weighted transfer theorem guarantees
+
+for every graph of order at least T(ε). Define
+
+This is one finite absolute constant, defined through an independent theorem—not through the assertion we are trying to prove. Its numerical value is not evaluated.
+
+The proof has two new steps:
+
+No general symmetrization-stability theorem is assumed.
+
+# 2. Retain a strictly negative coefficient on the defects
+
+Let P be any clique of a chordal graph. Write
+
+and distinguish the missing-incidence count from M(n) by writing
+
+Put
+
+## Lemma 1 — Quantitative terminal construction
+
+If
+
+then
+
+### Proof
+
+Properly edge-colour H with c colours. Balance the colour classes by alternating-path swaps, so every class is a matching of size at most t. Retain the p largest classes; they contain at least pm/c edges.
+
+Take a PEO ending with P. For a forward outside edge uv,
+
+If u misses au​ root vertices, exactly au​ root hosts are invalid for this edge. Since u has at most w−1 later neighbours in H, the total invalid-host count is at most
+
+Assign the retained classes bijectively to P. Some assignment retains at least
+
+valid outside-edge triangles.
+
+Each root vertex has at most 2t consumed outside spokes. Every root edge therefore has at least q−2D−4t≥p unused outside hosts. Häggkvist–Janssen properly colours all root edges from these lists. Cambridge University Press
+
+Use the resulting triangles and every remaining edge as a K2​. The exact count is
+
+Substitution proves (5). ∎
+
+In particular, if
+
+then
+
+The fixed negative coefficients are what will make stability possible.
+
+# 3. Strict root regularization
+
+The previous regularization promoted vertices with outside degree at least 2p. Replace that threshold by 7p/4.
+
+## Lemma 2 — Strict regularization
+
+Suppose G contains a clique P satisfying
+
+Then there is a clique P′, with corresponding outside statistics p′,q′,m′,M′, such that
+
+### Proof
+
+Move outside the root every vertex whose original missing column exceeds p/64. Let r be the number moved. Then
+
+All newly outside edges are included:
+
+Consequently,
+
+Hence
+
+Define
+
+Then
+
+Now repeatedly promote an outside vertex whose outside degree is at least 7/4 times the current root order.
+
+Every promotion is legal. Indeed, in a chordal graph, common neighbours of two nonadjacent vertices form a clique. Therefore, if an outside vertex u misses a root vertex x,
+
+The common neighbours in H, together with u, form a clique of order at most w; the other neighbours of u lie among at most D−1 further nonneighbours of x.
+
+Thus a vertex not complete to the current root has outside degree less than
+
+Every promoted vertex is therefore complete to the current root.
+
+Its new missing-column count is at most
+
+Old deficits and the outside clique number cannot increase.
+
+Each promotion removes at least 7p0​/4 current outside edges. Thus the number h of promotions satisfies
+
+At termination,
+
+Also
+
+The remaining root lists satisfy
+
+Apply (7). ∎
+
+There is no error proportional to the number of moved vertices. Their incident edges entered m0​, and the final construction is performed only after root selection is complete.
+
+# 4. Quantitative local stability in edit distance
+
+Let a=⌊n/3⌋, and define
+
+## Lemma 3 — Local stability
+
+For chordal G, if
+
+put
+
+Then
+
+and
+
+### Proof
+
+Choose a closest template with clique side A, and let its edit count be E. Choose a maximum clique P in the induced chordal graph G[A], and put u=∣A∣−p.
+
+A chordal graph on ∣A∣ vertices with clique number p has at most
+
+edges, by summing the forward-degree bounds along a PEO. Thus G[A] has at least (2u+1​) missing pairs, and
+
+It follows, for n≥1000, that
+
+Moreover,
+
+So Lemma 2 applies.
+
+Since
+
+equation (9) gives
+
+In particular,
+
+The graph differs from the complete-split graph with root P′ on exactly m′+M′ pairs. Adjusting that template’s root order to ⌊n/3⌋ costs at most
+
+Because
+
+we obtain (16).
+
+Finally, (9) is at most Q(n). Since the partition size is integral, it is at most
+
+∎
+
+This is stronger than a local upper bound on cp: it rules out a near-extremal graph lying near the boundary of a fixed split neighborhood.
+
+# 5. Symmetrization can be performed one vertex at a time, monotonically
+
+This is the other essential step.
+
+The dual for W4∗​(G) assigns nonnegative edge weights satisfying
+
+For nonadjacent vertices u,v, write Gu→v​ for replacing N(u) by N(v).
+
+## Lemma 4 — Copy inequality
+
+### Proof
+
+Copy an optimal dual cover from G. Every new triangle or K4​ containing the copied vertex maps to an old clique containing its model vertex. No clique contains both u and v.
+
+If the old incident-weight sums are tu​,tv​, the two copied covers have costs
+
+Their sum is 2W4∗​(G). The two copied edge counts sum to 2e(G). Subtraction proves (20). ∎
+
+Now take two distinct nonadjacent classes of simplicial false twins, of total order b. Keep their two clique neighbourhoods fixed, and let Hj​ have j vertices of the first type and b−j of the second.
+
+All Hj​ are chordal, and (20) gives
+
+Thus this sequence is discretely convex.
+
+At the current interior index, at least one adjacent value is no smaller. Choose that direction. Discrete convexity says all subsequent differences in that direction remain nonnegative. We may therefore continue to the endpoint through single-vertex copies, none decreasing Φ.
+
+At that endpoint the two false-twin classes merge. No other false-twin class splits: its vertices have identical adjacency to the model vertex, so they acquire identical adjacency to every copied vertex. Hence the number of classes strictly decreases.
+
+## Lemma 5 — Fine monotone symmetrization
+
+Every chordal graph has a sequence
+
+such that:
+
+- every Gi​ is chordal;
+- Φ(Gi+1​)≥Φ(Gi​);
+- consecutive graphs differ on at most n−2 unordered pairs.
+
+There are at most n−1 full-class rounds, each consisting of at most n single copies.
+
+### Why the terminal graph is complete-split
+
+A terminal graph has equal open neighbourhoods for every pair of nonadjacent simplicial vertices.
+
+If disconnected, it must be edgeless: otherwise simplicial vertices in different components give distinct neighbourhoods.
+
+For a connected, noncomplete terminal graph, take a clique tree. Private vertices from different leaf bags are nonadjacent simplicial vertices, so they have one common neighbourhood K. Each leaf has exactly one private vertex; two private vertices in one leaf would contradict that equality. Hence every leaf bag is K plus one vertex.
+
+The running-intersection property implies that every bag contains K, so K is universal. The leaf-private vertices are isolated in G−K. If G−K had an edge, a nonisolated simplicial vertex in one of its chordal components would also be simplicial in G, but would have a neighbourhood strictly larger than K, contradicting comparison with a leaf-private vertex. Thus G−K is independent.
+
+This proves the terminal assertion.
+
+No integral partition is transported through copying. The path will be used only to prove that a near-extremal original graph must already be close to a split template.
+
+# 6. The mixed terminal functional has only one near-maximizing branch
+
+For
+
+orbit averaging of the mixed cover gives root and spoke weights x,y with
+
+The relevant vertices are
+
+Therefore
+
+Their global upper bounds, with n=k+ℓ, are respectively
+
+The first follows from
+
+If ℓ=0, uniform fractional K4​-packing gives
+
+If k≤3, simply use Φ≤e≤3n.
+
+For n≥100, every branch other than the first in (23), including these degeneracies, is strictly below
+
+Consequently, a terminal graph satisfying
+
+must use the first branch. If Δ=Q(n)−Φ(S), then
+
+This concerns the terminal graph only. There is still no inference that copying preserved the original clique number.
+
+# 7. The first-entry argument proves global stability
+
+## Theorem 6 — Fixed-neighborhood stability
+
+For n≥1032, every chordal graph satisfying
+
+has
+
+### Proof
+
+Take the monotone path (22). At every graph H on the path,
+
+The terminal graph is within ρn2/4 of a balanced complete-split graph by (27).
+
+Suppose the initial graph has distance at least ρn2/2. Choose the first index i whose distance is less than ρn2/2.
+
+One vertex-copy changes at most n−2 pairs. Distance to the family of balanced complete-split graphs is therefore changed by at most n−2. Hence
+
+The graph Gi​ lies inside the neighborhood where Lemma 3 applies. Using (16) and (30),
+
+But the lower bound in (31) exceeds ρn2/4. This contradiction proves (29). ∎
+
+This is the missing implication. Uniqueness of the terminal maximizer alone would not prove it. What makes it work is the combination of:
+
+The argument does not charge the sum of all edits along the copying path.
+
+# 8. Finish the original theorem
+
+Take N,C from (3), and let G be chordal with n≥N.
+
+There are two cases.
+
+### Near the mixed fractional maximum
+
+If (28) holds, Theorem 6 places G inside the local split neighborhood. Lemma 3 gives directly
+
+This is an integral partition, not a fractional-to-integral approximation.
+
+### Away from the mixed fractional maximum
+
+Otherwise,
+
+The weighted transfer theorem, with the fixed error δ/2, gives
+
+Only a fixed quadratic error is spent here, against a fixed quadratic deficit. arXiv
+
+Thus every chordal graph of order at least N satisfies (1).
+
+For 0<n<N, use all edges as K2​’s:
+
+The case n=0 is immediate. For n≥N,
+
+Therefore the single absolute constant C=N works for every finite chordal graph.
+
+# 9. Eventual sharpness
+
+For a complete-split graph
+
+with enough outside vertices to host a factorization of Kk​,
+
+The upper bound comes from hosted root triangles and leftover spokes. The lower bound assigns weight −1 to root edges and +1 to spokes; every clique has weight at most one.
+
+Choose k nearest to (2n+1)/6. Checking the three residue classes of nmod3 gives
+
+The host condition holds for these choices for all sufficiently large n.
+
+Hence the proof gives the eventual exact extremal value
+
+# 10. Exact checks and the proof’s verification status
+
+The new audit checked all 531 nonempty chordal graphs through seven vertices. It verified:
+
+- 5,394 two-direction mixed-cover copy inequalities;
+- 531 monotone symmetrization paths, comprising 1,224 full-class rounds and 1,889 single-vertex moves;
+- 7,964 source-bound mixed-packing LP certificates;
+- 711,246 complete-split terminal comparisons and the exact rational inequalities used in regularization and the first-entry argument.
+
+A separate dependency-free replay checked all saved LP certificates and path steps. It verified 36,743 triangle/K4​ dual constraints and 14,134 positive packing entries, returning PASS.
+
+One nontrivial two-class sequence has values
+
+This illustrates why blindly choosing a copy direction is wrong, while choosing a nondecreasing adjacent direction and then following discrete convexity is valid.
+
+Jacobian independently returned the exact mixed-cover optimum
+
+with root weight 2, spoke weight 0, and matching primal/dual objectives. Thus
+
+A separate 12-vertex, 25-part terminal partition was checked by an exact local edge counter. The attempted Jacobian partition-check calls returned network errors, so I am not claiming remote verification of that partition.
+
+·
+
+The finite checks do not establish the infinite theorem by enumeration or evaluate the transfer threshold. The decisive general argument is Sections 2–8.
+
+The conclusion is affirmative under the three stated standard inputs. The new step is not another conditional reservoir estimate: strict root regularization supplies local stability, and the fine monotone copying path supplies the global stability implication needed to finish the linear-error bound.
+
+Citations:
+- arXiv+2Cambridge University Press+2: https://arxiv.org/abs/2410.05240
+- Cambridge University Press: https://www.cambridge.org/core/journals/combinatorics-probability-and-computing/article/abs/new-bounds-on-the-listchromatic-index-of-the-complete-graph-and-other-simple-graphs/18498E8F4291D12FA5D03FF011F3D2E2
+- arXiv: https://arxiv.org/pdf/2005.02529
+
+=== 5. USER ===
+
+Keep going, you can do it. Use tools.
+
+  The argument also yields eventual rigidity of every exact extremizer:
+  [
+  \operatorname{cp}(G)=M(n)
+  \quad\Longrightarrow\quad
+  G\cong K_p\vee\overline K_{n-p},
+  ]
+  where (p) is an integer nearest to ((2n+1)/6). Indeed, weighted transfer places an extremizer inside the local neighborhood. For the regularized
+  root, write (B=p'q'-\binom{p'}2). Your strict bound gives
+  [
+  M(n)\le\operatorname{cp}_{\le3}(G)
+  \le B-\frac{m'}9-\frac{\mathfrak M'}2,
+  \qquad B\le M(n).
+  ]
+  Therefore both defects vanish immediately: (m'=\mathfrak M'=0). Equality then forces (B=M(n)), giving precisely the stated root orders. No further
+  rounding or equality-case packing theorem is needed.
+
+  More generally, for every fixed integer (s\ge0), sufficiently large chordal graphs with (\operatorname{cp}(G)\ge M(n)-s) differ from a complete-split
+  graph on at most (s) pairs. The same inequalities give (m'+\mathfrak M'\le9s). Consequently (c'=p') for large (n), and the sharper terminal estimate
+  yields
+  [
+  m'+\mathfrak M'
+  \le s+\frac{2(w'-1)\mathfrak M'}{p'}=s+o(1).
+  ]
+  Integrality proves the assertion. Thus the proof supplies bounded-deficit stability as well as the extremal value. I found no gap in the supplied
+  assembly; these remain session-derived conclusions, without a formal verification of the full proof.
+
+=== 6. ASSISTANT ===
+
+Your rigidity deduction is correct under the supplied closure proof. It can be strengthened to an exact classification throughout a linear deficit window, rather than only for fixed s.
+
+The new conclusion is
+
+For near-extremizers, the clique P in this identity is canonical:
+
+This also gives a new exact consequence:
+
+for all sufficiently large n.
+
+These are corollaries of the session’s stability-closure proof, not independently reviewed published results. The finite repair lemma underlying them is proved below without any asymptotic theorem.
+
+# 1. Exact near-extremizer theorem
+
+Retain the absolute threshold from the closure argument:
+
+where T is the uniform weighted triangle/K4​ packing-transfer threshold. The weighted finite-family transfer used here is the one stated in Rohatgi–Urschel–Wellens, Theorem 3.4; its uniform application appears explicitly in their proof of Theorem 3.6. arXiv
+
+Define
+
+### Theorem
+
+Let G be chordal, n≥N, and let
+
+If
+
+then the set P in (2) is a clique. Writing
+
+we have
+
+Moreover,
+
+Conversely, in this range of n,s, a chordal graph has cp(G)≥M(n)−s exactly when it admits a clique P with
+
+The canonical P is the dense split core; it is not being identified with a maximum clique.
+
+# 2. The finite repair lemma
+
+Here is the reason the o(1) in the bounded-deficit argument can be eliminated completely.
+
+### Lemma — Exact sparse-defect completion
+
+Let P be a clique of order p≥2 in any graph G. Put
+
+If
+
+then
+
+The attaining partition uses K2​,K3​,K4​. No chordality assumption is needed.
+
+## 2.1 Reserve clean outside hosts
+
+Call an outside vertex clean if it is adjacent to every vertex of P and has no outside neighbor.
+
+At most a outside vertices are incident with missing spokes, and at most 2m are incident with outside edges. Therefore there are at least
+
+clean hosts.
+
+These vertices form an independent set. They will be reserved for the final root-edge factorization.
+
+## 2.2 Use one K4​ per outside edge
+
+Process the m outside edges uv. Assign to each one a pair of previously unused root vertices adjacent to both u and v.
+
+After j<m assignments, at most 2j root vertices have been used. Missing incidences exclude at most a further root vertices. Hence at least
+
+eligible vertices remain.
+
+The resulting K4​’s are edge-disjoint—even when the outside edges share endpoints—because their root pairs are vertex-disjoint.
+
+They cover all m outside edges and m root edges.
+
+## 2.3 Complete the root by an ordinary factorization
+
+Factor Kp​ into at most p matching classes. Remove the m reserved root pairs from these classes, and assign the classes injectively to the clean hosts.
+
+Every remaining root edge becomes a triangle. Its host cannot be an endpoint of an outside edge, so no spoke collides with the K4​’s.
+
+Use K2​’s for all remaining edges. The counts are
+
+and
+
+individual edges. Their sum is Bn​(p)−a−2m.
+
+This construction needs no list-colouring theorem: the reserved clean hosts all admit every root edge.
+
+## 2.4 A matching lower certificate for every clique size
+
+Assign edge weights
+
+A clique with x root vertices and y outside vertices has weight
+
+The exact identity
+
+holds for every pair of nonnegative integers x,y.
+
+Thus every clique, of any order, has weight at most one. The total graph weight is
+
+This proves (8), and also proves equality with the unrestricted fractional clique-partition number. ∎
+
+The full-clique lower bound is important: the construction is not merely optimal among packets of the chosen form.
+
+# 3. Why every near-extremizer enters the finite lemma
+
+Let G satisfy the near-extremizer hypothesis, and write
+
+Weighted transfer gives
+
+Since s≤n/100 and n≥1032,
+
+The supplied global stability argument therefore places G inside the local neighborhood.
+
+Its strict root-regularization estimate supplies an actual clique P satisfying
+
+Consequently,
+
+In particular,
+
+Also,
+
+For n≥100 and s≤n/100, this implies
+
+For completeness, the relevant numerical comparison is
+
+Thus
+
+whereas
+
+The finite lemma applies and gives
+
+This proves (4).
+
+## The root is canonical
+
+Now a+2m≤s. Every root vertex has degree at least
+
+Every outside vertex has degree at most
+
+Therefore P is exactly the set in (2).
+
+For the converse, condition (6) implies (15) and a+2m≤s, so the finite lemma applies directly. This proves the theorem.
+
+There is no further asymptotic rounding after the near-extremizer has entered the local neighborhood.
+
+# 4. Rigidity, exact edit distance, and root displacement
+
+## 4.1 Exact extremizers
+
+At s=0, equation (4) forces
+
+Hence G is complete-split and p maximizes Bn​(p), as you observed.
+
+Writing n=3k+r, the extremal root orders are:
+
+| n | Possible p |
+| --- | --- |
+| 3k | k |
+| 3k+1 | k or k+1 |
+| 3k+2 | k+1 |
+
+These are exactly the integers nearest to (2n+1)/6. Thus there is eventually one extremal isomorphism type when n≡0,2(mod3), and two when n≡1(mod3).
+
+## 4.2 The complete-split approximation is unique
+
+Let SP​ be the complete-split graph with clique side P. Its exact distance from G is
+
+In fact, SP​ is the unique complete-split graph within s pair edits, on the given labelled vertex set.
+
+To see this, suppose a complete-split template SK​ is within s edits. An original outside vertex has degree at most 3n/8+s/2; making it a universal core vertex would require more than s edits. Hence K⊆P.
+
+But a vertex of P has degree at least n−1−s. Leaving it outside K would reduce its template degree to at most p≤3n/8, again requiring more than s edits. Hence K=P.
+
+Therefore the distance to the family of complete-split graphs is exactly a+m.
+
+The coefficient one is sharp. Delete s spokes from a complete-split extremizer. It remains split and chordal, and the finite lemma gives
+
+Its distance to the complete-split family is exactly s.
+
+## 4.3 Root-size displacement consumes deficit separately
+
+Write p=k+j. The exact displacement penalties are
+
+This distinction prevents an overstatement: a bounded-deficit graph need not be O(s) edits from an exact extremizer.
+
+For example, at n=3k,
+
+has deficit one and no edge defects at all. Changing it into the extremal
+
+requires 2k−1 pair edits.
+
+The correct conclusion is closeness to a complete-split graph with the root order allowed by (17).
+
+# 5. All the packing benchmarks become exact in this window
+
+The same clean hosts also produce an optimal triangle-only packing.
+
+Assign each outside edge a distinct common root vertex, creating m outside triangles. Host every root edge on the clean outside vertices using a factorization. This gives
+
+edge-disjoint triangles.
+
+Conversely, the root edges together with E(J) meet every triangle of G. Giving these edges fractional cover weight one proves
+
+For the mixed packing, the K4​ construction has saving
+
+The nonnegative weights 1−we​, with w from (10), are a matching dual: every triangle has weight at least two and every K4​ at least five. Thus
+
+In the previous notation,
+
+we obtain
+
+Therefore
+
+These zero-gap statements apply to this near-extremal window. They do not reinstate the false universal O(n) full-clique integrality-gap assertion.
+
+### Every optimal partition has restricted part types
+
+Equality in the lower certificate (11) holds only when the numbers of root and outside vertices are
+
+Hence every optimal unrestricted partition consists only of crossing K2​’s, root-hosted triangles, two-root/two-outside K4​’s, and three-root/two-outside K5​’s.
+
+Exactly m parts meet the outside graph in two vertices—one per outside edge. There is always an optimum with no K5​’s, supplied by the construction above.
+
+# 6. The largest non-split chordal graph value is exactly M(n)−4
+
+This follows without classifying every finite defect pattern.
+
+If
+
+then (4) gives
+
+Thus m≤1.
+
+If m=0, P and J already give a split partition.
+
+If m=1, then a≤1. At least one endpoint of the unique outside edge is adjacent to all of P. Add that endpoint to P; the remaining outside vertices are independent. Again G is split.
+
+Therefore every non-split chordal graph of sufficiently large order satisfies
+
+For attainment, choose an extremal root order p from the table and put
+
+It is chordal and contains an induced 2K2​, so it is not split. It has a=0,m=2, and the finite lemma gives
+
+This proves (3).
+
+# 7. A finite description and a certificate-producing test
+
+The exceptional pairs involve at most a root vertices and at most a+2m outside vertices. Thus all defects are contained in a set of at most
+
+vertices.
+
+Every other root vertex is universal, and every other outside vertex is adjacent exactly to P. For fixed s, there are consequently only finitely many defect templates, together with the root shifts in (17).
+
+There is also a direct recognition test in the stated large-order window. Compute P={v:d(v)>n/2}, check that it is a clique, and calculate
+
+The graph has cp(G)≥M(n)−s exactly when this quantity is at most s.
+
+On acceptance, the elementary construction supplies an optimal partition and a signed all-clique dual of the same value. With an adjacency matrix, the construction and certificate can be produced in O(n2) time, including the output.
+
+This is not a polynomial-time exact algorithm for arbitrary chordal graphs. The near-extremal promise is essential. At arbitrary finite orders, a successful certificate remains valid when the explicit local condition (7) is checked, but rejection has no general implication for cp(G).
+
+# 8. Exact verification
+
+I reread the supplied closure proof and reran its dependency-free replay. It returned PASS for the saved 7,964 mixed-packing LP certificates, 36,743 triangle/K4​ dual constraints, and 1,889 single-copy steps. This is a replay of existing evidence, not a formal verification of the infinite argument.
+
+The new audit checked:
+
+- 1,643 rooted perturbations, including six nonchordal tests of the finite lemma;
+- 3,286 attaining partitions, replaying 815,824 edge incidences;
+- 60,594 actual clique inequalities in the enumerated small instances;
+- 226,457 exact linear-window parameter checks and 104,775 root-displacement identities.
+
+A separate dependency-free script replays all 94 saved partition certificates and their signed duals.
+
+### Independent Jacobian check
+
+The seed has a four-vertex root, eight outside vertices, one missing spoke, and one outside edge. Thus
+
+The formulas predict
+
+Jacobian returned VALID for the 38-edge graph’s partition
+
+It independently maximized the signed edge weight over all nontrivial cliques, returning maximum one, attained by a K5​. The total signed weight is 23, proving optimality against every clique size.
+
+·
+
+The conclusion is stronger than bounded-deficit edit stability: within a uniform linear deficit window, the deficit has an exact combinatorial decomposition, the split core is canonical, and all fractional-to-integral gaps relevant here vanish. The remaining verification obligation is independent review or formalization of the supplied global closure—not another rounding or equality-case argument for these corollaries.
+
+Citations:
+- arXiv: https://arxiv.org/pdf/2005.02529
+
+=== 7. USER ===
+
+Keep going, you can do it. Use tools Jacobian

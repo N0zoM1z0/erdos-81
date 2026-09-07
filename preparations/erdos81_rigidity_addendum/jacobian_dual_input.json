@@ -1,0 +1,400 @@
+{
+  "graph": {
+    "vertices": [
+      "v000",
+      "v001",
+      "v002",
+      "v003",
+      "v004",
+      "v005",
+      "v006",
+      "v007",
+      "v008",
+      "v009",
+      "v010",
+      "v011"
+    ],
+    "edges": [
+      {
+        "endpoints": [
+          "v000",
+          "v001"
+        ],
+        "weight": {
+          "num": "-1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v002"
+        ],
+        "weight": {
+          "num": "-1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v003"
+        ],
+        "weight": {
+          "num": "-1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v004"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v005"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v006"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v007"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v008"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v009"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v010"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v000",
+          "v011"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v002"
+        ],
+        "weight": {
+          "num": "-1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v003"
+        ],
+        "weight": {
+          "num": "-1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v004"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v005"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v006"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v007"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v008"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v009"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v010"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v001",
+          "v011"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v003"
+        ],
+        "weight": {
+          "num": "-1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v004"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v005"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v006"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v007"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v008"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v009"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v010"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v002",
+          "v011"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v003",
+          "v004"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v003",
+          "v006"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v003",
+          "v007"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v003",
+          "v008"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v003",
+          "v009"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v003",
+          "v010"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v003",
+          "v011"
+        ],
+        "weight": {
+          "num": "1",
+          "den": "1"
+        }
+      },
+      {
+        "endpoints": [
+          "v004",
+          "v005"
+        ],
+        "weight": {
+          "num": "-2",
+          "den": "1"
+        }
+      }
+    ]
+  }
+}

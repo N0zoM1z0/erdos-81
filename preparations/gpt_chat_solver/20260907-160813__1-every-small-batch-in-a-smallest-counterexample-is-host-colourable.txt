@@ -1,0 +1,1664 @@
+Title: 1. Every small batch in a smallest counterexample is host-colourable
+Source: chatgpt_web_dom
+Thread URL: https://chatgpt.com/share/6a9e6fb8-5d84-83e9-a725-61f885a52067
+Exported At: 2026-09-07T16:08:13+08:00
+Message Count: 8
+Schema Version: 1.1
+Time Zone: Asia/Shanghai
+
+=== 1. ASSISTANT ===
+
+## Small induced batches have more usable host capacity than the common-palette test suggests
+
+Two further reductions are now proved.
+
+First, in a smallest counterexample, every vertex set of order at most n/10 is automatically host-colourable. Thus, at every sublinear batch scale, finding an affordable batch becomes a numerical induced-subgraph problem; no additional host-compatibility hypothesis is needed.
+
+Second, even without that connectivity assumption, missing root incidences can pay for failed triangle hosts. A finite weighted argument shows that an affordable complete-root batch remains affordable under arbitrary chordal-compatible deletions of its root attachments, provided the retained root is sufficiently large relative to the batch’s clique number.
+
+The second result extends your path-power batch to arbitrary chordal root-neighborhood patterns, and to nearby ratios. These results do not yet force an affordable batch or a terminal construction in every chordal graph.
+
+# 1. Every small batch in a smallest counterexample is host-colourable
+
+Write κv​(G) for vertex connectivity, to distinguish it from the mixed-packing gap.
+
+### Theorem 1 — Automatic retained-host colouring
+
+Let G be chordal, with vertex connectivity κv​(G)=κ. If
+
+then
+
+Thus the optimal incident-edge price is attained while consuming no edge between retained vertices.
+
+## Proof
+
+Every maximal clique of a connected, noncomplete chordal graph has order at least κ+1. Indeed, its intersection with a neighboring bag in a clique tree is a separator and a proper subset of the bag. The complete-graph case satisfies the same conclusion directly.
+
+Consequently, every edge uv has at least κ−1 common neighbors.
+
+Put s=∣X∣. For every uv∈E(G[X]),
+
+Give uv this list of retained hosts. Häggkvist–Janssen’s theorem states that the list-chromatic index of Ks​ is at most s. Extend the lists arbitrarily to the nonedges of G[X], colour Ks​, and restrict to G[X]. This gives the required proper host colouring. Cambridge University Press
+
+Use the resulting triangles and every remaining crossing edge individually.
+
+For the matching lower bound, assign weight −1 to edges inside X, and +1 to crossing edges. A clique of IX​ contains at most one retained vertex. A part with a vertices in X and one retained vertex has weight
+
+while a pure X-clique has nonpositive weight. This certifies the lower bound in (1), allowing every clique size. ∎
+
+## 1.1 Why the theorem applies to all sublinear batches in a hypothetical counterexample
+
+Fix C≥1, and suppose G is a smallest counterexample to
+
+The induced-cut reduction implies
+
+for every nontrivial cut. Otherwise, partition the two proper induced subgraphs inductively and use crossing K2​’s.
+
+It follows that
+
+To verify this, suppose a separator S has order z≤n/5. A smallest component A of G−S has order
+
+Hence
+
+and
+
+contradicting (3).
+
+Combining (1) and (4):
+
+Therefore a smallest counterexample must satisfy
+
+for every such X.
+
+This is stronger than a condition on clique prefixes. It applies to all small induced graphs—paths, branching subgraphs, unions of overlapping cliques, and nonclique PEO prefixes.
+
+Connected witnesses suffice. If an affordable X is disconnected, its component margins sum to its margin plus
+
+at least one component is affordable, and it is itself host-colourable by (5).
+
+So, for a sequence of smallest counterexamples, every o(n)-vertex batch is eventually host-colourable. What remains at those scales is proving the reverse of (6) for some connected batch, or finding an alternative terminal partition.
+
+# 2. Missing root incidences can pay for failed hosts
+
+The preceding result is conditional on high connectivity. There is also a constructive statement that works without it and does not require all internal edges to find hosts.
+
+Let P be a retained clique, with
+
+Choose X⊆V(G)∖P, and put
+
+For x∈X, define
+
+Take a PEO ending with P, and let ℓx​ count the later neighbors of x inside X. Put
+
+Assume that a supplied proper edge colouring of H uses at most d matching classes.
+
+### Theorem 2 — Nonuniform batch completion
+
+Then
+
+In particular,
+
+If d≥2k, missing P-X edges cannot make this certificate more expensive than the corresponding complete-root template, whose exact incident price is ds+b−m.
+
+This is a restricted monotonicity statement about a batch certificate—not general edge-monotonicity of cp.
+
+## 2.1 The unavailable-host sum is exact
+
+If xy∈E(H), with x earlier in the PEO, then
+
+All those vertices and y are later neighbors of x.
+
+Thus the number of root vertices unavailable to host xy is exactly ax​. Summing,
+
+Moreover, the later neighbors of x in H form a clique, so
+
+The clique number of the batch, rather than its maximum degree, controls this weighted loss.
+
+## 2.2 Assign matching classes to root hosts
+
+Assign the supplied matching classes injectively to vertices of P. For each internal edge, use its candidate triangle if both host spokes exist.
+
+Every class receives each root host with probability 1/d. By (11), the expected number of invalid candidate triangles is LX​/d. Therefore some integral assignment has at most
+
+invalid candidates.
+
+Keep the valid triangles. Use all other incident edges as K2​’s.
+
+The crossing-edge count is ds−MX​+b. Since m−z internal edges were hosted, the exact number of parts is
+
+This proves (9), and (12) proves (10).
+
+The assignment can be optimized directly: its rows are matching classes, its columns are root hosts, and an entry counts invalid edges in that class at that host. It is an ordinary integral minimum-cost bipartite assignment.
+
+The matching-class mechanism is related to Ning’s Lemma 4.6, which charges invalid candidates injectively to missing crossing edges. Here the additional chordal calculation (11)–(12) gives the finer kMX​/d bound. arXiv
+
+There is no second-stage root packing: every edge between retained vertices is untouched.
+
+## 2.3 The exact affordable-batch test
+
+Subtract (9) from the budget difference. An affordable deletion is certified whenever
+
+A simpler sufficient test is
+
+Thus, when d≥2k, an affordable complete-root batch stays affordable after arbitrary deletions of its root attachments that preserve chordality.
+
+The price of failed hosts is retained explicitly. There is no substitution of o(n2) for O(n).
+
+# 3. Your path-power batch works with arbitrary chordal-compatible attachments
+
+Suppose P is a clique of order d, and the outside graph is the k-th power of a path on 2d vertices. The edges between P and that path are arbitrary, subject only to the whole graph being chordal.
+
+Assume
+
+Let X be the first 3k path vertices.
+
+Then
+
+There is an explicit proper (2k+1)-edge-colouring of H: label its vertices consecutively, and colour ij by
+
+At any vertex, its possible neighbors lie in an interval of 2k+1 distinct residues, so incident edge colours are distinct.
+
+Theorem 2 applies and gives
+
+Since n=3d, the budget margin is at least
+
+For C≥0 and k≥2, this is nonnegative.
+
+Hence:
+
+The original common retained palette may be absent. Some internal edges may have no retained host at all. The construction repairs those failures and still meets the deletion budget.
+
+The sufficient root size has also decreased from d≥8k to d≥2k+1 for this conclusion.
+
+## 3.1 Nearby ratios are controlled by a finite quadratic
+
+Let the exterior path instead have
+
+vertices, so n=3d+λ. For a prefix of length
+
+the same construction has budget margin at least
+
+The matching-colour bound remains 2k+1, independently of s.
+
+When the nearest integer to
+
+is admissible, the first three terms in (21) are at least
+
+For a concrete nearby-ratio statement, take
+
+with even k≥24. Then the margin is at least
+
+These are exact finite allowances at the k2 scale. They do not require k2=O(n).
+
+The same calculation applies to any induced batch with
+
+provided it has a proper edge colouring with at most d classes. A global path-power assumption is not required for that version.
+
+# 4. A nonuniform family still defeats the older tests
+
+The missing-incidence extension is compatible with the earlier irreducibility diagnostics.
+
+Fix C≥0, choose integers
+
+and put
+
+Start with
+
+At path vertex vi​, for 1≤i≤b, delete its edges to the first b−i+1 root vertices. Delete no other edges.
+
+The missing sets decrease along the path. Thus the natural path order, followed by the root, is a PEO. The graph remains chordal, and a later full-root path window shows
+
+Every vertex loses at most b incident edges. The first 3k vertices have
+
+missing root incidences.
+
+They still have enough untouched root hosts to colour all internal edges, so their exact incident cost is
+
+Their exact budget margin is
+
+## 4.1 Every clique batch in the previous size range fails
+
+In the unperturbed graph, a clique of order s contains at most k+1 path vertices. Its degree sum is minimized by taking
+
+path vertices in an end window and s−y root vertices.
+
+Its ideal hosted incident cost exceeds its budget allowance by at least
+
+For every
+
+this is at least
+
+For s≤k+1, this follows directly from
+
+For larger s, subtract the right side of (27). The difference is concave in s, zero at s=k+1, and at the other endpoint equals
+
+Deleting the crossing incidences decreases any such degree sum by at most bs. Therefore every clique in the perturbed graph still has positive excess at least
+
+This lower bound permits every clique size in the incident-edge partition. It does not assume a particular failed triangle construction.
+
+## 4.2 Ordinary deletions and sparse cuts also fail
+
+For ordinary individual-edge deletion, restore omitted root vertices first. Each increases e−BC​ by at least
+
+With the root restored, restoring an omitted exterior set W increases the surplus by at least
+
+Here the exterior path power has minimum degree k.
+
+Thus every nonempty ordinary deletion is unaffordable.
+
+For a cut containing x≤d/2 root vertices and an exterior set Y, ∣Y∣=y, the cut gap is at least
+
+This is concave in x. At x=0, it is positive immediately when y>3b. For 1≤y≤3b, minimum degree k gives the positive lower bound
+
+At x=d/2, completing the square gives, after discarding the last nonnegative term,
+
+Only the trivial cut can give zero.
+
+So these nonuniform graphs defeat the ordinary deletions, sparse cuts, and clique batches—but admit (24).
+
+### Intermediate-scale accounting
+
+Taking
+
+gives
+
+Nevertheless, the general repair allowance in Theorem 2 is
+
+The missing-incidence credit and the k2 batch margin remain superlinear and explicit. No asymptotic packing-transfer error is used.
+
+# 5. These examples also have a completed whole-graph partition
+
+The preceding family does not merely rely on a hypothetical induction.
+
+After deleting the first 3k path vertices, all missing attachments are gone. The remainder is
+
+Write
+
+Properly edge-colour the outside path power with q′ matching classes and balance their sizes by alternating-path swaps. Each class then has at most
+
+edges. Assign the d largest classes to distinct root vertices. They supply at least de′/q′ outside triangles, consuming at most 2k spokes at each root.
+
+Every root edge therefore retains at least
+
+outside hosts, since d≥8k. Complete the root using the complete-graph list-edge-colouring theorem and use K2​’s for all remaining edges. Cambridge University Press
+
+Adding the batch cost gives
+
+This is a full integral partition bound for this family, with the absolute constant 1/6. It uses only triangles and K2​’s.
+
+It is not asserted to be the exact clique-partition number.
+
+# 6. A small exact example where full hostability actually fails
+
+The partial-host theorem is not merely a reformulation of the all-hostable case.
+
+Take a retained root triangle {a,b,c}, and let
+
+induce a path. Their root neighborhoods are
+
+Add a retained vertex y complete to the root and adjacent to x4​.
+
+The full graph is chordal. But the internal edge x1​x2​ has no retained common neighbor, so the all-hostable identity cannot be applied.
+
+The incident graph has ten edges and the partition
+
+Thus cp(IX​)≤6.
+
+Give every incident edge weight one except cx3​ and x3​x4​, which receive weight −1. Every clique has weight at most one, and the total weight is six. Hence
+
+Jacobian independently returned:
+
+- OPTIMAL, value 2, for the matching-class/root-host assignment;
+- VALID for the six-part partition;
+- maximum signed clique weight 1 for the lower certificate.
+
+This validates a completed deletion with an unavoidable unhosted internal edge.
+
+# 7. Exact audit
+
+The new archive records:
+
+- 1,000 chordal batch instances, using exact subset-DP assignment optimization and exact edge coverage;
+- 542 of those instances with no common root host;
+- 129 with positive optimal failure count in the chosen matching-class assignment;
+- 240 additional arbitrary nested-attachment path-power cases at root sizes as small as d=2k+1, all meeting the proved batch budget;
+- 569 nontrivial automatic-hosting checks across the 531 nonempty chordal atlas graphs through order seven;
+- 56,820 exact clique-batch comparison inequalities;
+- explicit whole-graph partitions on 72,144, and 288 vertices.
+
+The whole-graph certificates have respectively
+
+parts, compared with
+
+for n2/6. These are upper certificates, not claimed optima.
+
+The general list-colouring existence theorem is not inferred from those checks. In the finite replays, actual host colourings were constructed and every edge was checked. The arbitrary random batch tests certify the stated inequalities and constructions, not universal budget coverage.
+
+.
+
+## The remaining theorem is now more sharply stated
+
+For a smallest counterexample, host compatibility is not an additional obstruction for any o(n)-vertex batch. Theorem 1 supplies it exactly. Such a counterexample must satisfy the numerical inequality (6) for every small connected induced set.
+
+Outside that irreducible setting, Theorem 2 gives a constructive substitute: missing root incidences pay for invalid hosts whenever the retained clique is large enough relative to the induced batch’s clique number. This makes the path-power reduction robust to nonuniform attachments and retains its intermediate-scale margin.
+
+What I have not proved is that every remaining chordal graph contains a connected X, with ∣X∣≤n/10, satisfying
+
+or admits one of the already budgeted terminal constructions.
+
+There is still no universal constant C proved here for all chordal graphs, and no counterexample to that assertion. The new results remove the small-batch host-colouring obligation and give an exact missing-incidence repair for broader batches; the substantial unresolved step is the existence of an affordable induced batch or terminal partition.
+
+Citations:
+- Cambridge University Press: https://www.cambridge.org/core/journals/combinatorics-probability-and-computing/article/abs/new-bounds-on-the-listchromatic-index-of-the-complete-graph-and-other-simple-graphs/18498E8F4291D12FA5D03FF011F3D2E2
+- arXiv: https://arxiv.org/html/2608.11536v1
+
+=== 2. USER ===
+
+keep going, you can do it. Use tools Jacobian
+
+=== 3. ASSISTANT ===
+
+## The hosting condition can be removed from a substantial batch-selection problem
+
+There is a useful strengthening of the arbitrary-set deletion rule:
+
+The selected set need not be a clique, connected, or adjacent to a common retained palette.
+
+This leads to an exact linear-time selection test over an exponentially large family of elimination-compatible batches, once a PEO is supplied. It also turns your path-power calculation into a quantitative dense-prefix lemma that tolerates Θ(k2) missing internal edges.
+
+Jacobian independently found an affordable nonclique batch in a bounded exact search and checked a separate nonuniform hosting certificate with no common retained palette.
+
+The universal existence step remains unproved. These results remove the colouring obligation on explicit families of candidate batches; they do not establish that one must be affordable in every remaining chordal graph.
+
+# 1. Automatically hostable PEO domains
+
+Fix a perfect elimination ordering
+
+Write N+(v) for the later neighbours of v, and let δ=δ(G).
+
+## Theorem 1 — Every subset of a short PEO prefix is hostable
+
+Let
+
+Then every X⊆W admits a proper edge-colouring of G[X] by common neighbours in V(G)∖W.
+
+Consequently,
+
+### Proof
+
+Take an edge vi​vj​∈E(G[X]), with i<j. Every neighbour of vi​ in V(G)∖W is also adjacent to vj​, because both belong to the later-neighbour clique of vi​.
+
+Moreover,
+
+Thus every edge of G[X] has at least m≥∣X∣ possible retained hosts.
+
+Häggkvist–Janssen’s theorem gives χℓ′​(Ks​)≤s. It applies to any subgraph of Ks​: give the missing edges arbitrary sufficiently large lists, colour Ks​, and restrict. Taking s=∣X∣ gives the required proper host colouring. Cambridge University Press
+
+The resulting triangles cover all internal edges of X, using exactly two crossing edges per triangle. Cover every remaining incident edge individually. The count is the right side of (2).
+
+For exactness, give weight −1 to edges inside X and +1 to crossing edges. In IX​, retained vertices are independent. A clique with one retained vertex and a vertices of X has weight
+
+and a clique entirely in X has nonpositive weight. The total weight is the constructed count. This proves optimality against all clique sizes. ∎
+
+### Why this matters for a smallest counterexample
+
+For a fixed C≥0, a smallest counterexample satisfies
+
+Therefore the first ⌊n/6⌋ vertices of any PEO form a domain in which every subset is automatically hostable.
+
+So, on this domain, selecting an affordable batch is purely an exact induced-edge optimization. No additional host-list condition has to be verified after selecting the vertices.
+
+This does not mean that every such domain contains an affordable nonempty set.
+
+## 1.1 A second automatic domain: large forward degree
+
+Put
+
+For an integer s≥2, define
+
+Then
+
+Indeed, for an internal edge whose earlier endpoint is u, there are at least
+
+retained later neighbours of u, all common neighbours of the edge. Apply the same list-colouring theorem.
+
+Unlike a short prefix, As​ can extend throughout much of the ordering. The set X need not itself be a PEO prefix.
+
+# 2. Connected witnesses and an exact elimination-tree scan
+
+Define the fully hosted deletion margin
+
+Whenever X is hostable, mC​(X)≥0 is exactly the affordable-deletion test.
+
+## 2.1 Disconnected batches do not conceal the only affordable witness
+
+Suppose X has induced components X1​,…,Xt​.
+
+Every clique of IX​ containing an edge belongs to one component together with at most one retained vertex. Thus
+
+If the components are fully hostable, their margins satisfy
+
+Hence an affordable nonempty union contains an affordable connected component.
+
+This is consistent with your general merging identity: there are no edges between different components, so the 3e(Xi​,Xj​) term vanishes.
+
+## 2.2 The elimination forest makes many connected batches easy to evaluate
+
+For every vertex with later neighbours, let its parent be its earliest later neighbour. Vertices with no later neighbours are roots.
+
+This defines a rooted forest. Let Tv​ be the full descendant subtree rooted at v. Also write
+
+for the number of earlier neighbours.
+
+### Lemma 2 — Exact subtree accounting
+
+For every v,
+
+### Proof
+
+Every graph edge connects an ancestor and a descendant in this forest. To see this, suppose w is a later neighbour of u, distinct from its parent. Both lie in N+(u), so w is also a later neighbour of the parent. Repeating reaches w.
+
+In particular, every earlier neighbour of a vertex belongs to its descendant subtree. Counting each internal edge at its later endpoint gives the third identity.
+
+Every neighbour outside Tv​ is an ancestor of v. The same later-neighbour propagation shows that it belongs to N+(v); conversely every member of N+(v) neighbours v. This proves the boundary identity.
+
+The parent edges make G[Tv​] connected. Finally, summing forward degrees over Tv​ counts its internal edges once and its crossing edges once, giving the last identity. ∎
+
+An ordering that eliminates descendants before ancestors is again a PEO: all remaining neighbours of a vertex are among its original later neighbours.
+
+Therefore a downward-closed initial set in this forest is a union of full subtrees rooted at incomparable vertices. Those subtrees are pairwise anticomplete.
+
+## Theorem 3 — Exact affordable-batch existence test in a fixed elimination forest
+
+Set
+
+Consider all downward-closed initial sets whose induced components have order at most L.
+
+There is an affordable nonempty set in this family if and only if some subtree Tv​ with ∣Tv​∣≤L satisfies
+
+All values in (9) can be computed in
+
+arithmetic operations once a valid PEO is supplied.
+
+### Proof
+
+A subtree can be placed first in a descendant-before-ancestor PEO. Its order bound makes it hostable by Theorem 1; singletons are automatic.
+
+If a union is affordable, equation (7) supplies an affordable component, and every component is one of the Tv​. The converse is immediate.
+
+Compute a(v),b(v), the parent pointers, and then accumulate subtree sizes and weights
+
+from children to parents. ∎
+
+This tests existence over an exponentially large collection of reorderings and unions without enumerating them.
+
+The scope matters: it is an exact test for the fixed elimination forest and these admitted components. It does not optimize over all PEOs or every connected subset. Constructing the eventual list-edge-colouring is also separate from the linear-time margin scan.
+
+# 3. A deterministic density test inside an automatic domain
+
+The automatic domains also support a selection rule that need not enumerate all subsets.
+
+Let
+
+and choose a uniform s-element subset X⊆Y. Every outcome is hostable by (4).
+
+Exact averaging gives
+
+Thus, if the right side is nonnegative, an affordable batch exists. It can be selected deterministically by conditional expectations while preserving cardinality s.
+
+There is no post-selection compatibility loss: the entire sampling domain was proved hostable beforehand.
+
+Equation (10) is a sufficient criterion, not an assertion that uniform sampling always locates the best batch. If it is negative, an exact subset search may still find an affordable set.
+
+For a smallest counterexample, its strict failure for every eligible s,Y is a new finite constraint:
+
+This retains the internal density and original degrees at the batch’s actual scale.
+
+# 4. Your path-prefix calculation has a robust extension
+
+The useful feature of the path power is not the exact path-power structure. It is the combination of bounded forward degrees and enough internal edges in a hostable prefix.
+
+## Theorem 4 — Dense-prefix deletion with an explicit defect allowance
+
+Let X be a hostable PEO prefix of order s≥k+1. Suppose
+
+and
+
+Then
+
+### Proof
+
+For a PEO prefix, summing forward degrees counts every incident edge once, except that an internal edge must subsequently be subtracted twice:
+
+Substitute (12)–(13), then subtract this upper bound from the budget allowance. ∎
+
+Two useful choices are
+
+and
+
+For example, if
+
+and a 3k-vertex prefix satisfies (12) and
+
+then it is automatically hostable and has margin at least
+
+This permits a quadratic internal-edge deficit. It does not require the prefix to be an exact k-tree or path power.
+
+Of course, the existence of such a dense prefix is a hypothesis. It is not established for every remaining chordal graph.
+
+## 4.1 Recovering and shortening the path-power batch
+
+For
+
+take the natural PEO that removes path vertices from one end. For its first s vertices, where k≤s≤2d−k,
+
+Since n=3d,
+
+and
+
+At s=3k, this is your margin
+
+Already at s=2k, the margin is
+
+which is positive for C≥0 and k>3.
+
+The hypothesis d≥8k makes both batches fall well within the automatic PEO-hosting range.
+
+# 5. The margin is stable under actual edge changes
+
+There is a simple way to transfer these batches to nearby graphs without reconstructing their host colouring.
+
+## Theorem 5 — Incident-edit stability
+
+Suppose IX​(G0​) has a partition into triangles and K2​’s of cost c0​. Let G1​ have the same vertex set, and let ε count the edges incident with X that have been added or removed. Then
+
+### Proof
+
+Restrict each old triangle to its surviving edges. A complete triangle remains one part; a proper restriction is partitioned into K2​’s. Its part count increases by at most the number of removed edges. Restrict old K2​’s similarly, and add every new edge as a K2​. ∎
+
+Consequently, if
+
+and G1​ is chordal, then X is still an affordable induced reduction in G1​.
+
+This does not claim that arbitrary edits preserve chordality. Nor does it assert a one-part-per-deleted-edge repair for large clique parts—the base here consists only of triangles and edges.
+
+For the 3k-prefix, a margin of order k2 can therefore absorb order k2 genuine incident-edge changes. This is a cost-preserving finite statement, not qualitative edit-distance stability.
+
+# 6. Exact optimization and Jacobian checks
+
+For a fixed domain of automatically hostable vertices, the batch objective has the exact binary form
+
+where zv​=1v∈X​.
+
+The pair coefficients are 16 on graph edges and −2 on nonedges. Thus this is not automatically a nonnegative-pair minimum-cut problem. I used exact signed-subset optimization for the bounded search, rather than claiming a min-cut reduction that drops the cardinality penalty.
+
+## 6.1 A nonclique batch found independently
+
+Take
+
+Optimize over all 212 subsets of the first twelve path vertices. They are all automatically hostable, since
+
+The exact maximum margin is
+
+attained by taking the whole twelve-vertex prefix.
+
+Its incident graph has
+
+The exact incident partition has
+
+while the quadratic budget allowance is
+
+Jacobian returned the exact maximum 1843 for the anchored signed encoding of (21). The forced-anchor contribution is 1807, so the resulting margin is
+
+For comparison, the maximum margin over every clique batch of order at most
+
+is
+
+For a clique containing a universal vertices and b≤7 path vertices, its minimum possible degree sum is
+
+attained by choosing its path vertices at an endpoint. Checking these integer types gives the stated maximum.
+
+Thus this is an actual affordable batch that every eligible clique batch misses.
+
+The 546-part object is a partition of the incident-edge graph, not of all of G. The induced remainder is deliberately left untouched.
+
+## 6.2 Hostability without any common retained palette
+
+Let the retained vertices r0​,…,r7​ form a clique. Take X={a,b,c} inducing the path a−b−c, with
+
+A PEO begins a,c,b, and δ(G)=5.
+
+There is no retained vertex adjacent to all three members of X. Nevertheless, Theorem 1 applies, and the two internal edges can be hosted by r0​ and r4​.
+
+Jacobian returned VALID for the resulting partition of the 18-edge incident graph into
+
+Its 14-part cost is optimal by the signed certificate in (2). At C=2, its deletion margin is 3/2.
+
+This isolates the distinction between a common-palette argument and the PEO list argument.
+
+# 7. Scope of the exact audit
+
+The new audit checked all 531 nonempty chordal graphs through seven vertices, using a supplied PEO for each. It verified:
+
+- 3,507 subtree identities and boundary-clique identities;
+- 4,543 admitted downward-closed unions and the connected-witness implication;
+- 607 hosted prefix-subset certificates and 291 forward-degree-layer certificates;
+- 160 incident optima by an independent recursion allowing every clique size;
+- 125 conditional-expectation selections against their exact subset averages.
+
+It also checked 303,000 rational instances of the dense-prefix identity and 1,000 incident-edge perturbation repairs.
+
+The archive distinguishes the algorithms carefully: subtree score accumulation is linear once a PEO is given; the bounded exact subset optimizer and the small list-colouring search are exponential. The conditional-expectation test is polynomial but only a sufficient test.
+
+.
+
+## What is now reduced—and what is not
+
+For these candidate families, the process is now:
+
+The elimination-tree scan searches many reorderings exactly. The prefix and forward-degree domains admit additional subsets that the tree scan does not cover. Dense-prefix and edit-stability bounds preserve quadratic intermediate-scale margins explicitly.
+
+All successful deletions compose in the current induced graphs:
+
+Retained vertices may be reused as hosts later, because earlier steps consumed only edges incident with already removed vertices.
+
+I have not proved that one of these searches must succeed in every remaining chordal graph, nor supplied a universal terminal construction when all fail. The original absolute-C theorem therefore remains unproved here.
+
+The new restriction is stronger than failure of clique prefixes: a smallest counterexample must defeat the exact weighted induced-density tests throughout the automatically hostable PEO domains, and every admitted elimination-tree branch. The remaining task is to turn that hereditary failure into an affordable terminal partition—not to assume that the colouring or telescoping costs of these admitted batches are still unresolved.
+
+Citations:
+- Cambridge University Press: https://www.cambridge.org/core/journals/combinatorics-probability-and-computing/article/abs/new-bounds-on-the-listchromatic-index-of-the-complete-graph-and-other-simple-graphs/18498E8F4291D12FA5D03FF011F3D2E2
+
+=== 4. ASSISTANT ===
+
+## The batch-existence argument closes all proper interval graphs
+
+Using the supplied weighted symmetrization bound as an input, I obtained a complete proof that every proper interval graph satisfies
+
+for one absolute constant CI​.
+
+More generally, if an interval representation has at most b intervals properly contained in any one interval, the proof gives
+
+This is not a solution for all chordal graphs, or even all interval graphs with unbounded containment. The useful general advance is an exact PEO-prefix budget identity and a larger automatic-hostability criterion. In the interval setting, geometry supplies the missing dense-prefix condition, so the induction actually closes instead of stopping at a selection conjecture.
+
+No claim that the original graph has ω(G)=n/3+o(n) is used.
+
+# 1. An exact budget identity for every PEO prefix
+
+Let
+
+be a perfect elimination ordering of a chordal graph G, and put
+
+Write
+
+for its forward degree.
+
+For the prefix
+
+define
+
+Thus Zs​ counts the missing pairs in the prefix, while Ts​ records its actual forward-degree deficit from the maximum possible value.
+
+Every internal prefix edge contributes once to the sum of earlier degrees. Therefore
+
+It follows that
+
+When Xs​ is host-colourable, the left side is exactly cp(IXs​​), including optimization over all clique sizes. Hence its exact budget margin is
+
+This isolates the remaining prefix obstruction: missing pairs, not an unspecified separator-rounding loss.
+
+For a fixed PEO, all these quantities can be evaluated in total O(n+e(G)) time by accumulating earlier degrees and forward deficits. This does not optimize over all PEOs or guarantee a positive margin.
+
+### The all-clique lower certificate remains exact
+
+Give weight −1 to edges inside Xs​ and +1 to crossing edges. A clique in IXs​​ contains at most one retained vertex. With a deleted vertices and one retained vertex, its weight is
+
+a pure deleted-vertex clique has nonpositive weight.
+
+Thus no use of K4​,K5​,… can beat the incident price in (3) when the hosted-triangle construction attains it. The identity does not rest on restricting the allowable partition.
+
+# 2. Automatic hostability is not limited to small cardinality
+
+The preceding round guaranteed hostability for every sufficiently small set. There is another criterion allowing arbitrarily many vertices, provided the induced maximum degree is small.
+
+### Theorem 1 — Degree-sensitive automatic hosting
+
+Let G be connected and chordal, with vertex connectivity κ. For X⊆V(G), suppose that every uv∈E(G[X]) satisfies
+
+Then every internal edge of X can be properly coloured by retained common neighbours. Consequently,
+
+In particular, it suffices that
+
+There is no restriction on ∣X∣.
+
+## Proof
+
+Every maximal clique of a connected chordal graph has order at least κ+1: a proper intersection with an adjacent clique-tree bag is a vertex separator. The complete-graph case satisfies the same assertion directly.
+
+Thus every edge of G has at least κ−1 common neighbours.
+
+For an internal edge uv, put
+
+Its retained-host list has size at least
+
+By (5), this is at least a+b−1. The edge has at most a+b−2 adjacent edges in G[X], so greedy list-edge-colouring succeeds.
+
+Finally,
+
+which proves the sufficient condition (7). ∎
+
+For a smallest counterexample to BC​, C≥1, the established induced-cut argument gives
+
+Hence
+
+irrespective of its order.
+
+This is separate from the earlier guarantee for every ∣X∣≤n/10. Large, internally sparse connected batches can therefore also be tested by their exact numerical margin.
+
+# 3. Interval geometry supplies a dense, hostable prefix
+
+Take a closed-interval representation of an interval graph. Let
+
+where equal intervals do not count as proper containments.
+
+Deleting vertices cannot increase b.
+
+Order the intervals by nondecreasing right endpoint. This is a PEO: every later neighbour of an interval contains its right endpoint, so those neighbours form a clique.
+
+Let the first vertex be v1​, with degree
+
+### Lemma 2 — Interval-prefix structure
+
+For every 1≤s≤D+1, the prefix Xs​ satisfies
+
+and has at least
+
+common neighbours outside Xs​.
+
+Consequently,
+
+guarantees an explicit retained-host colouring of all internal prefix edges.
+
+## Proof of the common-host assertion
+
+Take a neighbour w of v1​ that occurs after the prefix.
+
+Its left endpoint is at most the right endpoint of v1​, and its right endpoint is at least every right endpoint in Xs​. Therefore it intersects every interval in Xs​.
+
+At most s−1 neighbours of v1​ were removed, giving (11).
+
+If 2s≤D+1, at least s such hosts remain. Assign a round-robin factorization of Ks​, restricted to G[Xs​], to distinct common hosts.
+
+## Proof of the missing-pair assertion
+
+The case D=0 is trivial. Otherwise let w be the last neighbour of v1​ in the endpoint order. Its position is at least D+1.
+
+Any nonneighbour of v1​ in Xs​ lies strictly to the right of v1​, and its right endpoint is no later than that of w. It is therefore properly contained in w.
+
+There are at most b such vertices. All the other prefix vertices—v1​ and its later neighbours—form a clique. If the exceptional count is t≤b, then
+
+This proves (10). ∎
+
+For proper interval graphs, choose a representation with no proper containment, so b=0. Equivalently, one may use a unit-interval representation; the equality of these graph classes is standard. arXiv
+
+The first admissible prefix is then an actual clique. For b>0, the lemma permits nonclique prefixes.
+
+# 4. Fix one absolute large-clique threshold
+
+Here I use the supplied clique-capped weighted symmetrization inequality as a working input:
+
+when G is chordal,
+
+where ϕ=e−2ν3∗​.
+
+This is the session’s weighted extension, not a claim that Paper II proves structural stability. Paper II supplies the underlying fractional extremum and symmetrization principle. GitHub
+
+Let NHR​(ε) be a uniform threshold for
+
+The fixed-triangle Haxell–Rödl theorem, also covered by Yuster’s generalization, supplies such a threshold. arXiv
+
+Fix
+
+### Lemma 3 — The needed terminal case
+
+Every chordal graph with
+
+satisfies
+
+Notice
+
+Thus the cutoff is strictly above 2​/3, consistent with the established large-clique regime.
+
+## Finite verification of the margin
+
+Put p=ω(G). Retaining a maximum clique gives
+
+A PEO ending in it also gives
+
+The latter settles p≥4n/5.
+
+Otherwise, if (15) is not already within n2/6, then
+
+Insert this in (12) with λ=1/384. Exact expansion bounds
+
+by
+
+For n≥106, this is at most
+
+The fixed packing-transfer loss contributes at most
+
+leaving a positive quadratic margin. This proves (14).
+
+This use of asymptotic transfer is confined to a fixed quadratic-slack case. It does not assert an O(n) packing gap.
+
+# 5. A complete induction for bounded-containment interval graphs
+
+### Theorem 4
+
+If an interval graph G has a representation satisfying (9), then
+
+In particular, every proper interval graph satisfies
+
+with the single absolute constant N from (13).
+
+## Proof
+
+Fix b, put
+
+and use strong induction on n.
+
+For n<N, use every edge as a K2​. Disconnected graphs follow by induction on their components: the linear terms add exactly and
+
+If some vertex has degree at most
+
+delete it, apply induction to the induced remainder, and restore its incident edges individually.
+
+We may therefore assume
+
+If p≥17n/36, apply Lemma 3. Otherwise take the right-endpoint PEO and put
+
+Since p≥δ(G)+1, equation (19) gives
+
+so s≥1.
+
+On the other hand,
+
+implies
+
+Consequently,
+
+where the final inequality already holds when C−2b≥1.
+
+Let D=d(v1​)≥δ(G). By Lemma 2, the prefix Xs​ has at least s retained common hosts, and
+
+Its exact margin from (4) is therefore at least
+
+by the choice of s.
+
+Delete the prefix at its exact hosted incident cost and apply induction. The retained interval representation still has containment bound at most b.
+
+Every deletion consumes only edges incident with its deleted vertices. Hence the budget differences telescope exactly:
+
+There is no sum of overlapping separator costs. ∎
+
+The theorem covers all orders and all clique-number ratios in this class. It is not merely an estimate for a selected path-power family.
+
+When b grows with n, however, (17) is only the stated parameter-dependent bound. The term 2bn cannot be relabelled O(n).
+
+# 6. A quantitative restriction on any remaining interval counterexample
+
+The argument gives more than the fixed-b result.
+
+Set
+
+Then
+
+Use the established large-clique terminal theorem at this fixed ratio.
+
+### Corollary 5
+
+For any fixed C≥1, a sufficiently large smallest interval-graph counterexample to BC​ must have the following property:
+
+Indeed, suppose a representation has b≤βn. The single-vertex reduction gives (19), and the large-clique theorem gives
+
+Choose s as in (20). Since
+
+we obtain
+
+Thus the prefix is hostable and the margin calculation (22) remains nonnegative—a contradiction.
+
+This is a necessary condition for interval counterexamples, not a characterization of arbitrary chordal graphs. It identifies a linear-sized nesting obstruction that the current interval proof cannot bypass.
+
+# 7. Why a universal batch-only conclusion would still be false
+
+The complete-split family already shows why the terminal alternative remains essential.
+
+Take
+
+with
+
+For a set X of order s, containing x core vertices, the ideal incident-deletion margin is exactly
+
+If 1≤s≤n/10, every term is nonpositive and the first is strictly negative, because q≥n/2. Therefore no such batch is affordable, even before imposing hostability.
+
+The signed incident-edge lower certificate makes this a statement about every incident partition, not just a particular triangle construction.
+
+Nevertheless, factorizing the root and assigning its factors to distinct outside hosts gives
+
+For h≍p2/3, the graph has no affordable small batch but lies below the target by an intermediate-scale amount. It is a split terminal example, not a counterexample.
+
+Thus even in interval graphs, an unrestricted batch-existence assertion would be wrong. The successful induction above relies on the additional prefix-density supplied by bounded containment.
+
+# 8. Exact verification
+
+The new audit checked:
+
+- 14,028 exact PEO-prefix identities across the 531 nonempty chordal atlas graphs through order seven;
+- 6,917 ordered proper-interval graphs through order nine, with 6,916 explicit incident partitions;
+- 500 arbitrary interval representations, checking the common-host and containment arguments;
+- 761 larger unit-interval instances, of which 758 met the stated nontrivial batch-selection hypotheses and produced affordable batches;
+- 48 bounded-containment examples, including 18 affordable nonclique prefixes;
+- 2,585 induced sets satisfying the degree-sensitive automatic-hostability criterion.
+
+The three larger unit-interval instances not entering the batch branch were not discarded as failures: they simply did not satisfy all its hypotheses. The audit also retains a general interval example with prefix margin
+
+showing that dense-prefix selection is not automatic outside the stated conditions.
+
+The large-clique polynomial margin was checked by exact coefficient arithmetic. These finite checks do not determine NHR​.
+
+### Jacobian certificate
+
+In the seventh power of an 18-vertex path, delete the first three vertices. Its incident graph has 21 edges and an exact 15-part partition:
+
+The quadratic deletion allowance is 33/2, so its margin at C=0 is
+
+Jacobian returned VALID for the partition. It independently maximized the signed clique weights, returning maximum one; their total is 15. This certifies the incident graph’s optimum against all clique sizes, not the optimum of the original 18-vertex graph.
+
+.
+
+## What remains for the original chordal theorem
+
+The new general identity is
+
+The hostability issue is now settled for all sufficiently small batches and for all degree-capped batches, even large ones. In proper interval graphs—and more generally bounded-containment interval representations—the missing-pair term Zs​ is controlled strongly enough to choose an affordable prefix and complete the induction.
+
+For arbitrary chordal graphs, no such bound on Zs​ has been proved. A PEO prefix can be sparse, and the graph may still require a coupled terminal construction rather than deletion. The complete-split calculation (24)–(25) demonstrates why that alternative cannot be omitted.
+
+I have not proved one absolute C for every chordal graph or found a counterexample to that assertion. This continuation gives a complete batch-existence proof for an entire hereditary geometric class, an explicit extension to bounded containment, and two exact general-purpose batch criteria. The remaining chordal step is still to control the prefix deficiency—or select a budget-valid coupled completion when no affordable batch exists.
+
+Citations:
+- arXiv: https://arxiv.org/abs/1309.1248
+- GitHub: https://raw.githubusercontent.com/jtraverso/erdos-81-chordal-clique-partitions/main/preprints/PAPER_II/01_manuscript/PAPER_II_preprint_v1.2.md
+- arXiv: https://arxiv.org/abs/math/0305350
+
+=== 5. ASSISTANT ===
+
+The missing stability step can be supplied. Strengthening the root-regularization argument gives a quantitative local stability inequality. A monotone sequence of single-vertex copies then propagates that inequality globally.
+
+The resulting argument proves the stronger eventual bound
+
+In particular, there is one absolute C valid for every order:
+
+This is a new proof assembled here, not an independently reviewed or machine-verified theorem. The proof below states its external inputs and its absolute constant explicitly. The accompanying exact computations check the copying mechanism, the finite LP certificates, and the numerical inequalities; they do not substitute for the general argument.
+
+# 1. Inputs, notation, and the constant
+
+Let W4∗​(G) be the maximum fractional packing gain with gain 2 for each triangle and gain 5 for each K4​. Let W4​(G) be its integral counterpart, and put
+
+Then
+
+The proof uses three standard results: Vizing’s Δ+1 edge-colouring theorem; Häggkvist–Janssen’s bound χℓ′​(Kp​)≤p; and weighted finite-family packing transfer, which gives
+
+uniformly over n-vertex graphs. The last assertion is exactly the r=4 case of Rohatgi–Urschel–Wellens, Theorem 3.4. arXiv+2Cambridge University Press+2
+
+Fix
+
+Let T(ε) be the least integer such that the weighted transfer theorem guarantees
+
+for every graph of order at least T(ε). Define
+
+This is one finite absolute constant, defined through an independent theorem—not through the assertion we are trying to prove. Its numerical value is not evaluated.
+
+The proof has two new steps:
+
+No general symmetrization-stability theorem is assumed.
+
+# 2. Retain a strictly negative coefficient on the defects
+
+Let P be any clique of a chordal graph. Write
+
+and distinguish the missing-incidence count from M(n) by writing
+
+Put
+
+## Lemma 1 — Quantitative terminal construction
+
+If
+
+then
+
+### Proof
+
+Properly edge-colour H with c colours. Balance the colour classes by alternating-path swaps, so every class is a matching of size at most t. Retain the p largest classes; they contain at least pm/c edges.
+
+Take a PEO ending with P. For a forward outside edge uv,
+
+If u misses au​ root vertices, exactly au​ root hosts are invalid for this edge. Since u has at most w−1 later neighbours in H, the total invalid-host count is at most
+
+Assign the retained classes bijectively to P. Some assignment retains at least
+
+valid outside-edge triangles.
+
+Each root vertex has at most 2t consumed outside spokes. Every root edge therefore has at least q−2D−4t≥p unused outside hosts. Häggkvist–Janssen properly colours all root edges from these lists. Cambridge University Press
+
+Use the resulting triangles and every remaining edge as a K2​. The exact count is
+
+Substitution proves (5). ∎
+
+In particular, if
+
+then
+
+The fixed negative coefficients are what will make stability possible.
+
+# 3. Strict root regularization
+
+The previous regularization promoted vertices with outside degree at least 2p. Replace that threshold by 7p/4.
+
+## Lemma 2 — Strict regularization
+
+Suppose G contains a clique P satisfying
+
+Then there is a clique P′, with corresponding outside statistics p′,q′,m′,M′, such that
+
+### Proof
+
+Move outside the root every vertex whose original missing column exceeds p/64. Let r be the number moved. Then
+
+All newly outside edges are included:
+
+Consequently,
+
+Hence
+
+Define
+
+Then
+
+Now repeatedly promote an outside vertex whose outside degree is at least 7/4 times the current root order.
+
+Every promotion is legal. Indeed, in a chordal graph, common neighbours of two nonadjacent vertices form a clique. Therefore, if an outside vertex u misses a root vertex x,
+
+The common neighbours in H, together with u, form a clique of order at most w; the other neighbours of u lie among at most D−1 further nonneighbours of x.
+
+Thus a vertex not complete to the current root has outside degree less than
+
+Every promoted vertex is therefore complete to the current root.
+
+Its new missing-column count is at most
+
+Old deficits and the outside clique number cannot increase.
+
+Each promotion removes at least 7p0​/4 current outside edges. Thus the number h of promotions satisfies
+
+At termination,
+
+Also
+
+The remaining root lists satisfy
+
+Apply (7). ∎
+
+There is no error proportional to the number of moved vertices. Their incident edges entered m0​, and the final construction is performed only after root selection is complete.
+
+# 4. Quantitative local stability in edit distance
+
+Let a=⌊n/3⌋, and define
+
+## Lemma 3 — Local stability
+
+For chordal G, if
+
+put
+
+Then
+
+and
+
+### Proof
+
+Choose a closest template with clique side A, and let its edit count be E. Choose a maximum clique P in the induced chordal graph G[A], and put u=∣A∣−p.
+
+A chordal graph on ∣A∣ vertices with clique number p has at most
+
+edges, by summing the forward-degree bounds along a PEO. Thus G[A] has at least (2u+1​) missing pairs, and
+
+It follows, for n≥1000, that
+
+Moreover,
+
+So Lemma 2 applies.
+
+Since
+
+equation (9) gives
+
+In particular,
+
+The graph differs from the complete-split graph with root P′ on exactly m′+M′ pairs. Adjusting that template’s root order to ⌊n/3⌋ costs at most
+
+Because
+
+we obtain (16).
+
+Finally, (9) is at most Q(n). Since the partition size is integral, it is at most
+
+∎
+
+This is stronger than a local upper bound on cp: it rules out a near-extremal graph lying near the boundary of a fixed split neighborhood.
+
+# 5. Symmetrization can be performed one vertex at a time, monotonically
+
+This is the other essential step.
+
+The dual for W4∗​(G) assigns nonnegative edge weights satisfying
+
+For nonadjacent vertices u,v, write Gu→v​ for replacing N(u) by N(v).
+
+## Lemma 4 — Copy inequality
+
+### Proof
+
+Copy an optimal dual cover from G. Every new triangle or K4​ containing the copied vertex maps to an old clique containing its model vertex. No clique contains both u and v.
+
+If the old incident-weight sums are tu​,tv​, the two copied covers have costs
+
+Their sum is 2W4∗​(G). The two copied edge counts sum to 2e(G). Subtraction proves (20). ∎
+
+Now take two distinct nonadjacent classes of simplicial false twins, of total order b. Keep their two clique neighbourhoods fixed, and let Hj​ have j vertices of the first type and b−j of the second.
+
+All Hj​ are chordal, and (20) gives
+
+Thus this sequence is discretely convex.
+
+At the current interior index, at least one adjacent value is no smaller. Choose that direction. Discrete convexity says all subsequent differences in that direction remain nonnegative. We may therefore continue to the endpoint through single-vertex copies, none decreasing Φ.
+
+At that endpoint the two false-twin classes merge. No other false-twin class splits: its vertices have identical adjacency to the model vertex, so they acquire identical adjacency to every copied vertex. Hence the number of classes strictly decreases.
+
+## Lemma 5 — Fine monotone symmetrization
+
+Every chordal graph has a sequence
+
+such that:
+
+- every Gi​ is chordal;
+- Φ(Gi+1​)≥Φ(Gi​);
+- consecutive graphs differ on at most n−2 unordered pairs.
+
+There are at most n−1 full-class rounds, each consisting of at most n single copies.
+
+### Why the terminal graph is complete-split
+
+A terminal graph has equal open neighbourhoods for every pair of nonadjacent simplicial vertices.
+
+If disconnected, it must be edgeless: otherwise simplicial vertices in different components give distinct neighbourhoods.
+
+For a connected, noncomplete terminal graph, take a clique tree. Private vertices from different leaf bags are nonadjacent simplicial vertices, so they have one common neighbourhood K. Each leaf has exactly one private vertex; two private vertices in one leaf would contradict that equality. Hence every leaf bag is K plus one vertex.
+
+The running-intersection property implies that every bag contains K, so K is universal. The leaf-private vertices are isolated in G−K. If G−K had an edge, a nonisolated simplicial vertex in one of its chordal components would also be simplicial in G, but would have a neighbourhood strictly larger than K, contradicting comparison with a leaf-private vertex. Thus G−K is independent.
+
+This proves the terminal assertion.
+
+No integral partition is transported through copying. The path will be used only to prove that a near-extremal original graph must already be close to a split template.
+
+# 6. The mixed terminal functional has only one near-maximizing branch
+
+For
+
+orbit averaging of the mixed cover gives root and spoke weights x,y with
+
+The relevant vertices are
+
+Therefore
+
+Their global upper bounds, with n=k+ℓ, are respectively
+
+The first follows from
+
+If ℓ=0, uniform fractional K4​-packing gives
+
+If k≤3, simply use Φ≤e≤3n.
+
+For n≥100, every branch other than the first in (23), including these degeneracies, is strictly below
+
+Consequently, a terminal graph satisfying
+
+must use the first branch. If Δ=Q(n)−Φ(S), then
+
+This concerns the terminal graph only. There is still no inference that copying preserved the original clique number.
+
+# 7. The first-entry argument proves global stability
+
+## Theorem 6 — Fixed-neighborhood stability
+
+For n≥1032, every chordal graph satisfying
+
+has
+
+### Proof
+
+Take the monotone path (22). At every graph H on the path,
+
+The terminal graph is within ρn2/4 of a balanced complete-split graph by (27).
+
+Suppose the initial graph has distance at least ρn2/2. Choose the first index i whose distance is less than ρn2/2.
+
+One vertex-copy changes at most n−2 pairs. Distance to the family of balanced complete-split graphs is therefore changed by at most n−2. Hence
+
+The graph Gi​ lies inside the neighborhood where Lemma 3 applies. Using (16) and (30),
+
+But the lower bound in (31) exceeds ρn2/4. This contradiction proves (29). ∎
+
+This is the missing implication. Uniqueness of the terminal maximizer alone would not prove it. What makes it work is the combination of:
+
+The argument does not charge the sum of all edits along the copying path.
+
+# 8. Finish the original theorem
+
+Take N,C from (3), and let G be chordal with n≥N.
+
+There are two cases.
+
+### Near the mixed fractional maximum
+
+If (28) holds, Theorem 6 places G inside the local split neighborhood. Lemma 3 gives directly
+
+This is an integral partition, not a fractional-to-integral approximation.
+
+### Away from the mixed fractional maximum
+
+Otherwise,
+
+The weighted transfer theorem, with the fixed error δ/2, gives
+
+Only a fixed quadratic error is spent here, against a fixed quadratic deficit. arXiv
+
+Thus every chordal graph of order at least N satisfies (1).
+
+For 0<n<N, use all edges as K2​’s:
+
+The case n=0 is immediate. For n≥N,
+
+Therefore the single absolute constant C=N works for every finite chordal graph.
+
+# 9. Eventual sharpness
+
+For a complete-split graph
+
+with enough outside vertices to host a factorization of Kk​,
+
+The upper bound comes from hosted root triangles and leftover spokes. The lower bound assigns weight −1 to root edges and +1 to spokes; every clique has weight at most one.
+
+Choose k nearest to (2n+1)/6. Checking the three residue classes of nmod3 gives
+
+The host condition holds for these choices for all sufficiently large n.
+
+Hence the proof gives the eventual exact extremal value
+
+# 10. Exact checks and the proof’s verification status
+
+The new audit checked all 531 nonempty chordal graphs through seven vertices. It verified:
+
+- 5,394 two-direction mixed-cover copy inequalities;
+- 531 monotone symmetrization paths, comprising 1,224 full-class rounds and 1,889 single-vertex moves;
+- 7,964 source-bound mixed-packing LP certificates;
+- 711,246 complete-split terminal comparisons and the exact rational inequalities used in regularization and the first-entry argument.
+
+A separate dependency-free replay checked all saved LP certificates and path steps. It verified 36,743 triangle/K4​ dual constraints and 14,134 positive packing entries, returning PASS.
+
+One nontrivial two-class sequence has values
+
+This illustrates why blindly choosing a copy direction is wrong, while choosing a nondecreasing adjacent direction and then following discrete convexity is valid.
+
+Jacobian independently returned the exact mixed-cover optimum
+
+with root weight 2, spoke weight 0, and matching primal/dual objectives. Thus
+
+A separate 12-vertex, 25-part terminal partition was checked by an exact local edge counter. The attempted Jacobian partition-check calls returned network errors, so I am not claiming remote verification of that partition.
+
+·
+
+The finite checks do not establish the infinite theorem by enumeration or evaluate the transfer threshold. The decisive general argument is Sections 2–8.
+
+The conclusion is affirmative under the three stated standard inputs. The new step is not another conditional reservoir estimate: strict root regularization supplies local stability, and the fine monotone copying path supplies the global stability implication needed to finish the linear-error bound.
+
+Citations:
+- arXiv+2Cambridge University Press+2: https://arxiv.org/abs/2410.05240
+- Cambridge University Press: https://www.cambridge.org/core/journals/combinatorics-probability-and-computing/article/abs/new-bounds-on-the-listchromatic-index-of-the-complete-graph-and-other-simple-graphs/18498E8F4291D12FA5D03FF011F3D2E2
+- arXiv: https://arxiv.org/pdf/2005.02529
+
+=== 6. USER ===
+
+Keep going, you can do it. Use tools.
+
+  The argument also yields eventual rigidity of every exact extremizer:
+  [
+  \operatorname{cp}(G)=M(n)
+  \quad\Longrightarrow\quad
+  G\cong K_p\vee\overline K_{n-p},
+  ]
+  where (p) is an integer nearest to ((2n+1)/6). Indeed, weighted transfer places an extremizer inside the local neighborhood. For the regularized
+  root, write (B=p'q'-\binom{p'}2). Your strict bound gives
+  [
+  M(n)\le\operatorname{cp}_{\le3}(G)
+  \le B-\frac{m'}9-\frac{\mathfrak M'}2,
+  \qquad B\le M(n).
+  ]
+  Therefore both defects vanish immediately: (m'=\mathfrak M'=0). Equality then forces (B=M(n)), giving precisely the stated root orders. No further
+  rounding or equality-case packing theorem is needed.
+
+  More generally, for every fixed integer (s\ge0), sufficiently large chordal graphs with (\operatorname{cp}(G)\ge M(n)-s) differ from a complete-split
+  graph on at most (s) pairs. The same inequalities give (m'+\mathfrak M'\le9s). Consequently (c'=p') for large (n), and the sharper terminal estimate
+  yields
+  [
+  m'+\mathfrak M'
+  \le s+\frac{2(w'-1)\mathfrak M'}{p'}=s+o(1).
+  ]
+  Integrality proves the assertion. Thus the proof supplies bounded-deficit stability as well as the extremal value. I found no gap in the supplied
+  assembly; these remain session-derived conclusions, without a formal verification of the full proof.
+
+=== 7. ASSISTANT ===
+
+Your rigidity deduction is correct under the supplied closure proof. It can be strengthened to an exact classification throughout a linear deficit window, rather than only for fixed s.
+
+The new conclusion is
+
+For near-extremizers, the clique P in this identity is canonical:
+
+This also gives a new exact consequence:
+
+for all sufficiently large n.
+
+These are corollaries of the session’s stability-closure proof, not independently reviewed published results. The finite repair lemma underlying them is proved below without any asymptotic theorem.
+
+# 1. Exact near-extremizer theorem
+
+Retain the absolute threshold from the closure argument:
+
+where T is the uniform weighted triangle/K4​ packing-transfer threshold. The weighted finite-family transfer used here is the one stated in Rohatgi–Urschel–Wellens, Theorem 3.4; its uniform application appears explicitly in their proof of Theorem 3.6. arXiv
+
+Define
+
+### Theorem
+
+Let G be chordal, n≥N, and let
+
+If
+
+then the set P in (2) is a clique. Writing
+
+we have
+
+Moreover,
+
+Conversely, in this range of n,s, a chordal graph has cp(G)≥M(n)−s exactly when it admits a clique P with
+
+The canonical P is the dense split core; it is not being identified with a maximum clique.
+
+# 2. The finite repair lemma
+
+Here is the reason the o(1) in the bounded-deficit argument can be eliminated completely.
+
+### Lemma — Exact sparse-defect completion
+
+Let P be a clique of order p≥2 in any graph G. Put
+
+If
+
+then
+
+The attaining partition uses K2​,K3​,K4​. No chordality assumption is needed.
+
+## 2.1 Reserve clean outside hosts
+
+Call an outside vertex clean if it is adjacent to every vertex of P and has no outside neighbor.
+
+At most a outside vertices are incident with missing spokes, and at most 2m are incident with outside edges. Therefore there are at least
+
+clean hosts.
+
+These vertices form an independent set. They will be reserved for the final root-edge factorization.
+
+## 2.2 Use one K4​ per outside edge
+
+Process the m outside edges uv. Assign to each one a pair of previously unused root vertices adjacent to both u and v.
+
+After j<m assignments, at most 2j root vertices have been used. Missing incidences exclude at most a further root vertices. Hence at least
+
+eligible vertices remain.
+
+The resulting K4​’s are edge-disjoint—even when the outside edges share endpoints—because their root pairs are vertex-disjoint.
+
+They cover all m outside edges and m root edges.
+
+## 2.3 Complete the root by an ordinary factorization
+
+Factor Kp​ into at most p matching classes. Remove the m reserved root pairs from these classes, and assign the classes injectively to the clean hosts.
+
+Every remaining root edge becomes a triangle. Its host cannot be an endpoint of an outside edge, so no spoke collides with the K4​’s.
+
+Use K2​’s for all remaining edges. The counts are
+
+and
+
+individual edges. Their sum is Bn​(p)−a−2m.
+
+This construction needs no list-colouring theorem: the reserved clean hosts all admit every root edge.
+
+## 2.4 A matching lower certificate for every clique size
+
+Assign edge weights
+
+A clique with x root vertices and y outside vertices has weight
+
+The exact identity
+
+holds for every pair of nonnegative integers x,y.
+
+Thus every clique, of any order, has weight at most one. The total graph weight is
+
+This proves (8), and also proves equality with the unrestricted fractional clique-partition number. ∎
+
+The full-clique lower bound is important: the construction is not merely optimal among packets of the chosen form.
+
+# 3. Why every near-extremizer enters the finite lemma
+
+Let G satisfy the near-extremizer hypothesis, and write
+
+Weighted transfer gives
+
+Since s≤n/100 and n≥1032,
+
+The supplied global stability argument therefore places G inside the local neighborhood.
+
+Its strict root-regularization estimate supplies an actual clique P satisfying
+
+Consequently,
+
+In particular,
+
+Also,
+
+For n≥100 and s≤n/100, this implies
+
+For completeness, the relevant numerical comparison is
+
+Thus
+
+whereas
+
+The finite lemma applies and gives
+
+This proves (4).
+
+## The root is canonical
+
+Now a+2m≤s. Every root vertex has degree at least
+
+Every outside vertex has degree at most
+
+Therefore P is exactly the set in (2).
+
+For the converse, condition (6) implies (15) and a+2m≤s, so the finite lemma applies directly. This proves the theorem.
+
+There is no further asymptotic rounding after the near-extremizer has entered the local neighborhood.
+
+# 4. Rigidity, exact edit distance, and root displacement
+
+## 4.1 Exact extremizers
+
+At s=0, equation (4) forces
+
+Hence G is complete-split and p maximizes Bn​(p), as you observed.
+
+Writing n=3k+r, the extremal root orders are:
+
+| n | Possible p |
+| --- | --- |
+| 3k | k |
+| 3k+1 | k or k+1 |
+| 3k+2 | k+1 |
+
+These are exactly the integers nearest to (2n+1)/6. Thus there is eventually one extremal isomorphism type when n≡0,2(mod3), and two when n≡1(mod3).
+
+## 4.2 The complete-split approximation is unique
+
+Let SP​ be the complete-split graph with clique side P. Its exact distance from G is
+
+In fact, SP​ is the unique complete-split graph within s pair edits, on the given labelled vertex set.
+
+To see this, suppose a complete-split template SK​ is within s edits. An original outside vertex has degree at most 3n/8+s/2; making it a universal core vertex would require more than s edits. Hence K⊆P.
+
+But a vertex of P has degree at least n−1−s. Leaving it outside K would reduce its template degree to at most p≤3n/8, again requiring more than s edits. Hence K=P.
+
+Therefore the distance to the family of complete-split graphs is exactly a+m.
+
+The coefficient one is sharp. Delete s spokes from a complete-split extremizer. It remains split and chordal, and the finite lemma gives
+
+Its distance to the complete-split family is exactly s.
+
+## 4.3 Root-size displacement consumes deficit separately
+
+Write p=k+j. The exact displacement penalties are
+
+This distinction prevents an overstatement: a bounded-deficit graph need not be O(s) edits from an exact extremizer.
+
+For example, at n=3k,
+
+has deficit one and no edge defects at all. Changing it into the extremal
+
+requires 2k−1 pair edits.
+
+The correct conclusion is closeness to a complete-split graph with the root order allowed by (17).
+
+# 5. All the packing benchmarks become exact in this window
+
+The same clean hosts also produce an optimal triangle-only packing.
+
+Assign each outside edge a distinct common root vertex, creating m outside triangles. Host every root edge on the clean outside vertices using a factorization. This gives
+
+edge-disjoint triangles.
+
+Conversely, the root edges together with E(J) meet every triangle of G. Giving these edges fractional cover weight one proves
+
+For the mixed packing, the K4​ construction has saving
+
+The nonnegative weights 1−we​, with w from (10), are a matching dual: every triangle has weight at least two and every K4​ at least five. Thus
+
+In the previous notation,
+
+we obtain
+
+Therefore
+
+These zero-gap statements apply to this near-extremal window. They do not reinstate the false universal O(n) full-clique integrality-gap assertion.
+
+### Every optimal partition has restricted part types
+
+Equality in the lower certificate (11) holds only when the numbers of root and outside vertices are
+
+Hence every optimal unrestricted partition consists only of crossing K2​’s, root-hosted triangles, two-root/two-outside K4​’s, and three-root/two-outside K5​’s.
+
+Exactly m parts meet the outside graph in two vertices—one per outside edge. There is always an optimum with no K5​’s, supplied by the construction above.
+
+# 6. The largest non-split chordal graph value is exactly M(n)−4
+
+This follows without classifying every finite defect pattern.
+
+If
+
+then (4) gives
+
+Thus m≤1.
+
+If m=0, P and J already give a split partition.
+
+If m=1, then a≤1. At least one endpoint of the unique outside edge is adjacent to all of P. Add that endpoint to P; the remaining outside vertices are independent. Again G is split.
+
+Therefore every non-split chordal graph of sufficiently large order satisfies
+
+For attainment, choose an extremal root order p from the table and put
+
+It is chordal and contains an induced 2K2​, so it is not split. It has a=0,m=2, and the finite lemma gives
+
+This proves (3).
+
+# 7. A finite description and a certificate-producing test
+
+The exceptional pairs involve at most a root vertices and at most a+2m outside vertices. Thus all defects are contained in a set of at most
+
+vertices.
+
+Every other root vertex is universal, and every other outside vertex is adjacent exactly to P. For fixed s, there are consequently only finitely many defect templates, together with the root shifts in (17).
+
+There is also a direct recognition test in the stated large-order window. Compute P={v:d(v)>n/2}, check that it is a clique, and calculate
+
+The graph has cp(G)≥M(n)−s exactly when this quantity is at most s.
+
+On acceptance, the elementary construction supplies an optimal partition and a signed all-clique dual of the same value. With an adjacency matrix, the construction and certificate can be produced in O(n2) time, including the output.
+
+This is not a polynomial-time exact algorithm for arbitrary chordal graphs. The near-extremal promise is essential. At arbitrary finite orders, a successful certificate remains valid when the explicit local condition (7) is checked, but rejection has no general implication for cp(G).
+
+# 8. Exact verification
+
+I reread the supplied closure proof and reran its dependency-free replay. It returned PASS for the saved 7,964 mixed-packing LP certificates, 36,743 triangle/K4​ dual constraints, and 1,889 single-copy steps. This is a replay of existing evidence, not a formal verification of the infinite argument.
+
+The new audit checked:
+
+- 1,643 rooted perturbations, including six nonchordal tests of the finite lemma;
+- 3,286 attaining partitions, replaying 815,824 edge incidences;
+- 60,594 actual clique inequalities in the enumerated small instances;
+- 226,457 exact linear-window parameter checks and 104,775 root-displacement identities.
+
+A separate dependency-free script replays all 94 saved partition certificates and their signed duals.
+
+### Independent Jacobian check
+
+The seed has a four-vertex root, eight outside vertices, one missing spoke, and one outside edge. Thus
+
+The formulas predict
+
+Jacobian returned VALID for the 38-edge graph’s partition
+
+It independently maximized the signed edge weight over all nontrivial cliques, returning maximum one, attained by a K5​. The total signed weight is 23, proving optimality against every clique size.
+
+·
+
+The conclusion is stronger than bounded-deficit edit stability: within a uniform linear deficit window, the deficit has an exact combinatorial decomposition, the split core is canonical, and all fractional-to-integral gaps relevant here vanish. The remaining verification obligation is independent review or formalization of the supplied global closure—not another rounding or equality-case argument for these corollaries.
+
+Citations:
+- arXiv: https://arxiv.org/pdf/2005.02529
+
+=== 8. USER ===
+
+Keep going, you can do it. Use tools Jacobian
