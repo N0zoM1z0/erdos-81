@@ -53,6 +53,28 @@ The three-page manuscript proves the asymptotic partial bound
 an independent comparison point, but it does not address the linear-error
 closure.
 
+## Lean chordal-structure comparison
+
+### Reconstruction conjecture project
+
+- Repository:
+  <https://github.com/SamuelSchlesinger/reconstruction-conjecture>
+- Inspected commit: `419d639395bd5e3bc32f7e6e220a6c2c371e1ea5`.
+- Relevant modules: `MinimalSeparatorClique.lean`, `Dirac.lean`, and
+  `PEO.lean`.
+- Pinned environment: Lean `v4.28.0`, Mathlib `v4.28.0`.
+- Local audit: `lake build Reconstruction.PEO` completed all 1,200 jobs.
+  `#print axioms` for the minimal-separator, Dirac, and PEO theorems reported
+  only `propext`, `Classical.choice`, and `Quot.sound`.
+- Licence: no explicit software licence was found at the inspected commit.
+
+This is useful independent evidence that the standard separator-to-Dirac-to-PEO
+route can be kernel checked.  The repository as a whole contains an unrelated
+`sorry` for the open reconstruction conjecture, and it targets an older
+Mathlib release.  It is therefore neither imported nor copied into this
+formalization; all declarations used here are proved in this repository and
+pass its own source and axiom gates.
+
 ## Use policy
 
 The files above are prior work and comparison material.  Nothing in the
@@ -60,4 +82,3 @@ proposed proof is accepted merely because a partial manuscript or a Lean file
 asserts an analogous result.  Definitions, quantifiers, objective functions,
 and theorem dependencies are checked independently.  Any reused mathematical
 idea is cited; no third-party source code is copied into the formalization.
-

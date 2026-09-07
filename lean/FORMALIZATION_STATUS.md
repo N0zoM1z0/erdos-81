@@ -12,6 +12,7 @@ because no such theorem is claimed yet.
 | Manuscript component | Lean declaration/module | Status |
 |---|---|---|
 | Chordal graph (no induced `C_k`, `k >= 4`) | `Erdos81.IsChordal` | Modeled exactly |
+| Chordality is hereditary under induced subgraphs | `Erdos81.Chordal.induce_isChordal` | Checked |
 | Clique edge partition and block-size restriction | `Erdos81.CliquePartition` | Modeled exactly |
 | Erdős Problem 81 statement | `Erdos81.Erdos81Statement` | Modeled exactly |
 | Eventual `floor(n(n+1)/6)` upper bound | `Erdos81.EventualSharpUpperBound` | Modeled exactly |

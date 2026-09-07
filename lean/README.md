@@ -21,9 +21,10 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   continuous envelope to `floor(n(n+1)/6)`, including the required modulo-six
   argument.
 - `Erdos81/Chordal.lean` derives directly from the induced-cycle definition
-  that the common neighborhood of two distinct nonadjacent vertices in a
-  chordal graph is a clique.  It then proves the full cardinal estimate
-  `d_U(u) <= D + w - 2` used in the manuscript's nonadjacency lemma.
+  that induced subgraphs remain chordal and that the common neighborhood of
+  two distinct nonadjacent vertices is a clique.  It then proves the full
+  cardinal estimate `d_U(u) <= D + w - 2` used in the manuscript's
+  nonadjacency lemma.
 - `Erdos81/PerfectElimination.lean` defines both a fixed
   perfect-elimination order on `Fin n` and the label-independent existence of
   one under relabelling.  It proves directly that either condition implies

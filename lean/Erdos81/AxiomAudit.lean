@@ -20,6 +20,7 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.Arithmetic.second_branch_square_identity
 #print axioms Erdos81.Arithmetic.far_case_closure
 #print axioms Erdos81.Chordal.commonNeighbors_isClique_of_chordal
+#print axioms Erdos81.Chordal.induce_isChordal
 #print axioms Erdos81.Chordal.root_nonadjacency_degree_bound
 #print axioms Erdos81.Copying.opposite_copy_edge_count
 #print axioms Erdos81.Copying.collapseHom

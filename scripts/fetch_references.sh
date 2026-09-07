@@ -84,6 +84,15 @@ fi
 git -C "${traverso_repo}" fetch origin "${traverso_commit}"
 git -C "${traverso_repo}" checkout --detach "${traverso_commit}"
 
+reconstruction_commit=419d639395bd5e3bc32f7e6e220a6c2c371e1ea5
+reconstruction_repo="${repo_dir}/reconstruction-conjecture"
+if [[ ! -d "${reconstruction_repo}/.git" ]]; then
+  git clone https://github.com/SamuelSchlesinger/reconstruction-conjecture.git \
+    "${reconstruction_repo}"
+fi
+git -C "${reconstruction_repo}" fetch origin "${reconstruction_commit}"
+git -C "${reconstruction_repo}" checkout --detach "${reconstruction_commit}"
+
 cat <<'DIGESTS' | sha256sum --check
 37626b68bfc9c908b9e08ac563635cb422e68369e1f4aacda1b7dd9e71716fb6  .reference-cache/papers/traverso/PAPER_I_preprint_v1.3_en.pdf
 67bf3490cab8c54356850215a739b92a8007e48509707f64f622d5f6b402f4eb  .reference-cache/papers/traverso/PAPER_II_preprint_v1.2_en.pdf
@@ -93,3 +102,4 @@ DIGESTS
 
 echo "Reference cache populated at ${cache_dir}"
 echo "Traverso repository commit: $(git -C "${traverso_repo}" rev-parse HEAD)"
+echo "Chordal Lean comparison commit: $(git -C "${reconstruction_repo}" rev-parse HEAD)"

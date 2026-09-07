@@ -18,6 +18,13 @@ open scoped SimpleGraph
 variable {V : Type*}
 variable (G : SimpleGraph V) {u x : V}
 
+/-- Every induced subgraph of a chordal graph is chordal. -/
+theorem induce_isChordal (hG : Erdos81.IsChordal G) (S : Set V) :
+    Erdos81.IsChordal (G.induce S) := by
+  intro k hk hcycle
+  apply hG k hk
+  exact hcycle.trans ⟨SimpleGraph.Embedding.induce S⟩
+
 /--
 The common neighborhood of two distinct nonadjacent vertices in a chordal
 graph is a clique.
