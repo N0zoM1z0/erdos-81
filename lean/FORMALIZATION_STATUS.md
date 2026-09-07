@@ -32,6 +32,9 @@ because no such theorem is claimed yet.
 | Stability square identity and second-branch square identity | `Erdos81.Arithmetic` | Checked |
 | Exact floor identity for `Q(n)` | `Erdos81.SharpBound.floor_Q_eq_sharpBound` | Checked |
 | Local-deficit algebra and integer rounding | `Erdos81.LocalStability` | Checked |
+| Labelled edge-edit distance and triangle inequality | `Erdos81.EditDistance.edgeEditDistance_triangle` | Checked |
+| Distance to the `floor(n/3)` complete-split family | `Erdos81.EditDistance.splitEditDistance` | Modeled exactly; minimum attainment checked |
+| A single vertex copy changes split distance by at most `n-2` | `Erdos81.EditDistance.splitEditDistance_replaceVertex_dist_le` | Checked |
 | Local root extraction in edit distance | — | Pending |
 | Orientation and edge count of opposite vertex copies | `Erdos81.Copying` | Checked |
 | Simpliciality of the copied vertex | `Erdos81.Copying.simplicial_target_of_simplicial_source` | Checked |

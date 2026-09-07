@@ -30,6 +30,10 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   triangles and four-cliques as items, and gains `2` and `5`.
 - `Erdos81/DiscreteConvexity.lean` checks the direction choice, propagation to
   an endpoint, and the sign algebra in the single-vertex copying argument.
+- `Erdos81/EditDistance.lean` defines labelled edge-edit distance and the
+  family of complete-split templates with clique side `floor(n/3)`, proves
+  the triangle inequality, and proves that a single vertex copy changes both
+  the graph and its distance to that family by at most `n - 2`.
 - `Erdos81/Copying.lean` fixes the orientation of Mathlib's vertex-replacement
   operation, proves preservation of simpliciality at the copied vertex, and
   proves the exact two-direction edge-count identity.  It also proves directly

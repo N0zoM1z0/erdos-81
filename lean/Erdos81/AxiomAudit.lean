@@ -32,6 +32,9 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.CopyCover.potential_opposite_copy_inequality
 #print axioms Erdos81.DiscreteConvexity.monotone_to_right_endpoint
 #print axioms Erdos81.DiscreteConvexity.potential_copy_inequality
+#print axioms Erdos81.EditDistance.edgeEditDistance_triangle
+#print axioms Erdos81.EditDistance.edgeEditDistance_replaceVertex_le
+#print axioms Erdos81.EditDistance.splitEditDistance_replaceVertex_dist_le
 #print axioms Erdos81.FiniteLP.weak_duality
 #print axioms Erdos81.FirstEntry.barrier
 #print axioms Erdos81.FirstEntry.inverse_order_lt_quarter_radius
