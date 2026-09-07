@@ -36,6 +36,7 @@ because no such theorem is claimed yet.
 | Orientation and edge count of opposite vertex copies | `Erdos81.Copying` | Checked |
 | Simpliciality of the copied vertex | `Erdos81.Copying.simplicial_target_of_simplicial_source` | Checked |
 | Chordality preservation under the required copy | `Erdos81.Copying.chordal_replaceVertex_of_simplicial_source` | Checked |
+| Replacement-collapse homomorphism and clique-order preservation | `Erdos81.Copying.collapseHom`, `card_finset_image_of_isClique` | Checked |
 | Copied mixed-dual cover construction | — | Pending |
 | Copy-potential sign algebra | `Erdos81.DiscreteConvexity.potential_copy_inequality` | Checked |
 | Discrete-convex endpoint propagation | `Erdos81.DiscreteConvexity` | Checked |

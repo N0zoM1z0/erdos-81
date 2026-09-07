@@ -100,6 +100,68 @@ def AreFalseTwins (u v : V) : Prop :=
   u ≠ v ∧ ¬G.Adj u v ∧ G.neighborSet u = G.neighborSet v
 
 omit [Fintype V] in
+/-- The vertex map which identifies a replacement target with its source. -/
+def collapseVertex (s t : V) (v : V) : V :=
+  if v = t then s else v
+
+omit [Fintype V] in
+/-- Canonical graph homomorphism from a vertex-replaced graph back to its source. -/
+def collapseHom : G.replaceVertex s t →g G where
+  toFun := collapseVertex s t
+  map_rel' := by
+    intro v w hvw
+    by_cases hv : v = t
+    · subst v
+      have hw : w ≠ t := hvw.ne.symm
+      have hsw : G.Adj s w :=
+        (G.adj_replaceVertex_iff_of_ne_right s hw).mp hvw
+      simpa [collapseVertex, hw] using hsw
+    · by_cases hw : w = t
+      · subst w
+        have hsv : G.Adj s v :=
+          (G.adj_replaceVertex_iff_of_ne_right s hv).mp hvw.symm
+        simpa [collapseVertex, hv] using hsv.symm
+      · have hvw' : G.Adj v w :=
+          (G.adj_replaceVertex_iff_of_ne s hv hw).mp hvw
+        simpa [collapseVertex, hv, hw] using hvw'
+
+omit [Fintype V] [DecidableEq V] in
+/-- A graph homomorphism is injective on every clique in its domain. -/
+theorem hom_injectiveOn_of_isClique {W : Type*} {H : SimpleGraph V}
+    {J : SimpleGraph W} (f : H →g J) {K : Set V} (hK : H.IsClique K) :
+    Set.InjOn f K := by
+  intro a ha b hb heq
+  by_contra hab
+  have hadj : H.Adj a b := hK ha hb hab
+  have himage : J.Adj (f a) (f b) := f.map_adj hadj
+  rw [heq] at himage
+  exact J.irrefl himage
+
+omit [Fintype V] [DecidableEq V] in
+/-- The image of a finite clique under a graph homomorphism is a clique. -/
+theorem finset_image_isClique_of_hom {W : Type*} [DecidableEq W]
+    {H : SimpleGraph V} {J : SimpleGraph W} (f : H →g J)
+    (K : Finset V) (hK : H.IsClique (K : Set V)) :
+    J.IsClique ((K.image f : Finset W) : Set W) := by
+  intro a ha b hb hab
+  have ha' := Finset.mem_image.mp ha
+  have hb' := Finset.mem_image.mp hb
+  obtain ⟨a₀, ha₀, rfl⟩ := ha'
+  obtain ⟨b₀, hb₀, rfl⟩ := hb'
+  have hab₀ : a₀ ≠ b₀ := by
+    intro heq
+    exact hab (congrArg f heq)
+  exact f.map_adj (hK ha₀ hb₀ hab₀)
+
+omit [Fintype V] [DecidableEq V] in
+/-- A finite clique and its homomorphic image have the same order. -/
+theorem card_finset_image_of_isClique {W : Type*} [DecidableEq W]
+    {H : SimpleGraph V} {J : SimpleGraph W} (f : H →g J)
+    (K : Finset V) (hK : H.IsClique (K : Set V)) :
+    (K.image f).card = K.card := by
+  exact Finset.card_image_of_injOn (hom_injectiveOn_of_isClique f hK)
+
+omit [Fintype V] in
 /-- Copying along a nonedge gives the target exactly the source neighborhood. -/
 theorem neighborSet_replaceVertex_target (hn : ¬G.Adj s t) :
     (G.replaceVertex s t).neighborSet t = G.neighborSet s := by
