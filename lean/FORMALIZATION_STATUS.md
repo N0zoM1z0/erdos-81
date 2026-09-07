@@ -13,6 +13,8 @@ because no such theorem is claimed yet.
 |---|---|---|
 | Chordal graph (no induced `C_k`, `k >= 4`) | `Erdos81.IsChordal` | Modeled exactly |
 | Chordality is hereditary under induced subgraphs | `Erdos81.Chordal.induce_isChordal` | Checked |
+| Shortest paths have no nonconsecutive chord | `Erdos81.ChordalWalk.geodesic_not_adj_of_gap` | Checked |
+| Two separated chordless arcs induce a cycle | `Erdos81.ChordalWalk.inducedCycleEmbedding_of_two_arcs` | Checked |
 | Clique edge partition and block-size restriction | `Erdos81.CliquePartition` | Modeled exactly |
 | Erdős Problem 81 statement | `Erdos81.Erdos81Statement` | Modeled exactly |
 | Eventual `floor(n(n+1)/6)` upper bound | `Erdos81.EventualSharpUpperBound` | Modeled exactly |

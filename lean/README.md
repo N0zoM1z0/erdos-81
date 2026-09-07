@@ -25,6 +25,10 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   two distinct nonadjacent vertices is a clique.  It then proves the full
   cardinal estimate `d_U(u) <= D + w - 2` used in the manuscript's
   nonadjacency lemma.
+- `Erdos81/ChordalWalk.lean` proves that shortest paths are chordless and
+  packages two internally chordless, mutually separated arcs as an induced
+  cycle embedding.  These are the walk-level ingredients for a self-contained
+  proof of the chordal-to-perfect-elimination-order direction.
 - `Erdos81/PerfectElimination.lean` defines both a fixed
   perfect-elimination order on `Fin n` and the label-independent existence of
   one under relabelling.  It proves directly that either condition implies
