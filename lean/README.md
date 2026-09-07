@@ -42,8 +42,9 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   `e(complement G) >= choose(n-p+1,2)` for a graph admitting such an order.
 - `Erdos81/PEOExistence.lean` repeatedly peels simplicial vertices, converts
   the resulting duplicate-free list to a relabelling of `Fin n`, and proves
-  the converse chordal-to-PEO direction.  It therefore discharges both edge
-  bounds directly from chordality.
+  the converse chordal-to-PEO direction.  It also proves that the elimination
+  list may be chosen to end in any prescribed clique, and therefore discharges
+  both edge bounds directly from chordality.
 - `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
   first principles.
 - `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,

@@ -37,6 +37,7 @@ because no such theorem is claimed yet.
 | PEO implies the forbidden-induced-cycle definition of chordality | `Erdos81.PerfectElimination.isChordal_of_peo`, `isChordal_of_hasPEO` | Checked |
 | Every finite chordal graph admits a PEO | `Erdos81.PEOExistence.hasPEO_of_chordal` | Checked |
 | Chordal iff PEO | `Erdos81.PEOExistence.isChordal_iff_hasPEO` | Checked |
+| A PEO can be chosen to end in a prescribed clique | `Erdos81.PEOExistence.exists_elimination_list_ending_clique` | Checked |
 | Edge count from chordality and a clique-order bound | `Erdos81.PEOExistence.edge_bound_of_chordal` | Checked |
 | Missing-pair consequence `e(complement G) >= choose(n-p+1,2)` | `Erdos81.PEOExistence.complement_edge_bound_of_chordal` | Checked directly from chordality |
 | Full strict root-regularization lemma | — | Pending |

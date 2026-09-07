@@ -64,6 +64,7 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.PerfectElimination.complement_edge_bound_of_peo
 #print axioms Erdos81.PerfectElimination.complement_edge_bound_of_hasPEO
 #print axioms Erdos81.PEOExistence.exists_elimination_list
+#print axioms Erdos81.PEOExistence.exists_elimination_list_ending_clique
 #print axioms Erdos81.PEOExistence.hasPEO_of_chordal
 #print axioms Erdos81.PEOExistence.isChordal_iff_hasPEO
 #print axioms Erdos81.PEOExistence.edge_bound_of_chordal

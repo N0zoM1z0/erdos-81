@@ -24,6 +24,44 @@ def HasCliqueSuffixes (G : SimpleGraph V) (l : List V) : Prop :=
   ∀ v rest, v :: rest <:+ l →
     G.IsClique {w | w ∈ rest ∧ G.Adj v w}
 
+/-- A finite chordal graph has a simplicial vertex outside any proper clique. -/
+theorem exists_simplicial_outside_clique [Fintype V]
+    (hchordal : Erdos81.IsChordal G) {K : Set V} (hK : G.IsClique K)
+    (houtside : ∃ v : V, v ∉ K) :
+    ∃ v : V, v ∉ K ∧ Copying.IsSimplicial G v := by
+  classical
+  rcases Dirac.complete_or_two_simplicial
+      (Fintype.card V) V G le_rfl hchordal with
+    hcomplete | ⟨a, b, hab, hnab, haSimplicial, hbSimplicial⟩
+  · obtain ⟨v, hvK⟩ := houtside
+    refine ⟨v, hvK, ?_⟩
+    rw [hcomplete]
+    exact Dirac.simplicial_top v
+  · by_cases haK : a ∈ K
+    · have hbK : b ∉ K := by
+        intro hbK
+        exact hnab (hK haK hbK hab)
+      exact ⟨b, hbK, hbSimplicial⟩
+    · exact ⟨a, haK, haSimplicial⟩
+
+/-- An arbitrary ordering of a clique already satisfies every PEO suffix
+condition. -/
+theorem clique_toList_hasCliqueSuffixes [DecidableEq V]
+    {K : Finset V} (hK : G.IsClique (K : Set V)) :
+    HasCliqueSuffixes G K.toList := by
+  intro v rest hsuffix a ha b hb hab
+  obtain ⟨pre, heq⟩ := hsuffix
+  apply hK
+  · have hlist : a ∈ K.toList := by
+      rw [← heq]
+      exact List.mem_append_right pre (List.mem_cons_of_mem v ha.1)
+    exact Finset.mem_toList.mp hlist
+  · have hlist : b ∈ K.toList := by
+      rw [← heq]
+      exact List.mem_append_right pre (List.mem_cons_of_mem v hb.1)
+    exact Finset.mem_toList.mp hlist
+  · exact hab
+
 /-- Simpliciality inside `G[s]` gives the ambient clique needed for the first
 suffix after a vertex is peeled. -/
 theorem clique_of_simplicial_induce {s : Set V} {v : V} (hv : v ∈ s)
@@ -36,6 +74,96 @@ theorem clique_of_simplicial_induce {s : Set V} {v : V} (hv : v ∈ s)
   have hq' : (⟨q, hq.1⟩ : s) ∈
       (G.induce s).neighborSet ⟨v, hv⟩ := hq.2
   exact hsimplicial hp' hq' (fun h ↦ hpq (congrArg Subtype.val h))
+
+/-- Eliminate all vertices outside `K` first.  The resulting list covers `s`
+and has `K.toList` as a suffix. -/
+theorem elimination_list_ending_clique_aux (hchordal : Erdos81.IsChordal G)
+    (K : Finset V) (hK : G.IsClique (K : Set V)) :
+    ∀ (bound : ℕ) (s : Finset V), s.card ≤ bound → K ⊆ s →
+      ∃ l : List V, l.Nodup ∧ (∀ x, x ∈ l ↔ x ∈ s) ∧
+        HasCliqueSuffixes G l ∧ K.toList <:+ l := by
+  classical
+  intro bound
+  induction bound with
+  | zero =>
+      intro s hs hKs
+      have hcardKs : K.card ≤ s.card := Finset.card_le_card hKs
+      have hEq : K = s := Finset.eq_of_subset_of_card_le hKs (by omega)
+      subst s
+      exact ⟨K.toList, K.nodup_toList, by simp,
+        clique_toList_hasCliqueSuffixes hK, List.suffix_rfl⟩
+  | succ bound ih =>
+      intro s hs hKs
+      by_cases hsK : s = K
+      · subst s
+        exact ⟨K.toList, K.nodup_toList, by simp,
+          clique_toList_hasCliqueSuffixes hK, List.suffix_rfl⟩
+      · have hnotSubset : ¬s ⊆ K := by
+          intro hsSubset
+          exact hsK (Finset.Subset.antisymm hsSubset hKs)
+        obtain ⟨v, hvS, hvK⟩ := Finset.not_subset.mp hnotSubset
+        let Ksub : Set ↥(s : Set V) := {z | z.val ∈ K}
+        have hKsub : (G.induce (s : Set V)).IsClique Ksub := by
+          intro a ha b hb hab
+          exact hK ha hb (fun h ↦ hab (Subtype.ext h))
+        have houtside : ∃ z : ↥(s : Set V), z ∉ Ksub :=
+          ⟨⟨v, hvS⟩, hvK⟩
+        obtain ⟨w, hwKsub, hwSimplicial⟩ :=
+          exists_simplicial_outside_clique
+            (G := G.induce (s : Set V))
+            (Chordal.induce_isChordal G hchordal (s : Set V))
+            hKsub houtside
+        have hwK : w.val ∉ K := hwKsub
+        have hKerased : K ⊆ s.erase w.val := by
+          intro z hzK
+          apply Finset.mem_erase.mpr
+          refine ⟨?_, hKs hzK⟩
+          intro hzw
+          exact hwK (hzw ▸ hzK)
+        have heraseCard := Finset.card_erase_of_mem w.2
+        obtain ⟨tail, htailNodup, htailMem, htailSuffix, htailEnds⟩ :=
+          ih (s.erase w.val) (by omega) hKerased
+        have hwNotTail : w.val ∉ tail := by
+          intro hwtail
+          exact (Finset.mem_erase.mp ((htailMem w.val).mp hwtail)).1 rfl
+        have hwClique : G.IsClique
+            {z | z ∈ (s : Set V) ∧ G.Adj w.val z} :=
+          clique_of_simplicial_induce w.2 hwSimplicial
+        refine ⟨w.val :: tail,
+          List.nodup_cons.mpr ⟨hwNotTail, htailNodup⟩, ?_, ?_, ?_⟩
+        · intro z
+          rw [List.mem_cons, htailMem, Finset.mem_erase]
+          constructor
+          · rintro (rfl | ⟨_, hz⟩)
+            · exact w.2
+            · exact hz
+          · intro hz
+            by_cases hzw : z = w.val
+            · exact Or.inl hzw
+            · exact Or.inr ⟨hzw, hz⟩
+        · intro z rest hsuffix
+          rw [List.suffix_cons_iff] at hsuffix
+          rcases hsuffix with hfirst | hlater
+          · obtain ⟨rfl, rfl⟩ := List.cons.inj hfirst
+            intro a ha b hb hab
+            exact hwClique
+              ⟨(Finset.mem_erase.mp ((htailMem a).mp ha.1)).2, ha.2⟩
+              ⟨(Finset.mem_erase.mp ((htailMem b).mp hb.1)).2, hb.2⟩
+              hab
+          · exact htailSuffix z rest hlater
+        · exact htailEnds.trans (List.suffix_cons w.val tail)
+
+/-- A PEO list can be chosen to end in any prescribed clique. -/
+theorem exists_elimination_list_ending_clique [Fintype V]
+    (hchordal : Erdos81.IsChordal G) (K : Finset V)
+    (hK : G.IsClique (K : Set V)) :
+    ∃ l : List V, l.Nodup ∧ (∀ x : V, x ∈ l) ∧
+      HasCliqueSuffixes G l ∧ K.toList <:+ l := by
+  classical
+  obtain ⟨l, hnodup, hmem, hsuffix, hends⟩ :=
+    elimination_list_ending_clique_aux hchordal K hK
+      (Fintype.card V) Finset.univ Finset.card_univ.le (Finset.subset_univ K)
+  exact ⟨l, hnodup, fun x ↦ (hmem x).mpr (Finset.mem_univ x), hsuffix, hends⟩
 
 /-- The recursive elimination-list construction on an arbitrary finite vertex
 set. -/
