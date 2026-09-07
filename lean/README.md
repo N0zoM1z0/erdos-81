@@ -22,7 +22,8 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   argument.
 - `Erdos81/Chordal.lean` derives directly from the induced-cycle definition
   that the common neighborhood of two distinct nonadjacent vertices in a
-  chordal graph is a clique, the structural fact used in the root lemma.
+  chordal graph is a clique.  It then proves the full cardinal estimate
+  `d_U(u) <= D + w - 2` used in the manuscript's nonadjacency lemma.
 - `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
   first principles.
 - `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,
