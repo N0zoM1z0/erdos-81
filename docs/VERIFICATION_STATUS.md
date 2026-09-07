@@ -147,6 +147,21 @@ valid.  For this particular result, however, comprehensive formalization is
 strongly recommended because the proof is new, AI-assisted, quantitatively
 delicate, and would resolve a long-standing open problem.
 
+The staged project now lives entirely under `lean/` and builds with Lean
+4.31.0 against a manifest-pinned Mathlib revision.  It currently checks the
+exact graph-theoretic statement, a universal partition into edge-sized
+cliques, the implication from the eventual sharp bound to the original
+all-order assertion, the main rational identities and margins, finite LP weak
+duality, the mixed triangle--four-clique incidence model, and the discrete
+convexity mechanism behind single-vertex copying.  Its check script rejects
+source-level `axiom` and `sorry` declarations and prints the assumptions of
+the principal theorems.
+
+This is meaningful progress but not yet the first milestone below: the full
+new chordal reduction has not all been expressed in Lean.  In particular, the
+terminal construction, structural symmetrization lemmas, and copied-cover map
+remain to be completed.  The project README states this boundary explicitly.
+
 The work should be released in two accurately labelled milestones:
 
 1. **Formalized new reduction.** Formalize all definitions and all new
