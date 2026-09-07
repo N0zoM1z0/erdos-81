@@ -6,6 +6,7 @@ import Erdos81.DiscreteConvexity
 import Erdos81.EditDistance
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry
+import Erdos81.FirstEntryGraph
 import Erdos81.LocalStability
 import Erdos81.MixedModel
 import Erdos81.RootArithmetic

@@ -50,6 +50,7 @@ because no such theorem is claimed yet.
 | Terminal branch separation | `Erdos81.Arithmetic` | Checked |
 | First-entry least-index barrier | `Erdos81.FirstEntry.barrier` | Checked |
 | First-entry explicit numerical scale | `Erdos81.Arithmetic.first_entry_numerics`, `Erdos81.FirstEntry.inverse_order_lt_quarter_radius` | Checked |
+| First-entry barrier instantiated on a legal graph-copy path | `Erdos81.FirstEntryGraph.copyPath_barrier_at_manuscript_scale` | Checked, conditional on the separately tracked path endpoint and local-stability hypotheses |
 | Far-case closing arithmetic | `Erdos81.Arithmetic.far_case_closure` | Checked |
 | Full eventual sharp upper bound | — | Pending |
 | Rigidity addendum | Python exact certificates only | Pending in Lean |

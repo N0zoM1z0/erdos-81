@@ -55,6 +55,10 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
 - `Erdos81/FirstEntry.lean` uses a genuine least path index to prove the
   first-entry barrier argument and verifies the normalized one-step bound at
   `n >= 10^32`.
+- `Erdos81/FirstEntryGraph.lean` instantiates that barrier on an actual path
+  of legal `replaceVertex` steps, using `splitEditDistance` and the exact
+  `n - 2` edit bound.  It also specializes the result to the manuscript's
+  values `rho = 10^-12` and `n >= 10^32`.
 - `Erdos81/RootArithmetic.lean` checks the complete exact-constant chain in
   strict root demotion/promotion, including the ceiling and final host-list
   margins.
