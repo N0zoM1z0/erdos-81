@@ -84,9 +84,13 @@ The current Lean project machine-checks:
   at the manuscript's explicit threshold `n >= 10^32`;
 - the algebraic extraction of defect and root-displacement control from the
   local deficit inequality, including the final integrality step.
+- the finite chordal-graph characterization by perfect-elimination order,
+  including minimal-separator clique and Dirac simplicial-vertex theorems;
+- the chordal edge bound and its complement missing-pair consequence used in
+  the manuscript.
 
-The chordal structural reduction, terminal construction, full copy-map
-construction, and the three external inputs are not yet fully formalized.  No
+The remaining chordal symmetrization, terminal construction, local structural
+lemmas, and the three external inputs are not yet fully formalized.  No
 custom axiom or `sorry` hides that boundary.  See `lean/README.md` for the
 build guide and `lean/FORMALIZATION_STATUS.md` for the theorem-by-theorem
 ledger.

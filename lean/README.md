@@ -27,16 +27,23 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   nonadjacency lemma.
 - `Erdos81/ChordalWalk.lean` proves that shortest paths are chordless and
   packages two internally chordless, mutually separated arcs as an induced
-  cycle embedding.  These are the walk-level ingredients for a self-contained
-  proof of the chordal-to-perfect-elimination-order direction.
+  cycle embedding.
+- `Erdos81/Separator.lean` and `Erdos81/ChordalSeparator.lean` construct an
+  inclusion-minimal separator, prove that each separator vertex reaches both
+  selected components, and prove from the induced-cycle definition that every
+  such separator in a chordal graph is a clique.
+- `Erdos81/Dirac.lean` proves the strong finite Dirac theorem: a chordal graph
+  is complete or has two nonadjacent simplicial vertices.
 - `Erdos81/PerfectElimination.lean` defines both a fixed
   perfect-elimination order on `Fin n` and the label-independent existence of
   one under relabelling.  It proves directly that either condition implies
   chordality, counts every edge by its earlier endpoint, and establishes
   `e(G) + choose(p,2) <= (p-1)n` and
   `e(complement G) >= choose(n-p+1,2)` for a graph admitting such an order.
-  The reverse chordal-to-PEO direction remains separately tracked rather than
-  assumed.
+- `Erdos81/PEOExistence.lean` repeatedly peels simplicial vertices, converts
+  the resulting duplicate-free list to a relabelling of `Fin n`, and proves
+  the converse chordal-to-PEO direction.  It therefore discharges both edge
+  bounds directly from chordality.
 - `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
   first principles.
 - `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,
@@ -80,9 +87,8 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   step from `Q(n)` to `sharpBound n`.
 - `Erdos81/AxiomAudit.lean` prints the assumptions of the principal theorems.
 
-The chordal-to-perfect-elimination-order characterization, the long chordal
-symmetrization, the full root and local structural lemmas, and the applications
-of Vizing, Häggkvist--Janssen, and
+The long chordal symmetrization, the full root and local structural lemmas, and
+the applications of Vizing, Häggkvist--Janssen, and
 Rohatgi--Urschel--Wellens are **not yet fully formalized**.  No placeholder
 axiom or `sorry` is used to hide this boundary.  Accordingly, the Lean project
 is not yet a kernel proof of the complete result.

@@ -31,11 +31,14 @@ because no such theorem is claimed yet.
 | Terminal host construction | — | Pending |
 | Demotion/promotion numerical chain | `Erdos81.RootArithmetic` | Checked |
 | Common-neighbor clique and nonadjacency degree bound | `Erdos81.Chordal.commonNeighbors_isClique_of_chordal`, `root_nonadjacency_degree_bound` | Checked |
+| Minimal separators of chordal graphs are cliques | `Erdos81.ChordalSeparator.minimal_separator_isClique` | Checked from the induced-cycle definition |
+| Strong finite Dirac simplicial-vertex theorem | `Erdos81.Dirac.complete_or_two_simplicial` | Checked |
 | Perfect-elimination ordering conditions | `Erdos81.PerfectElimination.IsPEO`, `HasPEO` | Modeled exactly for a fixed order and label-independently |
 | PEO implies the forbidden-induced-cycle definition of chordality | `Erdos81.PerfectElimination.isChordal_of_peo`, `isChordal_of_hasPEO` | Checked |
-| Edge count from a PEO and clique-order bound | `Erdos81.PerfectElimination.edge_bound_of_peo`, `edge_bound_of_hasPEO` | Checked |
-| Missing-pair consequence `e(complement G) >= choose(n-p+1,2)` | `Erdos81.PerfectElimination.complement_edge_bound_of_peo`, `complement_edge_bound_of_hasPEO` | Checked under the PEO-existence hypothesis |
-| Every finite chordal graph admits a PEO | converse of `isChordal_of_hasPEO` | Pending |
+| Every finite chordal graph admits a PEO | `Erdos81.PEOExistence.hasPEO_of_chordal` | Checked |
+| Chordal iff PEO | `Erdos81.PEOExistence.isChordal_iff_hasPEO` | Checked |
+| Edge count from chordality and a clique-order bound | `Erdos81.PEOExistence.edge_bound_of_chordal` | Checked |
+| Missing-pair consequence `e(complement G) >= choose(n-p+1,2)` | `Erdos81.PEOExistence.complement_edge_bound_of_chordal` | Checked directly from chordality |
 | Full strict root-regularization lemma | — | Pending |
 | Stability square identity and second-branch square identity | `Erdos81.Arithmetic` | Checked |
 | Exact floor identity for `Q(n)` | `Erdos81.SharpBound.floor_Q_eq_sharpBound` | Checked |

@@ -26,6 +26,12 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.ChordalWalk.append_reverse_isCycle
 #print axioms Erdos81.ChordalWalk.inducedCycleEmbedding
 #print axioms Erdos81.ChordalWalk.inducedCycleEmbedding_of_two_arcs
+#print axioms Erdos81.Separator.exists_minimal_separator
+#print axioms Erdos81.Separator.exists_neighbor_in_component
+#print axioms Erdos81.ChordalSeparator.exists_component_arc
+#print axioms Erdos81.ChordalSeparator.minimal_separator_isClique
+#print axioms Erdos81.Dirac.complete_or_two_simplicial
+#print axioms Erdos81.Dirac.exists_simplicial
 #print axioms Erdos81.Copying.opposite_copy_edge_count
 #print axioms Erdos81.Copying.collapseHom
 #print axioms Erdos81.Copying.card_finset_image_of_isClique
@@ -57,6 +63,11 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.PerfectElimination.card_edges_add_card_complement
 #print axioms Erdos81.PerfectElimination.complement_edge_bound_of_peo
 #print axioms Erdos81.PerfectElimination.complement_edge_bound_of_hasPEO
+#print axioms Erdos81.PEOExistence.exists_elimination_list
+#print axioms Erdos81.PEOExistence.hasPEO_of_chordal
+#print axioms Erdos81.PEOExistence.isChordal_iff_hasPEO
+#print axioms Erdos81.PEOExistence.edge_bound_of_chordal
+#print axioms Erdos81.PEOExistence.complement_edge_bound_of_chordal
 #print axioms Erdos81.RootArithmetic.ceil_seven_quarters_le_nine_fifths
 #print axioms Erdos81.RootArithmetic.final_host_margin_nonnegative
 #print axioms Erdos81.SharpBound.floor_Q_eq_sharpBound
