@@ -18,6 +18,8 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.DiscreteConvexity.monotone_to_right_endpoint
 #print axioms Erdos81.DiscreteConvexity.potential_copy_inequality
 #print axioms Erdos81.FiniteLP.weak_duality
+#print axioms Erdos81.FirstEntry.barrier
+#print axioms Erdos81.FirstEntry.inverse_order_lt_quarter_radius
 #print axioms Erdos81.MixedModel.weak_duality
 #print axioms Erdos81.SharpBound.floor_Q_eq_sharpBound
 #print axioms Erdos81.SplitDual.exact_minimum

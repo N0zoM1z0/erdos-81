@@ -31,6 +31,9 @@ Erdős Problem 81 manuscript.  It is deliberately self-contained under
 - `Erdos81/SplitDual.lean` solves the averaged two-variable dual on a
   complete-split graph, proves attainment at one of its three lower-boundary
   vertices, and derives the manuscript's three-branch potential formula.
+- `Erdos81/FirstEntry.lean` uses a genuine least path index to prove the
+  first-entry barrier argument and verifies the normalized one-step bound at
+  `n >= 10^32`.
 - `Erdos81/AxiomAudit.lean` prints the assumptions of the principal theorems.
 
 The long chordal symmetrization, local structural lemma, and the applications

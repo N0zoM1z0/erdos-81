@@ -79,7 +79,9 @@ The current Lean project machine-checks:
   preservation of simpliciality at the copied vertex;
 - the discrete-convexity step used by the single-vertex copy path;
 - the complete-split averaged dual LP, including attainment at its three
-  relevant vertices and the resulting three-branch potential formula.
+  relevant vertices and the resulting three-branch potential formula;
+- the least-index first-entry barrier and the normalized step-size inequality
+  at the manuscript's explicit threshold `n >= 10^32`.
 
 The chordal structural reduction, terminal construction, full copy-map
 construction, and the three external inputs are not yet fully formalized.  No
