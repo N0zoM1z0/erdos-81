@@ -1,6 +1,7 @@
 import Erdos81.Arithmetic
 import Erdos81.Chordal
 import Erdos81.Copying
+import Erdos81.CopyCover
 import Erdos81.DiscreteConvexity
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry

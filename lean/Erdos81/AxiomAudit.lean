@@ -26,6 +26,8 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.Copying.card_finset_image_of_isClique
 #print axioms Erdos81.Copying.simplicial_target_of_simplicial_source
 #print axioms Erdos81.Copying.chordal_replaceVertex_of_simplicial_source
+#print axioms Erdos81.CopyCover.pullback_incidence_sum
+#print axioms Erdos81.CopyCover.pullbackCover
 #print axioms Erdos81.DiscreteConvexity.monotone_to_right_endpoint
 #print axioms Erdos81.DiscreteConvexity.potential_copy_inequality
 #print axioms Erdos81.FiniteLP.weak_duality

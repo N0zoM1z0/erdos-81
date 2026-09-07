@@ -37,6 +37,12 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   preserves chordality.  Its canonical collapse homomorphism maps every clique
   in a replaced graph injectively to a clique of the same order in the source
   graph, preparing the mixed-dual transport argument.
+- `Erdos81/CopyCover.lean` proves the required edge-set bijection on each
+  triangle or four-clique, reindexes its incidence sum, and constructs a
+  feasible mixed-cover pullback along any graph homomorphism.  In particular,
+  applying it to the replacement-collapse homomorphism gives the copied cover
+  used in the manuscript; its global objective identity remains tracked
+  separately.
 - `Erdos81/SplitDual.lean` solves the averaged two-variable dual on a
   complete-split graph, proves attainment at one of its three lower-boundary
   vertices, and derives the manuscript's three-branch potential formula.
