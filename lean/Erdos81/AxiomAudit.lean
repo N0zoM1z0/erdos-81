@@ -12,5 +12,9 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.Arithmetic.square_identity
 #print axioms Erdos81.Arithmetic.first_entry_numerics
 #print axioms Erdos81.Arithmetic.far_case_closure
+#print axioms Erdos81.DiscreteConvexity.monotone_to_right_endpoint
+#print axioms Erdos81.DiscreteConvexity.potential_copy_inequality
+#print axioms Erdos81.FiniteLP.weak_duality
+#print axioms Erdos81.MixedModel.weak_duality
 #print axioms Erdos81.pairPartition_size_le_square
 #print axioms Erdos81.eventualSharpUpperBound_implies_erdos81

@@ -16,6 +16,12 @@ Erdős Problem 81 manuscript.  It is deliberately self-contained under
 - `Erdos81/Arithmetic.lean` proves the exact stability square identity, root
   regularization constants, terminal-branch gaps, first-entry numerical
   inequality, and far-case closing arithmetic.
+- `Erdos81/FiniteLP.lean` proves finite packing/covering weak duality from
+  first principles.
+- `Erdos81/MixedModel.lean` instantiates that LP with graph edges as resources,
+  triangles and four-cliques as items, and gains `2` and `5`.
+- `Erdos81/DiscreteConvexity.lean` checks the direction choice, propagation to
+  an endpoint, and the sign algebra in the single-vertex copying argument.
 - `Erdos81/AxiomAudit.lean` prints the assumptions of the principal theorems.
 
 The long chordal symmetrization, local structural lemma, and the applications
