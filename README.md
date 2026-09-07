@@ -88,7 +88,8 @@ The current Lean project machine-checks:
 The chordal structural reduction, terminal construction, full copy-map
 construction, and the three external inputs are not yet fully formalized.  No
 custom axiom or `sorry` hides that boundary.  See `lean/README.md` for the
-module-level ledger.
+build guide and `lean/FORMALIZATION_STATUS.md` for the theorem-by-theorem
+ledger.
 
 ## System requirements
 

@@ -9,6 +9,12 @@ logical primitives (for example quotient soundness or choice) where a theorem
 uses classical finite-set reasoning.
 -/
 
+#check Erdos81.IsChordal
+#check Erdos81.CliquePartition
+#check Erdos81.Erdos81Statement
+#check Erdos81.EventualSharpUpperBound
+#check Erdos81.eventualSharpUpperBound_implies_erdos81
+
 #print axioms Erdos81.Arithmetic.square_identity
 #print axioms Erdos81.Arithmetic.first_entry_numerics
 #print axioms Erdos81.Arithmetic.second_branch_square_identity

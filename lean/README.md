@@ -3,6 +3,7 @@
 This directory contains the staged Lean 4 formalization accompanying the
 Erdős Problem 81 manuscript.  It is deliberately self-contained under
 `lean/`; Lake files and Lean sources do not spill into the repository root.
+See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
 
 ## What is machine checked now
 
