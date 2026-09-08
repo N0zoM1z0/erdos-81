@@ -1,255 +1,142 @@
-# Erdős Problem 81: proposed complete solution
+# Erdős Problem 81
 
-This repository contains a proposed complete proof of [Erdős Problem
-81](https://www.erdosproblems.com/81), a publication manuscript, exact finite
-certificate replays, independent review records, and a Lean 4 formalization
-of the complete new reduction.
+This repository contains a proposed complete solution of [Erdős Problem
+81](https://www.erdosproblems.com/81), together with a publication manuscript,
+a Lean 4 formalization, and reproducible finite certificates.
 
-The proposed theorem is stronger than the asymptotic question.  For every
-sufficiently large chordal graph `G` on `n` vertices, it constructs an edge
-partition into cliques of orders two, three, and four with at most
+For all sufficiently large `n`, the proposed result determines the exact
+extremal value
 
 ```text
-floor(n(n + 1) / 6)
+max cp(G) = floor(n(n + 1) / 6),
 ```
 
-parts.  Consequently, one absolute constant `C` gives
-`cp(G) <= n^2 / 6 + Cn` for every order.
+where the maximum is over all `n`-vertex chordal graphs and `cp(G)` is the
+minimum number of cliques whose edge sets partition `E(G)`. In particular,
+every chordal graph satisfies `cp(G) <= n²/6 + O(n)`.
 
-The mathematical argument has survived two independent model reviews, a
-separate line-by-line audit, exact certificate replay, and broad finite
-regression testing.  No substantive gap is currently known.  It should still
-be described as a **proposed complete proof** until it has received independent
-human specialist review.  The Lean development is sorry-free and proves the
-full manuscript conclusion from exact propositions representing the three
-published inputs.  Those three external theorems have not themselves been
-formalized, so this is a complete conditional formalization, not a
-self-contained kernel proof from Mathlib alone.
+The proof and its formalization are complete within the trust boundary below.
+Because the result would resolve a long-standing open problem, it should be
+treated as a proposed proof until it has received independent review by
+specialists in extremal or probabilistic graph theory.
 
-## Repository map
+## Proof idea
 
-- `manuscript/main.tex` is the standard `amsart` publication manuscript;
-  `manuscript/main.pdf` is a reproducibly built review copy.
-- `preparations/erdos81_stability_closure/PROOF.md` is the authoritative
-  supplied proof artifact.
-- `preparations/erdos81_rigidity_addendum/PROOF.md` is the rigidity and exact
-  near-extremizer addendum.
-- `docs/VERIFICATION_STATUS.md` records the independent audit, logical
-  dependency ledger, corrections incorporated into the manuscript, and
-  release blockers.
-- `lean/` contains the pinned Lean 4 project.  All Lean/Lake project files are
-  kept inside that directory.
-- `references/SOURCES.md` records primary literature and immutable reference
-  snapshots; `scripts/fetch_references.sh` retrieves them into the ignored
-  `.reference-cache/` directory.
-- `preparations/gpt_chat_solver/` and `preparations/gpt_chat_auditor/` preserve
-  provenance.  They are not authoritative mathematical sources because the
-  chat export omitted some displayed formulae.
-- `preparations/erdos81_elimination_batches/` is historical exploratory work.
-  The final proof does not depend on it.
+The proof combines a global fractional argument with a local integral one.
 
-## Trust and verification boundary
+1. Pack triangles and copies of `K₄` fractionally, with gains `2` and `5`.
+   The `K₄` term pushes complete graphs below the extremal quadratic scale,
+   leaving the complete-split family as the relevant terminal branch.
+2. A vertex-copy inequality and discrete convexity produce a monotone path of
+   single-vertex copies from any chordal graph to a complete-split graph.
+3. Near the extremal complete-split family, root regularization and balanced
+   edge-colouring construct an actual `K₂/K₃` partition with a strict saving
+   for every missing spoke or outside edge. A first-entry argument transfers
+   this local stability back along the copy path.
+4. Away from the extremal family, a fixed quadratic deficit absorbs the
+   subquadratic loss in fractional-to-integral packing transfer. A signed
+   edge count on complete-split graphs supplies the matching lower bound.
 
-The conventional proof uses three published external inputs:
+The manuscript gives the conventional proof and explains the relation to
+earlier complete-split and clone-copy work.
 
-1. Vizing's `Delta + 1` edge-colouring theorem.
-2. The Häggkvist--Janssen bound `chi'_ell(K_p) <= p` for arbitrary edge lists
-   of size `p`.
-3. The uniform finite-family fractional-to-integral packing transfer of
-   Rohatgi--Urschel--Wellens, applied to triangles of gain `2` and four-cliques
-   of gain `5`.
+## Repository layout
 
-The new local construction, root regularization, mixed-functional copying,
-single-vertex symmetrization, complete-split terminal analysis, first-entry
-argument, and near/far assembly are written out in the manuscript.  The finite
-computations are regression tests and exact certificates; they are not used as
-a substitute for any all-`n` theorem.
+- [`manuscript/main.tex`](manuscript/main.tex) is the paper source;
+  [`manuscript/main.pdf`](manuscript/main.pdf) is the built review copy.
+- [`lean/`](lean/) contains the pinned Lean 4 project and its verification
+  gate.
+- [`preparations/erdos81_stability_closure/`](preparations/erdos81_stability_closure/)
+  contains the main exact finite certificates.
+- [`preparations/erdos81_rigidity_addendum/`](preparations/erdos81_rigidity_addendum/)
+  contains a separate rigidity addendum and its replayable certificates; it is
+  not part of the Lean theorem perimeter.
+- [`references/SOURCES.md`](references/SOURCES.md) records primary sources and
+  immutable reference snapshots.
+- [`docs/VERIFICATION_STATUS.md`](docs/VERIFICATION_STATUS.md) gives the
+  detailed proof and formalization ledger.
 
-The current Lean project machine-checks:
+## Lean theorem and trust boundary
 
-- the exact forbidden-induced-cycle definition of chordality;
-- clique edge partitions with unique edge coverage;
-- the exact Erdős 81 statement and the stronger eventual upper-bound
-  statement;
-- the floor identity between `(2n+1)^2/24` and `n(n+1)/6`, including its
-  modulo-six remainder argument;
-- the universal partition into two-vertex cliques and the implication from
-  the eventual bound to `n^2 / 6 + O(n)` for every order;
-- the rational stability identities and all decisive numerical margins,
-  including the complete root-regularization constant chain;
-- finite packing/covering weak duality and its mixed triangle--`K_4` model;
-- the exact clique-partition edge double count and both objective-preserving
-  transformations proving `cp_{<=4}(G) = e(G) - W_int(G)` for attained
-  extrema;
-- existence of the finite integral extrema, the zero--one embedding into the
-  rational mixed LP, and the certified-optimum comparison
-  `Phi(G) <= cp_{<=3}(G)`;
-- the exact two-direction edge-count identity for vertex copying and
-  preservation of simpliciality and chordality under the required copy;
-- the discrete-convexity step used by the single-vertex copy path;
-- the complete-split averaged dual LP, including attainment at its three
-  relevant vertices and the resulting three-branch potential formula;
-- the least-index first-entry barrier and the normalized step-size inequality
-  at the manuscript's explicit threshold `n >= 10^32`;
-- the algebraic extraction of defect and root-displacement control from the
-  local deficit inequality, including the final integrality step;
-- the finite chordal-graph characterization by perfect-elimination order,
-  including minimal-separator clique and Dirac simplicial-vertex theorems;
-- the chordal edge bound and its complement missing-pair consequence used in
-  the manuscript;
-- the strict terminal construction and root demotion/promotion argument;
-- exact root extraction from split edit distance and the defect/edit-distance
-  identity;
-- quantitative local contraction at the manuscript constants;
-- the full fine-copy symmetrization path, complete-split endpoint, and global
-  first-entry stability theorem;
-- the near/far assembly, including the transfer-gap argument, as
-  `eventualSharpUpperBound_of_inputs` and the conditional resolution
-  `erdos81_of_inputs`.
-
-All new arguments in the manuscript are now formalized.  The remaining trust
-boundary consists exactly of Vizing's theorem, the Häggkvist--Janssen list
-edge-colouring theorem, and the Rohatgi--Urschel--Wellens transfer theorem,
-passed as ordinary hypotheses through `ExternalInputs.Inputs`.  No custom
-axiom or `sorry` hides that boundary.  See `lean/README.md` for the build guide
-and `lean/FORMALIZATION_STATUS.md` for the theorem-by-theorem ledger.
-
-## System requirements
-
-The commands below were rerun on Python 3.11.2, Lean 4.31.0, and Mathlib pinned
-by `lean/lake-manifest.json`.  On Debian or Ubuntu, the non-Python build tools
-can be installed with:
-
-```bash
-sudo apt-get update
-sudo apt-get install -y \
-  git curl unzip ripgrep python3 python3-venv python3-pip \
-  latexmk lmodern poppler-utils \
-  texlive-latex-base texlive-latex-recommended texlive-latex-extra \
-  texlive-fonts-recommended
-```
-
-Install Lean through [elan](https://github.com/leanprover/elan).  Entering the
-`lean/` directory makes elan select the repository-pinned toolchain
-automatically.
-
-## Python environment
-
-Only the full finite audits need third-party Python packages.  Create the
-pinned environment from the repository root:
-
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install --upgrade pip
-.venv/bin/python -m pip install -r requirements-audit.txt
-```
-
-The dependency-free replays use only the Python standard library:
-
-```bash
-python3 preparations/erdos81_stability_closure/replay.py
-python3 preparations/erdos81_rigidity_addendum/replay.py
-```
-
-Equivalently, run `make replay`.  The root `Makefile` also provides `lean`,
-`paper`, `audit`, `references`, and a quick aggregate `check` target.
-
-Expected summaries are:
+The principal checked declarations are
 
 ```text
-main replay:     PASS, 7,964 LP certificates and 1,889 copy steps
-rigidity replay: PASS, 94 partition certificates and 94,617 clique-type checks
+eventualSharpUpperBound_of_inputs :
+  ExternalInputs.Inputs -> EventualSharpUpperBound
+
+eventualSharpEquality_of_inputs :
+  ExternalInputs.Inputs -> EventualSharpEquality
+
+erdos81_of_inputs :
+  ExternalInputs.Inputs -> Erdos81Statement
 ```
 
-Run the substantially larger regeneration audits with the virtual environment:
+The complete-split lower bound and the passage from the eventual result to
+`n²/6 + O(n)` are proved inside Lean. The conditional upper bound uses three
+explicit interfaces:
+
+1. Vizing's edge-colouring theorem;
+2. the Häggkvist--Janssen list-edge-colouring bound for complete graphs;
+3. the uniform finite-family packing transfer specialized to triangles and
+   `K₄`.
+
+The third interface packages the transfer conclusion with attained rational
+primal and dual witnesses. These assumptions are theorem arguments, not Lean
+axioms or hidden placeholders. The project therefore checks the complete
+conditional reduction, but does not claim a self-contained kernel proof of
+the three external interfaces.
+
+`lean/check.sh` builds the project and performs a fail-closed environment
+audit of every public `Erdos81.*` declaration. The only permitted transitive
+kernel assumptions are `propext`, `Classical.choice`, and `Quot.sound`.
+
+## Reproduce the checks
+
+The dependency-free certificate replays need only Python 3:
 
 ```bash
-.venv/bin/python preparations/erdos81_stability_closure/audit.py
-.venv/bin/python preparations/erdos81_rigidity_addendum/audit.py
+make replay
 ```
 
-The main audit checks 531 nonempty chordal graph-atlas graphs, 5,394
-two-direction copy inequalities, 19,986 integer colour bounds, and 711,246
-terminal comparisons.  The rigidity audit replays 815,824 edge incidences.
-Both scripts regenerate tracked JSON reports; elapsed-time fields can differ
-between machines.
-
-The historical, non-closing audit can be run separately:
-
-```bash
-.venv/bin/python preparations/erdos81_elimination_batches/audit.py
-```
-
-Its witness ordering or choice of a valid partition need not be byte-identical
-across runs; verify its assertions and report semantically.
-
-## Lean verification
-
-From a clean clone with elan installed:
+For a first Lean build, install [elan](https://github.com/leanprover/elan) and
+fetch the manifest-pinned Mathlib cache:
 
 ```bash
 cd lean
-lake update
 lake exe cache get
 ./check.sh
 ```
 
-`check.sh` rejects source-level `axiom` and `sorry` declarations, builds the
-library, and runs `#print axioms` on the principal theorems.  The expected
-reported assumptions are Lean/Mathlib's ordinary foundational primitives
-(`propext`, `Classical.choice`, and `Quot.sound`), not project-specific axioms.
-
-## Manuscript build
-
-Build the paper and reject unresolved references, citation warnings, and box
+Build the manuscript and reject unresolved references, citations, and box
 overflow diagnostics with:
 
 ```bash
 make -C manuscript clean check
 ```
 
-With the pinned `SOURCE_DATE_EPOCH` and the TeX installation used for this
-audit, the 16-page PDF has SHA-256:
+From a prepared checkout, `make check` runs both certificate replays, the Lean
+gate, and the manuscript check. The larger regeneration audits use the pinned
+packages in `requirements-audit.txt` and can be run with `make audit` after
+creating a virtual environment.
 
-```text
-12f16b80cee60c9a8cfbafe5bd5f7105ee96179a6baa10a57de674d1162505f2
-```
+## Credits
 
-TeX engine or package-version changes can alter PDF bytes without altering the
-typeset mathematics.  `main.tex` and `references.bib` are authoritative.
+The mathematical proof was developed by
+[Morluto](https://github.com/morluto) ([X](https://x.com/morluto)), with GPT
+assistance. [Jacobian](https://github.com/morluto/jacobian), a research tool
+developed at Preference Labs, played a substantial role in the derivation and
+verification workflow.
 
-## Source and reference integrity
+The manuscript and Lean 4 formalization were written by
+[N0zoM1z0](https://github.com/N0zoM1z0/)
+([X](https://x.com/r00tth3w0r1d)).
 
-Check the three supplied source archives:
+This is a Preference Labs research project.
 
-```bash
-sha256sum preparations/*.zip
-unzip -t preparations/erdos81_stability_closure.zip
-unzip -t preparations/erdos81_rigidity_addendum.zip
-unzip -t preparations/erdos81_elimination_batches.zip
-(cd preparations/erdos81_stability_closure && sha256sum --check SHA256SUMS)
-(cd preparations/erdos81_rigidity_addendum && sha256sum --check SHA256SUMS)
-```
+## Publication status
 
-Expected archive digests are recorded in `docs/VERIFICATION_STATUS.md`.
-
-Retrieve the exact third-party papers and reference repository snapshots used
-by the audit with:
-
-```bash
-./scripts/fetch_references.sh
-```
-
-The script checks every downloaded paper/archive digest and checks out the
-recorded immutable repository commit.  These references are evidence and
-prior-art context; neither their proofs nor their formal models are treated as
-trusted automatically.
-
-## Before public submission
-
-Replace the manuscript's `Anonymous` placeholder with the final authors and
-affiliations, choose explicit repository and manuscript licences, obtain human
-specialist review, and create a stable archive/DOI.  A release claiming a
-self-contained formal proof must additionally formalize or import the three
-published inputs; otherwise the conditional boundary should remain prominent
-in the abstract-facing release notes.
+Before submission, the anonymous author placeholder and affiliations should
+be finalized, appropriate licences selected, the artifact archived at a
+stable version, and independent specialist review obtained. Any public claim
+about the Lean development should retain the conditional boundary stated
+above.
