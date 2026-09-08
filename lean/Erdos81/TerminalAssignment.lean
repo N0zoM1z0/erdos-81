@@ -239,12 +239,12 @@ theorem retained_count_lower_cleared {G : SimpleGraph V}
     (O : RootedPEO.Order G P)
     (C : ProperEdgeColoring (outsideGraph G P) Color)
     (S : Finset Color) (assign : ↑S ≃ ↑P)
-    (p c : ℕ) (hP : P.card = p)
-    (hselected : p * (outsideEdges G P).card ≤
+    (p c m : ℕ) (hP : P.card = p)
+    (hselected : p * m ≤
       c * (selectedEdges C S).card)
     (hcharge : p * (∑ a : ↑S, invalidCost O C a (assign a)) ≤
       ((outsideGraph G P).cliqueNum - 1) * missingIncidences G P) :
-    p * p * (outsideEdges G P).card ≤
+    p * p * m ≤
       c * p * (retainedAssignedEdges O C S assign).card +
         c * (((outsideGraph G P).cliqueNum - 1) *
           missingIncidences G P) := by
@@ -252,7 +252,7 @@ theorem retained_count_lower_cleared {G : SimpleGraph V}
   have hinvalid := card_invalidAssignedEdges O C S assign
   rw [← hinvalid] at hcharge
   calc
-    p * p * (outsideEdges G P).card
+    p * p * m
         ≤ p * (c * (selectedEdges C S).card) := by
       simpa [Nat.mul_assoc] using Nat.mul_le_mul_left p hselected
     _ = c * p * ((retainedAssignedEdges O C S assign).card +

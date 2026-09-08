@@ -38,7 +38,7 @@ omit [DecidableEq V] in
 /-- The colour classes count every graph edge exactly once. -/
 theorem sum_card_colorClass {G : SimpleGraph V}
     (C : ProperEdgeColoring G Color) :
-    ∑ a : Color, (colorClass C a).card = G.edgeFinset.card := by
+    ∑ a : Color, (colorClass C a).card = Nat.card (Resource G) := by
   classical
   calc
     ∑ a : Color, (colorClass C a).card =
@@ -48,7 +48,7 @@ theorem sum_card_colorClass {G : SimpleGraph V}
         (Finset.sum_card_fiberwise_eq_card_filter
           (Finset.univ : Finset (Resource G))
           (Finset.univ : Finset Color) C.color)
-    _ = G.edgeFinset.card := G.edgeFinset_card.symm
+    _ = Nat.card (Resource G) := Nat.card_eq_fintype_card.symm
 
 /-- A finite edge family is a matching when distinct edges in the family do
 not meet. -/
@@ -95,7 +95,7 @@ theorem exists_large_selected_palette {G : SimpleGraph V}
     (C : ProperEdgeColoring G Color) (p : ℕ)
     (hp : p ≤ Fintype.card Color) :
     ∃ S : Finset Color, S.card = p ∧
-      p * G.edgeFinset.card ≤
+      p * Nat.card (Resource G) ≤
         Fintype.card Color * (selectedEdges C S).card := by
   obtain ⟨S, hScard, hlarge⟩ :=
     LargeClasses.exists_subset_mul_total_le_card_mul_sum
