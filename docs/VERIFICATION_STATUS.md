@@ -1,189 +1,159 @@
-# Verification status of the proposed solution to Erdős Problem 81
+# Verification status
 
-Date of this audit: 2026-09-08
+Date: 2026-09-08
 
 ## Executive conclusion
 
-The file `preparations/erdos81_stability_closure/PROOF.md` contains a proposed
-complete proof of Erdős Problem 81, conditional only on three published
-external inputs that it states explicitly.  The proof establishes the stronger
-eventual estimate
+The manuscript presents a proposed complete solution of Erdős Problem 81. It
+proves the stronger eventual identity
 
 \[
-  \operatorname{cp}_{\le 4}(G)
-  \le \left\lfloor \frac{n(n+1)}6 \right\rfloor
+  \max_{\substack{|V(G)|=n\\G\text{ chordal}}}\operatorname{cp}(G)
+  =\left\lfloor\frac{n(n+1)}6\right\rfloor
 \]
 
-for every sufficiently large chordal graph \(G\) on \(n\) vertices.  The
-individual-edge partition for the finitely many smaller orders then gives one
-absolute constant \(C\) such that
+and hence `cp(G) <= n²/6 + O(n)` for every finite chordal graph. No known gap
+remains within the stated proof and trust boundary. Because this would resolve
+a long-standing problem, the work remains a proposed proof pending independent
+review by specialists in extremal or probabilistic graph theory.
 
-\[
-  \operatorname{cp}(G) \le \frac{n^2}{6}+Cn
-\]
+The Lean companion checks the full conditional upper-bound reduction, the
+matching complete-split lower witness, the eventual equality statement, and
+the all-order Erdős 81 consequence. Three external interfaces remain explicit
+parameters of the final theorems.
 
-for every finite chordal graph.
-
-The argument has been checked line by line in this repository audit, and both
-supplied independent GPT-6-Pro reviews reached the same positive conclusion.
-No unpaid case, circular threshold, or missing error term has been identified.
-This is nevertheless a **proposed complete proof**, not yet validated by an
-independent human specialist. The complete new reduction is now formalized in
-Lean, conditional on exact statements of the same three published inputs.
-
-## Authoritative sources
-
-The authoritative mathematical source is
-`preparations/erdos81_stability_closure/PROOF.md`.  It is byte-for-byte
-identical to
-`preparations/erdos81_rigidity_addendum/closure_PROOF.md` and has SHA-256
-
-```text
-db87bc1c20aca1b1e444e19e87695d40f141824f8ec1e1d0209abda29e150d47
-```
-
-The rigidity addendum is
-`preparations/erdos81_rigidity_addendum/PROOF.md`.  The long `.txt` chat
-exports are provenance records, not mathematical source files: their export
-format dropped displayed equations.
-
-The source archives have SHA-256 digests
-
-```text
-faf853b41fef9c68cda043e9b9810284186a9bc2c860af513f9718b5ce95a79b  erdos81_stability_closure.zip
-a0796fa8c4e58baeb7dc8714d3db8a31e37174f1c6687d14c172d1bf87c656e9  erdos81_rigidity_addendum.zip
-c9fafa5729c8d6c39e0542133e113908684a5e733d0c0f3ac7b53ba57be85e56  erdos81_elimination_batches.zip
-```
-
-The elimination-batch archive is historical exploratory work.  Its own proof
-ledger expressly says that it does not solve the problem, and the final proof
-does not depend on it.
-
-## Logical dependency map
+## Mathematical dependency map
 
 | Layer | Result | Status |
 |---|---|---|
-| Published input | Vizing's \(\Delta+1\) edge-colouring theorem | Standard published theorem |
-| Published input | Häggkvist--Janssen: \(\chi'_{\ell}(K_p)\le p\) | Published theorem; the proof needs arbitrary lists of size \(p\) |
-| Published input | Uniform finite-family fractional-to-integral packing transfer for triangle gain 2 and \(K_4\) gain 5 | Rohatgi--Urschel--Wellens, Theorem 3.4; uniform use is explicit in their proof of Theorem 3.6 |
-| New local step | Integral terminal construction with strict savings in outside edges and missing incidences | Checked; every edge and every used spoke is accounted for |
-| New local step | Root demotion/promotion at threshold \(7p/4\) | Checked; chordality makes every promoted vertex complete to the current root |
-| New local step | Quantitative local stability in actual labelled edit distance | Checked; follows from the strict terminal estimate and the chordal edge bound |
-| New global step | Mixed-functional copy inequality and a monotone path of single-vertex copies | Checked; the inequality direction is correct and every intermediate graph remains chordal |
-| New global step | Complete-split terminal characterization and branch separation | Checked; the competing mixed-cover branches have fixed quadratic slack |
-| New closure step | First entry into the local stability ball | Checked; one copy changes at most \(n-2\) pairs, producing the required contradiction |
-| Final assembly | Near/far split, followed by the small-order edge partition | Checked; one fixed transfer threshold defines one absolute constant |
+| External | Vizing's `Δ + 1` edge-colouring theorem | Published theorem; explicit Lean input |
+| External | Häggkvist--Janssen: `χ'ₗ(K_p) <= p` | Published theorem; explicit Lean input |
+| External | Uniform finite-family transfer for triangle gain 2 and `K₄` gain 5 | Rohatgi--Urschel--Wellens specialization; explicit Lean input |
+| Local | Terminal `K₂/K₃` construction with defect savings | Manuscript proof; Lean checked |
+| Local | Root demotion/promotion and labelled stability | Manuscript proof; Lean checked |
+| Global | Mixed-functional copy inequality and fine monotone path | Manuscript proof; Lean checked |
+| Global | Complete-split terminal calculation and branch separation | Manuscript proof; Lean checked |
+| Closure | First entry into the local stability ball | Manuscript proof; Lean checked |
+| Assembly | Near/far eventual upper bound | Conditional on the three interfaces; Lean checked |
+| Sharpness | Signed complete-split lower bound and integer maximization | Lean checked without additional inputs |
+| Consequence | All-order `n²/6 + O(n)` bound | Lean checked |
 
-## Critical checks performed
+The clone-copy, class interpolation, and complete-split terminal strategy are
+credited in the manuscript to Traverso's Paper II. The present argument adapts
+that method to the mixed triangle/`K₄` functional and adds the quantitative
+local stability and fine first-entry mechanism needed for linear error.
 
-1. In the terminal construction, a balanced proper \(c\)-edge-colouring of the
-   outside graph has classes of size at most \(\lceil m/c\rceil\).  A random
-   bijection of the \(p\) largest classes to root vertices loses at most
-   \((\omega(H)-1)A/p\) edges in expectation, where \(A\) is the number of
-   missing root--outside incidences.  The remaining root-edge host lists have
-   the advertised size, so the Häggkvist--Janssen theorem applies.
-2. Demoted root vertices contribute all their new outside edges to \(m_0\).
-   The bounds \(m_0<p^2/400\), \(\bar D<p/3\), and \(h<p/693\) imply the final
-   list margin.  No edit or partition is performed during root selection.
-3. The mixed functional is
-   \(\Phi(G)=e(G)-W_4^*(G)\).  The universally valid comparison used by the
-   proof is \(\Phi(G)\le \operatorname{cp}_{\le3}(G)\), not
-   \(\Phi(G)\le\operatorname{cp}(G)\).
-4. Copying an optimal dual cover gives upper bounds for the copied packing
-   optima.  Subtraction from the exact edge-count identity gives
-   \(\Phi(G_{u\to v})+\Phi(G_{v\to u})\ge2\Phi(G)\), in the required direction.
-5. Discrete convexity is used at single-vertex resolution.  Once a
-   nondecreasing adjacent direction is selected, all remaining moves to that
-   endpoint are nondecreasing.  The proof does not charge the total length of
-   the symmetrization path.
-6. The first-entry graph is simultaneously near the boundary of the fixed
-   edit ball and subject to the local inequality.  The two quantitative bounds
-   are incompatible for \(n\ge10^{32}\).
-7. The transfer theorem is spent only in the case with a fixed quadratic
-   deficit.  The proof never treats an \(o(n^2)\) error as an \(O(n)\) error.
+## Critical proof checks
 
-## Reproduced computational evidence
+1. The terminal construction retains the `p` largest classes of a balanced
+   proper edge-colouring, assigns them to root vertices, and accounts for all
+   invalid hosts. The remaining root-edge lists satisfy the exact
+   Häggkvist--Janssen hypothesis.
+2. Root selection performs no graph edit. All edges created in the outside
+   graph by demotion are included in the new defect count, and the numerical
+   margins used for later promotion are exact rational inequalities.
+3. The universally valid fractional comparison is
+   `Phi(G) <= cp_{<=3}(G)`, not `Phi(G) <= cp(G)`.
+4. Pulling back dual covers through opposite vertex copies gives the copy
+   inequality in the required direction. Every recorded single-vertex copy
+   preserves chordality and changes at most `n-2` pairs.
+5. The argument does not charge total copy-path length. It uses the first
+   path vertex entering a fixed edit ball, where the one-step lower bound and
+   local contraction are incompatible.
+6. The general transfer theorem is used only in the far case, where a fixed
+   quadratic deficit absorbs its subquadratic error.
+7. On a complete-split witness, root edges have signed weight `-1` and spokes
+   weight `+1`; every clique has total weight at most one. This proves the
+   matching lower bound for arbitrary clique sizes, not merely blocks of
+   order at most four.
 
-The following checks were rerun locally on Python 3.11.2.
+## Reproducible evidence
 
-| Artifact | Reproduced result |
+The dependency-free replay commands are:
+
+```bash
+python3 preparations/erdos81_stability_closure/replay.py
+python3 preparations/erdos81_rigidity_addendum/replay.py
+```
+
+Current tracked reports record:
+
+| Artifact | Result |
 |---|---|
-| Main dependency-free replay | PASS: 7,964 LP certificates, 14,134 positive packing entries, 36,743 triangle/\(K_4\) dual constraints, and 1,889 copy steps |
-| Main full regeneration audit | PASS: 531 chordal atlas graphs, 5,394 two-direction copy checks, 1,889 monotone steps, 19,986 colour-count checks, and 711,246 terminal comparisons |
-| Rigidity dependency-free replay | PASS: 94 partition certificates and 94,617 universal clique-type checks |
-| Rigidity full audit | PASS: 1,643 instances, 3,286 partitions, and 815,824 replayed edge incidences |
-| Historical elimination audit | PASS with a structurally identical report; it remains non-closing exploratory evidence |
+| Main replay | PASS: 7,964 LP certificates and 1,889 copy steps |
+| Main regeneration audit | PASS: 531 chordal atlas graphs, 5,394 two-direction copy checks, 19,986 colour checks, and 711,246 terminal comparisons |
+| Rigidity replay | PASS: 94 partition certificates, one negative size-cap test, and 94,617 clique-type checks |
+| Rigidity regeneration audit | PASS: 1,643 instances, 3,286 partitions, and 815,824 edge incidences |
 
-The main regenerated certificate files were byte-for-byte identical to the
-archived files; the report differed only in elapsed time.  The historical
-elimination witness can differ in ordering or in the selected valid partition,
-so it must be checked semantically rather than by generated-file equality.
+These are exact finite regression tests. They are not premises for the
+infinite theorem or replacements for the three external interfaces.
 
-These computations are regression tests and exact finite certificates.  They
-do not prove the infinite theorem, the list-edge-colouring theorem, or the
-asymptotic packing-transfer theorem.
+The rigidity verifier now enforces each certificate's declared maximum block
+size. Its negative control deliberately presents a `K₄` block under a cap of
+three and requires rejection.
 
-## Corrections required before circulation
+## Lean boundary and gate
 
-1. State \(p\ge1\) in the terminal construction.  Its formula divides by
-   \(p\); every application already has \(p\ge128\).
-2. Use a symbol such as \(A\) for missing root--outside incidences.  Do not use
-   \(M\), which is also used for the extremal integer \(M(n)\).
-3. State the two distinct inequalities involving \(\Phi\) explicitly:
-   \(\Phi\le\operatorname{cp}_{\le3}\), and
-   \(\Phi\ge\operatorname{cp}-(W_4^*-W_4)\).
-4. State the uniform quantifiers in the packing-transfer input and define the
-   threshold \(T(\varepsilon)\) before defining \(N\).
-5. Cite the original Erdős--Ordman--Zalcstein paper, the earlier split-graph
-   result, the two current partial claims, and the exact published sources of
-   all external inputs.  Logical independence does not erase intellectual
-   provenance.
-6. Keep computational evidence in a separate verification section and do not
-   describe finite enumeration as establishing the general theorem.
-
-## Formalization decision
-
-A conventional proof does not require Lean in order to be mathematically
-valid. For this result, comprehensive formalization was undertaken because the
-proof is new, AI-assisted, quantitatively delicate, and would resolve a
-long-standing open problem.
-
-The project lives entirely under `lean/` and builds with Lean 4.31.0 against a
-manifest-pinned Mathlib revision. It now checks the full chain: chordal
-infrastructure, PEO extraction and edge bounds, the terminal host construction,
-strict root demotion and promotion, exact local-root extraction from edit
-distance, local potential contraction, terminating monotone symmetrization,
-complete-split endpoint analysis, the global first-entry argument, and the
-near/far final assembly. The two final declarations are
+The principal theorem surfaces are:
 
 ```text
 eventualSharpUpperBound_of_inputs :
   ExternalInputs.Inputs -> EventualSharpUpperBound
 
-erdos81_of_inputs : ExternalInputs.Inputs -> Erdos81Statement
+eventualSharpEquality_of_inputs :
+  ExternalInputs.Inputs -> EventualSharpEquality
+
+erdos81_of_inputs :
+  ExternalInputs.Inputs -> Erdos81Statement
 ```
 
-This completes the first formalization milestone: all definitions and all new
-arguments are kernel checked, with the three external theorems passed as
-explicit hypotheses. The remaining, separate milestone is to formalize or
-import Vizing, Häggkvist--Janssen, and the weighted packing transfer so that
-those hypotheses can be discharged. The latter two do not currently have an
-identified upstream Mathlib theorem in the required form.
+The packing-transfer field bundles attained rational primal/dual witnesses
+with the uniform transfer gap. Thus the formal boundary includes standard
+finite rational LP attainment/strong duality in addition to the published
+asymptotic transfer conclusion; this is why the documentation calls the
+fields three interfaces rather than simply three formalized published
+theorems.
 
-A theorem can be sorry-free and have only foundational axioms while still
-being conditional because assumptions may occur in its statement.  Every
-release must therefore publish both `#check` output for the exact statement and
-`#print axioms` output for the transitive proof dependencies.
+Run the gate with:
 
-## Release blockers
+```bash
+cd lean
+lake exe cache get
+./check.sh
+```
 
-- Independent review by at least one human specialist in extremal or
-  probabilistic graph theory.
-- Final author names, affiliations, contribution statement, and corresponding
-  author contact.
-- A deliberate repository and manuscript licence selected by the authors.
-- A stable public archive or DOI and a priority search updated on the release
-  date.
-- Formalization or import of all three published inputs if the release is to
-  claim a self-contained Lean proof; otherwise the exact conditional boundary
-  must remain visible.
+The gate builds the project, type-pins the public theorem surfaces, and audits
+every public declaration whose name and source module begin with `Erdos81`.
+It fails on any transitive axiom outside `propext`, `Classical.choice`, and
+`Quot.sound`, and has a fast source guard for `axiom`, `sorry`, and `admit`.
+
+The formal proof architecture differs from the prose in two documented ways:
+the terminal characterization uses minimal separators rather than clique
+trees, and path termination uses a finite lexicographic measure. The unused
+manuscript estimate `L <= n(n-1)` is not separately formalized. The rigidity
+addendum is also outside the Lean theorem perimeter.
+
+## Corrections incorporated in this revision
+
+- The rigidity replay now enforces the advertised block-size cap and includes
+  a failing negative control.
+- The Lean check is fail-closed rather than relying on displayed
+  `#print axioms` output.
+- The complete-split matching lower bound and eventual equality are now
+  explicit Lean theorems.
+- The manuscript now gives paper-specific attribution for earlier clone-copy
+  symmetrization, explains the role of the mixed `K₄` term, records the RUW
+  weight specialization, and fixes the neighborhood notation in the
+  nonadjacency lemma.
+- The formalization ledger now distinguishes theorem interfaces from
+  internally proved claims and records the alternate proof architecture.
+
+## Before publication
+
+- Obtain independent review from at least one relevant graph-theory
+  specialist.
+- Finalize author names, affiliations, and corresponding-author information.
+- Select explicit repository and manuscript licences.
+- Archive a stable release and update the priority search at submission time.
+- Keep the three-interface conditional boundary prominent unless those inputs
+  are later formalized or imported.
