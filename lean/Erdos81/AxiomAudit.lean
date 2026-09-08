@@ -69,6 +69,7 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.LocalRoot.exists_initialRoot
 #print axioms Erdos81.LocalRootArithmetic.initialRoot_numerics
 #print axioms Erdos81.LocalRegularization.exists_strict_partition_of_split_close
+#print axioms Erdos81.LocalRegularization.exists_partition_le_sharpBound_of_split_close
 #print axioms Erdos81.MixedModel.weak_duality
 #print axioms Erdos81.PerfectElimination.card_edgeFinset_eq_sum_laterNeighbors
 #print axioms Erdos81.PerfectElimination.isChordal_of_peo
