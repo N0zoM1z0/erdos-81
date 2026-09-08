@@ -5,6 +5,7 @@ import Erdos81.ChordalSeparator
 import Erdos81.ChordalWalk
 import Erdos81.CliquePartitionCounting
 import Erdos81.CompleteSplit
+import Erdos81.CompleteSplitLowerBound
 import Erdos81.CompleteSplitPacking
 import Erdos81.CompleteSplitPotential
 import Erdos81.CompleteSplitReduction

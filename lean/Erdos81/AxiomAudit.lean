@@ -57,5 +57,10 @@ example :
     Erdos81.ExternalInputs.Inputs → Erdos81.Erdos81Statement :=
   Erdos81.erdos81_of_inputs
 
+example :
+    Erdos81.ExternalInputs.Inputs → Erdos81.EventualSharpEquality :=
+  Erdos81.eventualSharpEquality_of_inputs
+
 #print axioms Erdos81.eventualSharpUpperBound_of_inputs
 #print axioms Erdos81.erdos81_of_inputs
+#print axioms Erdos81.eventualSharpEquality_of_inputs
