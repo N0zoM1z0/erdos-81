@@ -123,9 +123,10 @@ creating a virtual environment.
 
 The mathematical proof was developed by
 [Morluto](https://github.com/morluto) ([X](https://x.com/morluto)), with GPT
-assistance. [Jacobian](https://github.com/morluto/jacobian), a research tool
-developed at Preference Labs, played a substantial role in the derivation and
-verification workflow.
+assistance; the [shared proof-development conversation](https://chatgpt.com/share/6a9e6fb8-5d84-83e9-a725-61f885a52067)
+records that derivation. [Jacobian](https://github.com/morluto/jacobian), a
+research tool developed at Preference Labs, played a substantial role in the
+derivation and verification workflow.
 
 The manuscript and Lean 4 formalization were written by
 [N0zoM1z0](https://github.com/N0zoM1z0/)
