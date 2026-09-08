@@ -125,7 +125,8 @@ lake exe cache get
 The gate builds the project, type-pins the public theorem surfaces, and audits
 every public declaration whose name and source module begin with `Erdos81`.
 It fails on any transitive axiom outside `propext`, `Classical.choice`, and
-`Quot.sound`, and has a fast source guard for `axiom`, `sorry`, and `admit`.
+`Quot.sound`, and has a fast guard for common source forms of `axiom`,
+`sorry`, and `admit`.
 
 The formal proof architecture differs from the prose in two documented ways:
 the terminal characterization uses minimal separators rather than clique

@@ -79,7 +79,7 @@ lake exe cache get
 ./check.sh
 ```
 
-`check.sh` first rejects source occurrences of `axiom`, `sorry`, or `admit`,
+`check.sh` first rejects common source forms of `axiom`, `sorry`, or `admit`,
 builds the complete library, and then performs an environment-level audit of
 every public declaration whose name and source module begin with `Erdos81`.
 The audit fails on any transitive assumption outside this allowlist:
