@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-export SOURCE_DATE_EPOCH := 1788739200
+export SOURCE_DATE_EPOCH := 1788825600
 export FORCE_SOURCE_DATE := 1
 
 .PHONY: all clean check
@@ -30,3 +30,4 @@ check:
 
 clean:
 	latexmk -C main.tex
+	$(RM) main.bbl

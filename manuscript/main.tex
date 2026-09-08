@@ -5,15 +5,13 @@
 \usepackage{microtype}
 \usepackage{mathtools}
 \usepackage{amssymb}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
 \hypersetup{
   pdftitle={Clique partitions of chordal graphs with linear error},
   pdfauthor={Anonymous},
-  pdfsubject={Erdos Problem 81},
+  pdfsubject={Erdős Problem 81},
   pdfkeywords={chordal graphs, clique partitions, fractional packings, stability}
 }
 
@@ -27,6 +25,7 @@
 \newtheorem{claim}[theorem]{Claim}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\cp}{\operatorname{cp}}
@@ -35,11 +34,6 @@
 \newcommand{\Wfrac}{W_4^*}
 \newcommand{\PhiF}{\Phi}
 \newcommand{\distsp}{d_{\mathrm{sp}}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\cS}{\mathcal{S}}
-\newcommand{\cP}{\mathcal{P}}
-\newcommand{\one}{\mathbf{1}}
 
 \title[Linear-error clique partitions of chordal graphs]
   {Clique partitions of chordal graphs with linear error}
@@ -47,7 +41,7 @@
 \author{Anonymous}
 \date{September 8, 2026}
 
-\subjclass[2020]{05C70, 05C35, 90C27}
+\subjclass[2020]{Primary 05C70, 05C35; Secondary 90C27}
 \keywords{chordal graph, clique partition, fractional packing,
   symmetrization, stability}
 
@@ -619,14 +613,13 @@ Under the hypotheses of \cref{lem:local-root}, put
   \mathcal{D}=Q(n)-\PhiF(G).
 \]
 Then $\mathcal{D}\geq0$ and
-\begin{equation}\label{eq:local-stability}
+\begin{align}
   \distsp(G)
-  \leq9\mathcal{D}+n\sqrt{\frac{2\mathcal{D}}3}+n.
-\end{equation}
-Moreover,
-\begin{equation}\label{eq:local-integral-conclusion}
-  \cple{3}(G)\leq M(n).
-\end{equation}
+  &\leq9\mathcal{D}+n\sqrt{\frac{2\mathcal{D}}3}+n,
+    \label{eq:local-stability}\\
+  \cple{3}(G)&\leq M(n).
+    \label{eq:local-integral-conclusion}
+\end{align}
 \end{lemma}
 
 \begin{proof}
