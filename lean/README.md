@@ -60,6 +60,10 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   feasible point of the rational mixed LP, proves exact objective preservation,
   and derives `Phi(G) <= |P|` for every order-at-most-three partition relative
   to a certified fractional optimum.
+- `Erdos81/ExternalInputs.lean` states the three published inputs as exact Lean
+  propositions.  The transfer interface returns matching primal/dual optimum
+  witnesses, so LP attainment and equality cannot enter the later proof
+  silently.
 - `Erdos81/DiscreteConvexity.lean` checks the direction choice, propagation to
   an endpoint, and the sign algebra in the single-vertex copying argument.
 - `Erdos81/EditDistance.lean` defines labelled edge-edit distance and the

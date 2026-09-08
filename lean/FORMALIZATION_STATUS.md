@@ -29,9 +29,9 @@ because no such theorem is claimed yet.
 | Attainment of the integral maximum and restricted partition minimum | `Erdos81.IntegralPacking.exists_integralOptimum_and_restrictedPartitionMinimum` | Checked |
 | Integral packing embeds in the mixed fractional LP with equal objective | `Erdos81.IntegralFractional.toFractional`, `packingValue_toFractional` | Checked |
 | Comparison `Phi <= cp_{<=3}` | `Erdos81.IntegralFractional.potential_le_size_of_orderAtMost_three` | Checked conditional on a certified fractional primal optimum |
-| Vizing edge colouring | — | External theorem; not yet imported/formalized |
-| Häggkvist--Janssen list edge colouring | — | External theorem; not yet formalized |
-| Rohatgi--Urschel--Wellens uniform transfer | — | External theorem; not yet formalized |
+| Vizing edge colouring | `Erdos81.ExternalInputs.VizingInput` | Exact external interface modeled; theorem not yet proved in Lean |
+| Häggkvist--Janssen list edge colouring | `Erdos81.ExternalInputs.HaggkvistJanssenInput` | Exact external interface modeled; theorem not yet proved in Lean |
+| Rohatgi--Urschel--Wellens uniform transfer | `Erdos81.ExternalInputs.PackingTransferInput` | Exact uniform external interface modeled; theorem not yet proved in Lean |
 | Terminal host construction | — | Pending |
 | Demotion/promotion numerical chain | `Erdos81.RootArithmetic` | Checked |
 | Common-neighbor clique and nonadjacency degree bound | `Erdos81.Chordal.commonNeighbors_isClique_of_chordal`, `root_nonadjacency_degree_bound` | Checked |

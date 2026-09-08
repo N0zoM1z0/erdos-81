@@ -8,6 +8,7 @@ import Erdos81.CopyCover
 import Erdos81.DiscreteConvexity
 import Erdos81.Dirac
 import Erdos81.EditDistance
+import Erdos81.ExternalInputs
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry
 import Erdos81.FirstEntryGraph

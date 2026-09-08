@@ -14,6 +14,10 @@ uses classical finite-set reasoning.
 #check Erdos81.Erdos81Statement
 #check Erdos81.EventualSharpUpperBound
 #check Erdos81.eventualSharpUpperBound_implies_erdos81
+#check Erdos81.ExternalInputs.VizingInput
+#check Erdos81.ExternalInputs.HaggkvistJanssenInput
+#check Erdos81.ExternalInputs.PackingTransferInput
+#check Erdos81.ExternalInputs.Inputs
 
 #print axioms Erdos81.Arithmetic.square_identity
 #print axioms Erdos81.Arithmetic.first_entry_numerics
