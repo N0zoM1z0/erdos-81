@@ -72,6 +72,7 @@ private theorem le_one_add_choose_two (r : ℕ) :
       simp
       omega
 
+omit [Fintype V] in
 private theorem choose_card_le_one_add_twice_inter (K L : Finset V)
     (hout : (L \ K).card ≤ 1) :
     Nat.choose L.card 2 ≤ 1 + 2 * Nat.choose (L ∩ K).card 2 := by

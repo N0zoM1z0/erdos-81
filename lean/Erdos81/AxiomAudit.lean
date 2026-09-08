@@ -6,10 +6,11 @@ import Lean.Util.CollectAxioms
 # Kernel-assumption audit
 
 This file is an executable verification gate, not merely a diagnostic printout.
-It inspects every declaration originating in an `Erdos81` module and rejects any
-transitive axiom dependency outside Lean's standard logical primitives listed
-below. In particular, an unused project axiom or `sorryAx` still fails the
-check.
+It inspects every public declaration whose name and source module begin with
+`Erdos81` and rejects any transitive axiom dependency outside Lean's standard
+logical primitives listed below. A custom public axiom or any `sorryAx`
+dependency reachable from that surface therefore fails the check; `check.sh`
+also rejects common source forms of private axioms, `sorry`, and `admit`.
 -/
 
 open Lean Elab Command

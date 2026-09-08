@@ -87,9 +87,8 @@ lake exe cache get
 ```
 
 The gate builds the library and audits every public `Erdos81.*` declaration
-against an explicit transitive-axiom allowlist. It also rejects source
-occurrences of `axiom`, `sorry`, and `admit`. The permitted kernel primitives
-are:
+against an explicit transitive-axiom allowlist. It also rejects common source
+forms of `axiom`, `sorry`, and `admit`. The permitted kernel primitives are:
 
 ```text
 propext, Classical.choice, Quot.sound
