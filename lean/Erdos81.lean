@@ -36,6 +36,7 @@ import Erdos81.SharpBound
 import Erdos81.Separator
 import Erdos81.SplitDual
 import Erdos81.Statement
+import Erdos81.StrictTerminalBound
 import Erdos81.Symmetrization
 import Erdos81.TerminalAssignment
 import Erdos81.TerminalConstruction
