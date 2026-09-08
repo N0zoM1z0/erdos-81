@@ -34,6 +34,7 @@ import Erdos81.SplitDual
 import Erdos81.Statement
 import Erdos81.TerminalAssignment
 import Erdos81.TerminalConstruction
+import Erdos81.TerminalCharacterization
 import Erdos81.TerminalPacking
 import Erdos81.TrianglePacking
 
