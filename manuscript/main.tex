@@ -89,12 +89,16 @@ Recall that a graph is chordal if it contains no induced cycle of length at
 least four.  Split graphs, whose vertices can be divided into a clique and an
 independent set, form an important subclass.  Chen, Erd\H{o}s, and Ordman
 proved the bound $3n^2/16+O(n)$ for split graphs
-\cite{ChenErdosOrdman1994}.  Two recent preprints give complementary partial
-progress: Traverso proves \eqref{eq:erdos-question} for split graphs and
-determines an associated fractional triangle functional, while Cipollini
-proves $n^2/6+o(n^2)$ for all chordal graphs
-\cite{Traverso2026,Cipollini2026}.  Neither partial result supplies the
-linear-error conclusion for general chordal graphs.
+\cite{ChenErdosOrdman1994}.  Traverso determined the exact extremum of a
+fractional triangle-cover functional over chordal graphs, with a
+complete-split extremizer and a clone-copy reduction
+\cite{TraversoPaperII2026}.  Combined with the standard dense packing
+transfer, that result already gives the first-order estimate
+$n^2/6+o(n^2)$ for chordal graphs.  Traverso subsequently proved the
+linear-error bound for split graphs \cite{TraversoPaperIII2026}, while
+Cipollini independently obtained $n^2/6+o(n^2)$ for all chordal graphs
+\cite{Cipollini2026}.  The remaining issue addressed here is the linear-error
+conclusion for general chordal graphs.
 
 Our main result is stronger than \eqref{eq:erdos-question}.
 
@@ -116,6 +120,11 @@ vertices satisfies
 
 The proof has two distinct parts.  We first introduce a mixed packing
 functional in which a triangle has gain $2$ and a copy of $K_4$ has gain $5$.
+The $K_4$ term is structurally useful rather than cosmetic.  For the
+triangle-only fractional functional, complete graphs remain on the competing
+$n^2/6$ scale; allowing $K_4$ with its natural gain $\binom42-1=5$ lowers
+that branch by a fixed quadratic amount.  This isolates the complete-split
+branch needed by the stability argument.
 The corresponding fractional functional is well behaved under vertex
 copying.  Repeated copies lead monotonically to a complete-split graph.  This
 gives the correct global quadratic bound, but a general packing-transfer
@@ -189,6 +198,11 @@ $K_4$ in $G$, then
  \end{aligned}
 \end{equation}
 
+The gains are exactly the numbers of parts saved by replacing constituent
+edges with one clique: $\binom32-1=2$ and $\binom42-1=5$.  Thus the family
+and weight vector in the notation of the finite-family transfer theorem are
+$\{K_3,K_4\}$ and $(2,5)$.
+
 \begin{theorem}[finite-family packing transfer]
 \label{thm:packing-transfer}
 For every $\varepsilon>0$ there is an integer $T(\varepsilon)$ such that every
@@ -202,9 +216,9 @@ The threshold is uniform over all graphs of the given order.
 
 This is the specialization of the weighted finite-family theorem
 \cite[Theorem~3.4]{RohatgiUrschelWellens2021} to $\{K_3,K_4\}$ and gains
-$2,5$.  The proof of
-\cite[Theorem~3.6]{RohatgiUrschelWellens2021} also makes the required uniform
-application explicit.
+$2,5$.  The graph-independent threshold used here is the uniformity made
+explicit in the proof of
+\cite[Theorem~3.6]{RohatgiUrschelWellens2021}.
 
 We shall use standard properties of chordal graphs: induced subgraphs are
 chordal; chordal graphs admit perfect elimination orderings; adding a vertex
@@ -401,7 +415,7 @@ $u\in V(H)$ is nonadjacent to some $x\in P$.  Then
 \begin{proof}
 The common neighbours of two nonadjacent vertices in a chordal graph form a
 clique: two nonadjacent common neighbours would induce a $4$-cycle.  Thus
-$N_H(u)\cap N_H(x)$, together with $u$, is a clique in $H$, and the
+$N_H(u)\cap N_G(x)$, together with $u$, is a clique in $H$, and the
 intersection has at most $w-1$ vertices.  Every remaining neighbour of $u$ in
 $H$ lies in $V(H)\setminus N_G(x)$.  This set has at most $D$ vertices and
 contains $u$ itself, so it contains at most $D-1$ neighbours of $u$.  Adding
@@ -655,6 +669,14 @@ $\cple{3}(G)\leq Q(n)$.  The left side is an integer, so
 
 \section{A monotone path of single-vertex copies}
 
+The cover-pullback copy inequality, its discrete-convex lift to clone
+classes, and the complete-split terminal reduction follow the strategy of
+Traverso \cite[Sections~3--5]{TraversoPaperII2026} for the triangle-cover
+functional.  We give the mixed-functional adaptation because both triangle
+and $K_4$ constraints must be transported.  The additional feature needed
+later is a fine path recording every single-vertex copy, so that a first-entry
+argument can control the moment the path crosses a fixed edit-distance ball.
+
 Let $u$ and $v$ be nonadjacent vertices of a graph $G$.  Write
 $G_{u\to v}$ for the graph obtained by deleting the edges incident with $u$
 and then making $N_{G_{u\to v}}(u)=N_G(v)$.  In particular, $u$ and $v$
@@ -698,7 +720,10 @@ false-twin classes consisting of simplicial vertices, with no edge between
 the two classes.  Keep the graph outside $A_1\cup A_2$ fixed.  If
 $r=|A_1|+|A_2|$, let $H_j$ be the graph in which $j$ of these $r$ vertices
 have neighbourhood $N_G(A_1)$ and the other $r-j$ have neighbourhood
-$N_G(A_2)$.  Both neighbourhoods are cliques, so every $H_j$ is chordal.
+$N_G(A_2)$.  For fixed $j$, different choices of the $j$ labelled vertices
+give isomorphic graphs, via a permutation supported on $A_1\cup A_2$; hence
+$\PhiF(H_j)$ depends only on $j$.  Both neighbourhoods are cliques, so every
+$H_j$ is chordal.
 For $0<j<r$, \cref{lem:copy-inequality} gives
 \begin{equation}\label{eq:discrete-convexity}
   \PhiF(H_{j-1})+\PhiF(H_{j+1})\geq2\PhiF(H_j).
@@ -715,7 +740,9 @@ representative of the target class and consequently acquire the same
 adjacency to every copied vertex.  The number of false-twin classes has
 strictly decreased.
 
-We next identify the graphs at which this procedure stops.
+We next identify the graphs at which this procedure stops; this is the same
+terminal family appearing in
+\cite[Section~5]{TraversoPaperII2026}.
 
 \begin{lemma}[terminal characterization]\label{lem:terminal-characterization}
 Let $G$ be chordal.  If every two nonadjacent simplicial vertices of $G$ have
@@ -1029,7 +1056,7 @@ This proves \cref{cor:erdos81}.
 
 \section{Verification and scope}
 
-The proof uses exactly three non-elementary external inputs:
+The proof invokes three named non-elementary theorem inputs:
 \cref{thm:vizing,thm:HJ,thm:packing-transfer}.  In particular, it does not
 assume a linear bound for the general integral--fractional packing gap.  The
 transfer theorem is invoked only in the far regime, where a fixed quadratic
@@ -1041,23 +1068,26 @@ The accompanying repository contains exact rational checks of the numerical
 inequalities and finite mixed-packing certificates.  These computations are
 regression tests; none is a premise of the proof for arbitrary $n$.
 
-The Lean companion formalizes every new argument in the paper, including the
-terminal construction, root regularization, local stability, terminating
-single-vertex symmetrization, first-entry argument, and near--far assembly.
-Its final theorem proves the Erd\H{o}s--Ordman--Zalcstein statement from a
-record with exactly three fields, corresponding to
-\cref{thm:vizing,thm:HJ,thm:packing-transfer}.  Those published theorems are
-explicit hypotheses rather than project axioms; they have not themselves been
-reproved in Lean.  The repository records this conditional trust boundary and
-the commands used to reproduce the full build and axiom audit.
+The Lean companion checks the conditional upper-bound chain: terminal
+construction, root regularization, local stability, terminating
+single-vertex symmetrization, first entry, and near--far assembly.  It also
+checks the signed-weight lower bound for complete-split witnesses and combines
+the two sides into the eventual exact extremal statement.  Its external-input
+record has three interfaces corresponding to
+\cref{thm:vizing,thm:HJ,thm:packing-transfer}; the packing-transfer interface
+packages attained rational primal and dual witnesses together with the
+published asymptotic gap.  These are explicit theorem arguments rather than
+project axioms and have not themselves been reproved in Lean.
 
-\subsection*{AI-assisted development disclosure}
-
-AI systems were used in exploration, proof organization, adversarial review,
-finite computation, and editorial work.  The mathematical claims have been
-restated as the self-contained argument above, with all external results
-identified explicitly.  Responsibility for verification, attribution, and
-publication remains with the human authors; no AI system is an author.
+The formalization sometimes uses an equivalent proof architecture rather
+than mirroring the prose line by line.  In particular, its terminal
+characterization uses minimal separators instead of clique trees, and path
+termination uses a finite lexicographic measure.  The displayed auxiliary
+bound $L\leq n(n-1)$ is not needed by the final theorem and is not separately
+formalized.  The rigidity addendum is supported by exact Python certificate
+replay but lies outside this Lean theorem perimeter.  The repository records
+the precise trust ledger and the commands for reproducing the build and the
+fail-closed axiom audit.
 
 \bibliographystyle{alpha}
 \bibliography{references}
