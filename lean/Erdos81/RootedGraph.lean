@@ -287,6 +287,60 @@ theorem missingIncidences_le_card_mul_max (G : SimpleGraph V)
           exact Finset.sum_le_sum fun x hx ↦ card_missingColumn_le_max G P hx
     _ = P.card * maxMissingColumn G P := by simp
 
+/-- Root vertices which fail to be adjacent to a fixed outside vertex. -/
+noncomputable def missingRow (G : SimpleGraph V) [DecidableRel G.Adj]
+    (P : Finset V) (u : V) : Finset V :=
+  P.filter fun x ↦ ¬ G.Adj u x
+
+omit [Fintype V] [DecidableEq V] in
+@[simp]
+theorem mem_missingRow {G : SimpleGraph V} [DecidableRel G.Adj]
+    {P : Finset V} {u x : V} :
+    x ∈ missingRow G P u ↔ x ∈ P ∧ ¬ G.Adj u x := by
+  simp [missingRow]
+
+/-- The same missing incidences may be summed by outside rows instead of by
+root columns. -/
+theorem sum_card_missingRow (G : SimpleGraph V) [DecidableRel G.Adj]
+    (P : Finset V) :
+    ∑ u ∈ outsideVertices P, (missingRow G P u).card =
+      missingIncidences G P := by
+  classical
+  let S : Finset (V × V) := Gᶜ.interedges P (outsideVertices P)
+  have hMaps : (S : Set (V × V)).MapsTo Prod.snd (outsideVertices P) := by
+    intro xy hxy
+    exact (Rel.mem_interedges_iff.mp hxy).2.1
+  have hFibers : ∀ u ∈ outsideVertices P,
+      (S.filter fun xy ↦ xy.2 = u).card = (missingRow G P u).card := by
+    intro u hu
+    apply Finset.card_bij (fun xy _ ↦ xy.1)
+    · intro xy hxy
+      simp only [Finset.mem_filter] at hxy
+      have hInter := Rel.mem_interedges_iff.mp hxy.1
+      have hSecond : xy.2 = u := hxy.2
+      exact mem_missingRow.mpr
+        ⟨hInter.1, by
+          intro hux
+          exact hInter.2.2.2 (by simpa [hSecond] using hux.symm)⟩
+    · intro xy₁ hxy₁ xy₂ hxy₂ hFirst
+      simp only [Finset.mem_filter] at hxy₁ hxy₂
+      exact Prod.ext hFirst (hxy₁.2.trans hxy₂.2.symm)
+    · intro x hx
+      have hx' := mem_missingRow.mp hx
+      refine ⟨(x, u), ?_, rfl⟩
+      simp only [Finset.mem_filter]
+      refine ⟨Rel.mem_interedges_iff.mpr ⟨hx'.1, hu, ?_⟩, trivial⟩
+      refine ⟨?_, ?_⟩
+      · intro hxu
+        have hxu' : x = u := by simpa using hxu
+        exact (mem_outsideVertices.mp hu) (hxu' ▸ hx'.1)
+      · intro hxu
+        exact hx'.2 hxu.symm
+  rw [missingIncidences]
+  change ∑ u ∈ outsideVertices P, (missingRow G P u).card = S.card
+  rw [Finset.card_eq_sum_card_fiberwise hMaps]
+  exact Finset.sum_congr rfl fun u hu ↦ (hFibers u hu).symm
+
 /-- Exact root-relative edge bookkeeping. -/
 theorem edge_count_identity (G : SimpleGraph V) [DecidableRel G.Adj]
     (P : Finset V) (hClique : G.IsClique (P : Set V)) :
