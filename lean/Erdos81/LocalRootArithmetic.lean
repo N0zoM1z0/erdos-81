@@ -1,4 +1,5 @@
 import Erdos81.RootArithmetic
+import Mathlib.Data.Nat.Dist
 import Mathlib.Tactic
 
 /-!
@@ -65,6 +66,47 @@ theorem initialRoot_numerics {n a p E d : ℕ}
   have hbudget : 65536 * d ≤ p * p := by
     nlinarith
   exact ⟨hp128, hlower, hupper, hbudget⟩
+
+/-- The integer distance from a root order to `floor(n/3)` is controlled by
+the displacement appearing in the exact square identity, up to one vertex. -/
+theorem cast_dist_div_three_le_abs_displacement (n p : ℕ) :
+    (Nat.dist p (n / 3) : ℚ) ≤
+      |(p : ℚ) - (2 * (n : ℚ) + 1) / 6| + 1 := by
+  let k := n / 3
+  let c : ℚ := (2 * (n : ℚ) + 1) / 6
+  have hkn : 3 * k ≤ n := by
+    dsimp only [k]
+    omega
+  have hnk : n ≤ 3 * k + 2 := by
+    dsimp only [k]
+    omega
+  have hkcLower : (k : ℚ) ≤ c := by
+    dsimp only [c]
+    have hknQ : (3 : ℚ) * (k : ℚ) ≤ (n : ℚ) := by
+      exact_mod_cast hkn
+    linarith
+  have hkcUpper : c ≤ (k : ℚ) + 1 := by
+    dsimp only [c]
+    have hnkQ : (n : ℚ) ≤ 3 * (k : ℚ) + 2 := by
+      exact_mod_cast hnk
+    linarith
+  by_cases hpk : p ≤ k
+  · rw [Nat.dist_eq_sub_of_le hpk, Nat.cast_sub hpk]
+    have hpkQ : (p : ℚ) ≤ (k : ℚ) := by exact_mod_cast hpk
+    have hpc : (p : ℚ) ≤ c := hpkQ.trans hkcLower
+    rw [abs_of_nonpos (sub_nonpos.mpr hpc)]
+    norm_num
+    linarith
+  · have hkp : k ≤ p := Nat.le_of_not_ge hpk
+    rw [Nat.dist_eq_sub_of_le_right hkp, Nat.cast_sub hkp]
+    by_cases hpc : (p : ℚ) ≤ c
+    · rw [abs_of_nonpos (sub_nonpos.mpr hpc)]
+      norm_num
+      linarith
+    · have hcp : c ≤ (p : ℚ) := le_of_not_ge hpc
+      rw [abs_of_nonneg (sub_nonneg.mpr hcp)]
+      norm_num
+      linarith
 
 end LocalRootArithmetic
 end Erdos81

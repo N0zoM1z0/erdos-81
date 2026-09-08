@@ -55,6 +55,39 @@ theorem edit_distance_assembly
     distance ≤ 9 * delta + n * displacement + n := by
   nlinarith
 
+/-- The deliberately separated manuscript scales turn the local root bounds
+into a strict contraction from radius `10^-12` to radius `10^-12 / 4`. -/
+theorem manuscript_contraction_numerics
+    {n delta defects displacement distance : ℚ}
+    (hn : (10 : ℚ) ^ 32 ≤ n)
+    (hdelta : delta = n ^ 2 / (10 : ℚ) ^ 30)
+    (hdefects : defects ≤ 9 * delta)
+    (hdisplacement : displacement ^ 2 ≤ 2 * delta / 3)
+    (hdistance : distance ≤ defects + n * (|displacement| + 1)) :
+    distance / n ^ 2 < ((1 : ℚ) / 10 ^ 12) / 4 := by
+  have hn0 : 0 < n := by
+    have : (0 : ℚ) < 10 ^ 32 := by positivity
+    exact this.trans_le hn
+  have hn2pos : 0 < n ^ 2 := sq_pos_of_pos hn0
+  have habsSmall : |displacement| < n / (10 : ℚ) ^ 14 := by
+    by_contra hnot
+    have hlarge : n / (10 : ℚ) ^ 14 ≤ |displacement| :=
+      le_of_not_gt hnot
+    have htargetNonneg : 0 ≤ n / (10 : ℚ) ^ 14 := by positivity
+    have hsquare :=
+      (sq_le_sq₀ htargetNonneg (abs_nonneg displacement)).2 hlarge
+    rw [sq_abs] at hsquare
+    rw [hdelta] at hdisplacement
+    nlinarith
+  have hmul := mul_lt_mul_of_pos_left habsSmall hn0
+  have hnProduct : (10 : ℚ) ^ 32 * n ≤ n * n :=
+    mul_le_mul_of_nonneg_right hn (le_of_lt hn0)
+  have hnSmall : n ≤ n ^ 2 / (10 : ℚ) ^ 32 := by
+    nlinarith
+  rw [hdelta] at hdefects
+  apply (div_lt_iff₀ hn2pos).2
+  nlinarith
+
 /-- Integrality converts the continuous `Q(n)` upper bound to the sharp target. -/
 theorem nat_le_sharpBound_of_le_Q (n value : ℕ)
     (hvalue : (value : ℚ) ≤ Arithmetic.Q (n : ℚ)) :
