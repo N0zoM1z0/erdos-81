@@ -431,8 +431,6 @@ theorem rootFourClique_uses_eq_zero_of_spoke (K : Finset V)
   exact (Finset.mem_sdiff.mp hz).2
     ((Finset.mem_powersetCard.mp R.2).1 hzR)
 
-attribute [local instance] MixedModel.resourceFintype
-
 /-- Rational indicator of membership in a finite item family. -/
 noncomputable def familyIndicator {G : SimpleGraph V}
     (F : Finset (Item G)) (i : Item G) : ℚ := by
@@ -562,6 +560,498 @@ theorem packingValue_generatedPacking (K : Finset V) (α β γ : ℚ)
         sum_gain_familyIndicator _ 5 (mixedFourCliques_gain K),
         sum_gain_familyIndicator _ 5 (rootFourCliques_gain K)]
       ring
+
+/-- Twice a rationally cast pair count has the expected polynomial form. -/
+theorem two_mul_cast_choose_two (n : ℕ) :
+    (2 : ℚ) * (Nat.choose n 2 : ℚ) = (n - 1 : ℕ) * n := by
+  have hnat : Nat.choose n 2 + Nat.choose n 2 = (n - 1) * n := by
+    have h := Nat.choose_succ_right_eq n 1
+    calc
+      Nat.choose n 2 + Nat.choose n 2 = Nat.choose n 2 * 2 := by omega
+      _ = n * (n - 1) := by simpa using h
+      _ = (n - 1) * n := Nat.mul_comm _ _
+  have hq : (Nat.choose n 2 : ℚ) + (Nat.choose n 2 : ℚ) =
+      ((n - 1 : ℕ) : ℚ) * (n : ℚ) := by
+    exact_mod_cast hnat
+  linarith
+
+/-- Three times a rationally cast triple count is a pair count times the
+number of remaining root vertices. -/
+theorem three_mul_cast_choose_three (n : ℕ) :
+    (3 : ℚ) * (Nat.choose n 3 : ℚ) =
+      (Nat.choose n 2 : ℚ) * (n - 2 : ℕ) := by
+  have hnat : Nat.choose n 3 * 3 = Nat.choose n 2 * (n - 2) := by
+    simpa using (Nat.choose_succ_right_eq n 2)
+  have hq : (Nat.choose n 3 : ℚ) * 3 =
+      (Nat.choose n 2 : ℚ) * ((n - 2 : ℕ) : ℚ) := by
+    exact_mod_cast hnat
+  linarith
+
+/-- Four times a rationally cast four-set count is a triple count times the
+number of remaining root vertices. -/
+theorem four_mul_cast_choose_four (n : ℕ) :
+    (4 : ℚ) * (Nat.choose n 4 : ℚ) =
+      (Nat.choose n 3 : ℚ) * (n - 3 : ℕ) := by
+  have hnat : Nat.choose n 4 * 4 = Nat.choose n 3 * (n - 3) := by
+    simpa using (Nat.choose_succ_right_eq n 3)
+  have hq : (Nat.choose n 4 : ℚ) * 4 =
+      (Nat.choose n 3 : ℚ) * ((n - 3 : ℕ) : ℚ) := by
+    exact_mod_cast hnat
+  linarith
+
+/-- The high-outside-vertex regime is witnessed by uniform mixed triangles. -/
+noncomputable def firstRegimePacking (K : Finset V)
+    (houtside : 0 < (outsideVertices K).card)
+    (hspoke : K.card - 1 ≤ (outsideVertices K).card) :
+    FractionalPacking (completeSplitGraph K) := by
+  let l : ℚ := (outsideVertices K).card
+  have hl : 0 < l := by
+    dsimp only [l]
+    exact_mod_cast houtside
+  apply generatedPacking K (1 / l) 0 0 (by positivity) (by norm_num)
+    (by norm_num)
+  intro e
+  rcases edge_root_or_spoke K e with heRoot | heSpoke
+  · have huNat := mixedTriangle_uses_le_root K e heRoot
+    have hu : (familyUses (mixedTriangles K) e : ℚ) ≤ l := by
+      dsimp only [l]
+      exact_mod_cast huNat
+    norm_num only [zero_mul, add_zero]
+    rw [one_div, inv_mul_eq_div]
+    exact (div_le_one hl).mpr hu
+  · have huNat := (mixedTriangle_uses_le_spoke K e heSpoke).trans hspoke
+    have hu : (familyUses (mixedTriangles K) e : ℚ) ≤ l := by
+      dsimp only [l]
+      exact_mod_cast huNat
+    norm_num only [zero_mul, add_zero]
+    rw [one_div, inv_mul_eq_div]
+    exact (div_le_one hl).mpr hu
+
+/-- Exact value of the high-outside-vertex packing. -/
+theorem packingValue_firstRegimePacking (K : Finset V)
+    (houtside : 0 < (outsideVertices K).card)
+    (hspoke : K.card - 1 ≤ (outsideVertices K).card) :
+    packingValue (firstRegimePacking K houtside hspoke) =
+      2 * (Nat.choose K.card 2 : ℚ) := by
+  let l : ℚ := (outsideVertices K).card
+  have hl : l ≠ 0 := by
+    have : 0 < l := by
+      dsimp only [l]
+      exact_mod_cast houtside
+    positivity
+  unfold firstRegimePacking
+  rw [packingValue_generatedPacking, card_mixedTriangles,
+    card_mixedFourCliques, card_rootFourCliques]
+  norm_num only [zero_mul, add_zero]
+  push_cast
+  field_simp
+
+/-- In the middle regime, mixed triangles and mixed four-cliques jointly
+saturate root edges and spokes. -/
+noncomputable def secondRegimePacking (K : Finset V)
+    (hk : 3 ≤ K.card)
+    (houtside : 0 < (outsideVertices K).card)
+    (hlow : K.card - 1 ≤ 2 * (outsideVertices K).card)
+    (hhigh : (outsideVertices K).card ≤ K.card - 1) :
+    FractionalPacking (completeSplitGraph K) := by
+  let l : ℚ := (outsideVertices K).card
+  let km1 : ℚ := (K.card - 1 : ℕ)
+  let km2 : ℚ := (K.card - 2 : ℕ)
+  let α : ℚ := (2 * l - km1) / (l * km1)
+  let β : ℚ := 2 * (km1 - l) / (l * km1 * km2)
+  have hl : 0 < l := by
+    dsimp only [l]
+    exact_mod_cast houtside
+  have hkm1 : 0 < km1 := by
+    dsimp only [km1]
+    exact_mod_cast (show 0 < K.card - 1 by omega)
+  have hkm2 : 0 < km2 := by
+    dsimp only [km2]
+    exact_mod_cast (show 0 < K.card - 2 by omega)
+  have hαnum : 0 ≤ 2 * l - km1 := by
+    have hlowQ : km1 ≤ 2 * l := by
+      dsimp only [l, km1]
+      exact_mod_cast hlow
+    linarith
+  have hβnum : 0 ≤ km1 - l := by
+    have hhighQ : l ≤ km1 := by
+      dsimp only [l, km1]
+      exact_mod_cast hhigh
+    linarith
+  have hα : 0 ≤ α := by
+    dsimp only [α]
+    positivity
+  have hβ : 0 ≤ β := by
+    dsimp only [β]
+    positivity
+  apply generatedPacking K α β 0 hα hβ (by norm_num)
+  intro e
+  rcases edge_root_or_spoke K e with heRoot | heSpoke
+  · have huαNat := mixedTriangle_uses_le_root K e heRoot
+    have huβNat := mixedFourClique_uses_le_root K e heRoot
+    have huα : (familyUses (mixedTriangles K) e : ℚ) ≤ l := by
+      dsimp only [l]
+      exact_mod_cast huαNat
+    have huβ : (familyUses (mixedFourCliques K) e : ℚ) ≤ km2 * l := by
+      dsimp only [km2, l]
+      exact_mod_cast huβNat
+    norm_num only [zero_mul, add_zero]
+    calc
+      α * (familyUses (mixedTriangles K) e : ℚ) +
+          β * (familyUses (mixedFourCliques K) e : ℚ) ≤
+          α * l + β * (km2 * l) :=
+        add_le_add (mul_le_mul_of_nonneg_left huα hα)
+          (mul_le_mul_of_nonneg_left huβ hβ)
+      _ = 1 := by
+        dsimp only [α, β]
+        field_simp
+        ring
+  · have huαNat := mixedTriangle_uses_le_spoke K e heSpoke
+    have huβNat := mixedFourClique_uses_le_spoke K e heSpoke
+    have huα : (familyUses (mixedTriangles K) e : ℚ) ≤ km1 := by
+      dsimp only [km1]
+      exact_mod_cast huαNat
+    have huβ : (familyUses (mixedFourCliques K) e : ℚ) ≤
+        (Nat.choose (K.card - 1) 2 : ℚ) := by
+      exact_mod_cast huβNat
+    have hchoose : (2 : ℚ) * (Nat.choose (K.card - 1) 2 : ℚ) =
+        km2 * km1 := by
+      rw [two_mul_cast_choose_two]
+      dsimp only [km1, km2]
+      congr 1
+    norm_num only [zero_mul, add_zero]
+    calc
+      α * (familyUses (mixedTriangles K) e : ℚ) +
+          β * (familyUses (mixedFourCliques K) e : ℚ) ≤
+          α * km1 + β * (Nat.choose (K.card - 1) 2 : ℚ) :=
+        add_le_add (mul_le_mul_of_nonneg_left huα hα)
+          (mul_le_mul_of_nonneg_left huβ hβ)
+      _ = 1 := by
+        dsimp only [α, β]
+        field_simp
+        nlinarith
+
+/-- Exact value of the middle-regime packing. -/
+theorem packingValue_secondRegimePacking (K : Finset V)
+    (hk : 3 ≤ K.card)
+    (houtside : 0 < (outsideVertices K).card)
+    (hlow : K.card - 1 ≤ 2 * (outsideVertices K).card)
+    (hhigh : (outsideVertices K).card ≤ K.card - 1) :
+    packingValue (secondRegimePacking K hk houtside hlow hhigh) =
+      (4 * (Nat.choose K.card 2 : ℚ) +
+        (K.card : ℚ) * (outsideVertices K).card) / 3 := by
+  let l : ℚ := (outsideVertices K).card
+  let km1 : ℚ := (K.card - 1 : ℕ)
+  let km2 : ℚ := (K.card - 2 : ℕ)
+  have hl : l ≠ 0 := by
+    have : 0 < l := by
+      dsimp only [l]
+      exact_mod_cast houtside
+    positivity
+  have hkm1 : km1 ≠ 0 := by
+    have : 0 < km1 := by
+      dsimp only [km1]
+      exact_mod_cast (show 0 < K.card - 1 by omega)
+    positivity
+  have hkm2 : km2 ≠ 0 := by
+    have : 0 < km2 := by
+      dsimp only [km2]
+      exact_mod_cast (show 0 < K.card - 2 by omega)
+    positivity
+  have hpair : (Nat.choose K.card 2 : ℚ) =
+      km1 * (K.card : ℚ) / 2 := by
+    have h := two_mul_cast_choose_two K.card
+    dsimp only [km1]
+    linarith
+  have htriple : (Nat.choose K.card 3 : ℚ) =
+      (Nat.choose K.card 2 : ℚ) * km2 / 3 := by
+    have h := three_mul_cast_choose_three K.card
+    dsimp only [km2]
+    linarith
+  unfold secondRegimePacking
+  rw [packingValue_generatedPacking, card_mixedTriangles,
+    card_mixedFourCliques, card_rootFourCliques]
+  norm_num only [zero_mul, add_zero]
+  push_cast
+  rw [htriple, hpair]
+  dsimp only [l, km1, km2] at hl hkm1 hkm2 ⊢
+  field_simp
+  ring
+
+/-- In the low-outside-vertex regime, mixed four-cliques use the spokes and
+root four-cliques fill the residual root-edge capacity. -/
+noncomputable def thirdRegimePacking (K : Finset V)
+    (hk : 4 ≤ K.card)
+    (hregion : 2 * (outsideVertices K).card ≤ K.card - 1) :
+    FractionalPacking (completeSplitGraph K) := by
+  let l : ℚ := (outsideVertices K).card
+  let km1 : ℚ := (K.card - 1 : ℕ)
+  let km2 : ℚ := (K.card - 2 : ℕ)
+  let C1 : ℚ := Nat.choose (K.card - 1) 2
+  let C2 : ℚ := Nat.choose (K.card - 2) 2
+  let β : ℚ := 1 / C1
+  let γ : ℚ := (1 - β * km2 * l) / C2
+  have hkm2 : 0 ≤ km2 := by positivity
+  have hC1 : 0 < C1 := by
+    dsimp only [C1]
+    exact_mod_cast (Nat.choose_pos (show 2 ≤ K.card - 1 by omega))
+  have hC2 : 0 < C2 := by
+    dsimp only [C2]
+    exact_mod_cast (Nat.choose_pos (show 2 ≤ K.card - 2 by omega))
+  have hchoose : 2 * C1 = km2 * km1 := by
+    dsimp only [C1, km1, km2]
+    rw [two_mul_cast_choose_two]
+    congr 1
+  have hregionQ : 2 * l ≤ km1 := by
+    dsimp only [l, km1]
+    exact_mod_cast hregion
+  have hscaled := mul_le_mul_of_nonneg_left hregionQ hkm2
+  have hfill : 0 ≤ 1 - β * km2 * l := by
+    dsimp only [β]
+    have hbound : km2 * l ≤ C1 := by nlinarith
+    have hdiv : km2 * l / C1 ≤ 1 := (div_le_one hC1).mpr hbound
+    calc
+      0 ≤ 1 - km2 * l / C1 := sub_nonneg.mpr hdiv
+      _ = 1 - (1 / C1) * km2 * l := by ring
+  have hβ : 0 ≤ β := by
+    dsimp only [β]
+    positivity
+  have hγ : 0 ≤ γ := by
+    dsimp only [γ]
+    positivity
+  apply generatedPacking K 0 β γ (by norm_num) hβ hγ
+  intro e
+  rcases edge_root_or_spoke K e with heRoot | heSpoke
+  · have huβNat := mixedFourClique_uses_le_root K e heRoot
+    have huγNat := rootFourClique_uses_le_root K e heRoot
+    have huβ : (familyUses (mixedFourCliques K) e : ℚ) ≤ km2 * l := by
+      dsimp only [km2, l]
+      exact_mod_cast huβNat
+    have huγ : (familyUses (rootFourCliques K) e : ℚ) ≤ C2 := by
+      dsimp only [C2]
+      exact_mod_cast huγNat
+    norm_num only [zero_mul, zero_add]
+    calc
+      β * (familyUses (mixedFourCliques K) e : ℚ) +
+          γ * (familyUses (rootFourCliques K) e : ℚ) ≤
+          β * (km2 * l) + γ * C2 :=
+        add_le_add (mul_le_mul_of_nonneg_left huβ hβ)
+          (mul_le_mul_of_nonneg_left huγ hγ)
+      _ = 1 := by
+        dsimp only [γ]
+        field_simp
+        ring
+  · have huβNat := mixedFourClique_uses_le_spoke K e heSpoke
+    have huβ : (familyUses (mixedFourCliques K) e : ℚ) ≤ C1 := by
+      dsimp only [C1]
+      exact_mod_cast huβNat
+    have huγ := rootFourClique_uses_eq_zero_of_spoke K e heSpoke
+    norm_num only [zero_mul, zero_add]
+    rw [huγ, Nat.cast_zero, mul_zero, add_zero]
+    dsimp only [β]
+    rw [one_div, inv_mul_eq_div]
+    exact (div_le_one hC1).mpr huβ
+
+/-- Exact value of the low-outside-vertex packing. -/
+theorem packingValue_thirdRegimePacking (K : Finset V)
+    (hk : 4 ≤ K.card)
+    (hregion : 2 * (outsideVertices K).card ≤ K.card - 1) :
+    packingValue (thirdRegimePacking K hk hregion) =
+      5 * ((Nat.choose K.card 2 : ℚ) +
+        (K.card : ℚ) * (outsideVertices K).card) / 6 := by
+  let l : ℚ := (outsideVertices K).card
+  let km1 : ℚ := (K.card - 1 : ℕ)
+  let km2 : ℚ := (K.card - 2 : ℕ)
+  let km3 : ℚ := (K.card - 3 : ℕ)
+  let C1 : ℚ := Nat.choose (K.card - 1) 2
+  let C2 : ℚ := Nat.choose (K.card - 2) 2
+  have hkm1 : km1 ≠ 0 := by
+    have : 0 < km1 := by
+      dsimp only [km1]
+      exact_mod_cast (show 0 < K.card - 1 by omega)
+    positivity
+  have hkm2 : km2 ≠ 0 := by
+    have : 0 < km2 := by
+      dsimp only [km2]
+      exact_mod_cast (show 0 < K.card - 2 by omega)
+    positivity
+  have hkm3 : km3 ≠ 0 := by
+    have : 0 < km3 := by
+      dsimp only [km3]
+      exact_mod_cast (show 0 < K.card - 3 by omega)
+    positivity
+  have hpair : (Nat.choose K.card 2 : ℚ) =
+      km1 * (K.card : ℚ) / 2 := by
+    have h := two_mul_cast_choose_two K.card
+    dsimp only [km1]
+    linarith
+  have htriple : (Nat.choose K.card 3 : ℚ) =
+      (Nat.choose K.card 2 : ℚ) * km2 / 3 := by
+    have h := three_mul_cast_choose_three K.card
+    dsimp only [km2]
+    linarith
+  have hfour : (Nat.choose K.card 4 : ℚ) =
+      (Nat.choose K.card 3 : ℚ) * km3 / 4 := by
+    have h := four_mul_cast_choose_four K.card
+    dsimp only [km3]
+    linarith
+  have hC1 : C1 = km2 * km1 / 2 := by
+    have h := two_mul_cast_choose_two (K.card - 1)
+    dsimp only [C1, km1, km2]
+    have hsub : K.card - 1 - 1 = K.card - 2 := by omega
+    rw [hsub] at h
+    linarith
+  have hC2 : C2 = km3 * km2 / 2 := by
+    have h := two_mul_cast_choose_two (K.card - 2)
+    dsimp only [C2, km2, km3]
+    have hsub : K.card - 2 - 1 = K.card - 3 := by omega
+    rw [hsub] at h
+    linarith
+  unfold thirdRegimePacking
+  rw [packingValue_generatedPacking, card_mixedTriangles,
+    card_mixedFourCliques, card_rootFourCliques]
+  norm_num only [zero_mul, zero_add]
+  push_cast
+  dsimp only [C1] at hC1
+  dsimp only [C2] at hC2
+  rw [hfour, htriple, hpair, hC1, hC2]
+  dsimp only [l, km1, km2, km3, C1, C2] at hkm1 hkm2 hkm3 ⊢
+  field_simp
+  ring
+
+/-- A certified optimum is at least the explicit first-regime witness. -/
+theorem packingOptimum_ge_firstRegime (K : Finset V) (w : ℚ)
+    (hopt : IsPackingOptimum (G := completeSplitGraph K) w)
+    (houtside : 0 < (outsideVertices K).card)
+    (hspoke : K.card - 1 ≤ (outsideVertices K).card) :
+    2 * (Nat.choose K.card 2 : ℚ) ≤ w := by
+  rw [← packingValue_firstRegimePacking K houtside hspoke]
+  exact hopt.2 (firstRegimePacking K houtside hspoke)
+
+/-- A certified optimum is at least the explicit middle-regime witness. -/
+theorem packingOptimum_ge_secondRegime (K : Finset V) (w : ℚ)
+    (hopt : IsPackingOptimum (G := completeSplitGraph K) w)
+    (hk : 3 ≤ K.card)
+    (houtside : 0 < (outsideVertices K).card)
+    (hlow : K.card - 1 ≤ 2 * (outsideVertices K).card)
+    (hhigh : (outsideVertices K).card ≤ K.card - 1) :
+    (4 * (Nat.choose K.card 2 : ℚ) +
+      (K.card : ℚ) * (outsideVertices K).card) / 3 ≤ w := by
+  rw [← packingValue_secondRegimePacking K hk houtside hlow hhigh]
+  exact hopt.2 (secondRegimePacking K hk houtside hlow hhigh)
+
+/-- A certified optimum is at least the explicit low-regime witness. -/
+theorem packingOptimum_ge_thirdRegime (K : Finset V) (w : ℚ)
+    (hopt : IsPackingOptimum (G := completeSplitGraph K) w)
+    (hk : 4 ≤ K.card)
+    (hregion : 2 * (outsideVertices K).card ≤ K.card - 1) :
+    5 * ((Nat.choose K.card 2 : ℚ) +
+      (K.card : ℚ) * (outsideVertices K).card) / 6 ≤ w := by
+  rw [← packingValue_thirdRegimePacking K hk hregion]
+  exact hopt.2 (thirdRegimePacking K hk hregion)
+
+theorem cast_card_edgeFinset_default (K : Finset V) :
+    ((completeSplitGraph K).edgeFinset.card : ℚ) =
+      (Nat.choose K.card 2 : ℚ) +
+        (K.card : ℚ) * (outsideVertices K).card := by
+  have h := card_edgeFinset K
+  rw [← card_outsideVertices K] at h
+  exact_mod_cast h
+
+/-- The `potential` definition was elaborated with the mixed model's explicit
+edge-set `Fintype` instance.  This instance-robust bridge identifies its
+cardinality with the ordinary complete-split count. -/
+theorem cast_card_edgeFinset_potential (K : Finset V) :
+    ((@SimpleGraph.edgeFinset V (completeSplitGraph K)
+      (MixedModel.resourceFintype (completeSplitGraph K))).card : ℚ) =
+      (Nat.choose K.card 2 : ℚ) +
+        (K.card : ℚ) * (outsideVertices K).card := by
+  have heq :
+      @SimpleGraph.edgeFinset V (completeSplitGraph K)
+          (MixedModel.resourceFintype (completeSplitGraph K)) =
+        (completeSplitGraph K).edgeFinset := by
+    ext e
+    simp
+  rw [heq]
+  exact cast_card_edgeFinset_default K
+
+/-- Potential upper bound in the high-outside-vertex regime. -/
+theorem potential_le_firstRegime (K : Finset V) (w : ℚ)
+    (hopt : IsPackingOptimum (G := completeSplitGraph K) w)
+    (houtside : 0 < (outsideVertices K).card)
+    (hspoke : K.card - 1 ≤ (outsideVertices K).card) :
+    potential (completeSplitGraph K) w ≤
+      (K.card : ℚ) * (outsideVertices K).card -
+        (Nat.choose K.card 2 : ℚ) := by
+  have hw := packingOptimum_ge_firstRegime K w hopt houtside hspoke
+  rw [potential, cast_card_edgeFinset_potential]
+  linarith
+
+/-- Potential upper bound in the middle regime. -/
+theorem potential_le_secondRegime (K : Finset V) (w : ℚ)
+    (hopt : IsPackingOptimum (G := completeSplitGraph K) w)
+    (hk : 3 ≤ K.card)
+    (houtside : 0 < (outsideVertices K).card)
+    (hlow : K.card - 1 ≤ 2 * (outsideVertices K).card)
+    (hhigh : (outsideVertices K).card ≤ K.card - 1) :
+    potential (completeSplitGraph K) w ≤
+      (2 * (K.card : ℚ) * (outsideVertices K).card -
+        (Nat.choose K.card 2 : ℚ)) / 3 := by
+  have hw := packingOptimum_ge_secondRegime K w hopt hk houtside hlow hhigh
+  rw [potential, cast_card_edgeFinset_potential]
+  linarith
+
+/-- Potential upper bound in the low-outside-vertex regime. -/
+theorem potential_le_thirdRegime (K : Finset V) (w : ℚ)
+    (hopt : IsPackingOptimum (G := completeSplitGraph K) w)
+    (hk : 4 ≤ K.card)
+    (hregion : 2 * (outsideVertices K).card ≤ K.card - 1) :
+    potential (completeSplitGraph K) w ≤
+      ((Nat.choose K.card 2 : ℚ) +
+        (K.card : ℚ) * (outsideVertices K).card) / 6 := by
+  have hw := packingOptimum_ge_thirdRegime K w hopt hk hregion
+  rw [potential, cast_card_edgeFinset_potential]
+  linarith
+
+/-- The zero packing supplies the elementary nonnegativity baseline. -/
+noncomputable def zeroPacking (K : Finset V) :
+    FractionalPacking (completeSplitGraph K) :=
+  generatedPacking K 0 0 0 (by norm_num) (by norm_num) (by norm_num)
+    (by intro; norm_num)
+
+theorem packingValue_zeroPacking (K : Finset V) :
+    packingValue (zeroPacking K) = 0 := by
+  unfold zeroPacking
+  rw [packingValue_generatedPacking]
+  ring
+
+theorem packingOptimum_nonnegative (K : Finset V) (w : ℚ)
+    (hopt : IsPackingOptimum (G := completeSplitGraph K) w) : 0 ≤ w := by
+  rw [← packingValue_zeroPacking K]
+  exact hopt.2 (zeroPacking K)
+
+/-- Complete-split graphs with root order at most three have only linearly
+many edges. -/
+theorem edge_count_le_three_mul_order_of_small_root (K : Finset V)
+    (hk : K.card ≤ 3) :
+    Nat.choose K.card 2 + K.card * (outsideVertices K).card ≤
+      3 * Fintype.card V := by
+  have houtside := card_outsideVertices K
+  have hrootOrder := Finset.card_le_univ K
+  interval_cases hK : K.card <;> norm_num at houtside ⊢ <;> omega
+
+theorem potential_le_three_mul_order_of_small_root (K : Finset V) (w : ℚ)
+    (hopt : IsPackingOptimum (G := completeSplitGraph K) w)
+    (hk : K.card ≤ 3) :
+    potential (completeSplitGraph K) w ≤ 3 * (Fintype.card V : ℚ) := by
+  have hw := packingOptimum_nonnegative K w hopt
+  have hedgeNat := edge_count_le_three_mul_order_of_small_root K hk
+  have hedge : (Nat.choose K.card 2 : ℚ) +
+      (K.card : ℚ) * (outsideVertices K).card ≤
+        3 * (Fintype.card V : ℚ) := by
+    exact_mod_cast hedgeNat
+  rw [potential, cast_card_edgeFinset_potential]
+  linarith
 
 end CompleteSplitPacking
 end Erdos81
