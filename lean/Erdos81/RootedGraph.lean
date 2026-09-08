@@ -218,6 +218,75 @@ theorem crossing_add_missing (G : SimpleGraph V) [DecidableRel G.Adj]
   exact G.card_interedges_add_card_interedges_compl
     (root_disjoint_outside P)
 
+/-- Outside vertices which fail to be adjacent to a fixed root vertex. -/
+noncomputable def missingColumn (G : SimpleGraph V) [DecidableRel G.Adj]
+    (P : Finset V) (x : V) : Finset V :=
+  (outsideVertices P).filter fun y ↦ ¬ G.Adj x y
+
+@[simp]
+theorem mem_missingColumn {G : SimpleGraph V} [DecidableRel G.Adj]
+    {P : Finset V} {x y : V} :
+    y ∈ missingColumn G P x ↔ y ∈ outsideVertices P ∧ ¬ G.Adj x y := by
+  simp [missingColumn]
+
+/-- The total missing incidence count is the sum of the missing-column
+sizes.  This fixes the orientation of the root--outside incidence count once
+and for all. -/
+theorem sum_card_missingColumn (G : SimpleGraph V) [DecidableRel G.Adj]
+    (P : Finset V) :
+    ∑ x ∈ P, (missingColumn G P x).card = missingIncidences G P := by
+  classical
+  let S : Finset (V × V) := Gᶜ.interedges P (outsideVertices P)
+  have hMaps : (S : Set (V × V)).MapsTo Prod.fst P := by
+    intro xy hxy
+    exact (Rel.mem_interedges_iff.mp hxy).1
+  have hFibers : ∀ x ∈ P,
+      (S.filter fun xy ↦ xy.1 = x).card = (missingColumn G P x).card := by
+    intro x hx
+    apply Finset.card_bij (fun xy _ ↦ xy.2)
+    · intro xy hxy
+      simp only [Finset.mem_filter] at hxy
+      have hInter := Rel.mem_interedges_iff.mp hxy.1
+      have hFirst : xy.1 = x := hxy.2
+      exact mem_missingColumn.mpr
+        ⟨hInter.2.1, by simpa [hFirst] using hInter.2.2.2⟩
+    · intro xy₁ hxy₁ xy₂ hxy₂ hSecond
+      simp only [Finset.mem_filter] at hxy₁ hxy₂
+      exact Prod.ext (hxy₁.2.trans hxy₂.2.symm) hSecond
+    · intro y hy
+      have hy' := mem_missingColumn.mp hy
+      refine ⟨(x, y), ?_, rfl⟩
+      simp only [Finset.mem_filter]
+      refine ⟨Rel.mem_interedges_iff.mpr ⟨hx, hy'.1, ?_⟩, trivial⟩
+      refine ⟨?_, hy'.2⟩
+      intro hxy
+      have hxy' : x = y := by simpa using hxy
+      exact (mem_outsideVertices.mp hy'.1) (hxy' ▸ hx)
+  rw [missingIncidences]
+  change ∑ x ∈ P, (missingColumn G P x).card = S.card
+  rw [Finset.card_eq_sum_card_fiberwise hMaps]
+  exact Finset.sum_congr rfl fun x hx ↦ (hFibers x hx).symm
+
+/-- Maximum missing degree of a root vertex into the outside. -/
+noncomputable def maxMissingColumn (G : SimpleGraph V)
+    [DecidableRel G.Adj] (P : Finset V) : ℕ :=
+  P.sup fun x ↦ (missingColumn G P x).card
+
+theorem card_missingColumn_le_max (G : SimpleGraph V)
+    [DecidableRel G.Adj] (P : Finset V) {x : V} (hx : x ∈ P) :
+    (missingColumn G P x).card ≤ maxMissingColumn G P := by
+  exact Finset.le_sup (f := fun x ↦ (missingColumn G P x).card) hx
+
+theorem missingIncidences_le_card_mul_max (G : SimpleGraph V)
+    [DecidableRel G.Adj] (P : Finset V) :
+    missingIncidences G P ≤ P.card * maxMissingColumn G P := by
+  rw [← sum_card_missingColumn]
+  calc
+    ∑ x ∈ P, (missingColumn G P x).card
+        ≤ ∑ _x ∈ P, maxMissingColumn G P := by
+          exact Finset.sum_le_sum fun x hx ↦ card_missingColumn_le_max G P hx
+    _ = P.card * maxMissingColumn G P := by simp
+
 /-- Exact root-relative edge bookkeeping. -/
 theorem edge_count_identity (G : SimpleGraph V) [DecidableRel G.Adj]
     (P : Finset V) (hClique : G.IsClique (P : Set V)) :
