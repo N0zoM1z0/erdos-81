@@ -8,12 +8,14 @@ import Erdos81.CopyCover
 import Erdos81.DiscreteConvexity
 import Erdos81.Dirac
 import Erdos81.EditDistance
+import Erdos81.EdgeColoring
 import Erdos81.ExternalInputs
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry
 import Erdos81.FirstEntryGraph
 import Erdos81.IntegralFractional
 import Erdos81.IntegralPacking
+import Erdos81.LargeClasses
 import Erdos81.LocalStability
 import Erdos81.MixedModel
 import Erdos81.PEOExistence
