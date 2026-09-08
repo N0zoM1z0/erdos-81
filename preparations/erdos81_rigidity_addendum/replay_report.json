@@ -1,5 +1,6 @@
 {
   "verdict": "PASS",
   "partition_certificates": 94,
+  "negative_size_guard_checks": 1,
   "clique_type_checks": 94617
 }

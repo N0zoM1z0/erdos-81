@@ -4,14 +4,26 @@ from itertools import combinations
 import json
 from construct import verify_partition, certify_near_extremizer
 root=Path(__file__).resolve().parent
+
+def check_size_guard():
+    """Negative control: a K4 is not a valid order-at-most-three partition."""
+    E=set(combinations(range(4),2))
+    try:
+        verify_partition(E,[(0,1,2,3)],max_size=3)
+    except AssertionError:
+        return
+    raise AssertionError('The partition verifier accepted an oversized block')
+
+check_size_guard()
 certs=json.loads((root/'partition_certificates.json').read_text())
 checks=0
 for c in certs:
     p,q=c['p'],c['q']; n=p+q
     E={tuple(e) for e in c['edges']}
     parts=[tuple(Q) for Q in c['parts']]
-    assert verify_partition(E,parts)==c['value']
     a=len(c['missing']);m=len(c['outside']);cap=c['max_size']
+    assert cap in (3,4)
+    assert verify_partition(E,parts,max_size=cap)==c['value']
     assert a+2*m<=min(p,q-p)
     w={tuple(e[:2]):e[2] for e in c['dual_weights']}
     assert set(w)==E and sum(w.values())==c['value']
@@ -30,6 +42,7 @@ for c in certs:
             r=certify_near_extremizer(n,E,deficit)
             assert r is not None and r['cp']==c['value']
             assert r['root']==list(range(p))
-report={'verdict':'PASS','partition_certificates':len(certs),'clique_type_checks':checks}
+report={'verdict':'PASS','partition_certificates':len(certs),
+        'negative_size_guard_checks':1,'clique_type_checks':checks}
 (root/'replay_report.json').write_text(json.dumps(report,indent=2))
 print(json.dumps(report,indent=2))
