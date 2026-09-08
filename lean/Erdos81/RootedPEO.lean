@@ -1,5 +1,6 @@
 import Erdos81.PEOExistence
 import Erdos81.RootedGraph
+import Erdos81.MixedModel
 import Mathlib.Tactic
 
 /-!
@@ -15,6 +16,9 @@ namespace Erdos81
 namespace RootedPEO
 
 open RootedGraph
+open MixedModel
+
+attribute [-instance] MixedModel.resourceFintype
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -349,6 +353,123 @@ theorem invalidHostIncidences_le {G : SimpleGraph V}
       ((outsideGraph G P).cliqueNum - 1) * missingIncidences G P := by
   rw [invalidHostIncidences_eq_sum]
   exact invalid_host_charge_le O
+
+/-- Turn an oriented outside edge into the corresponding resource of the
+outside graph. -/
+def forwardToResource {G : SimpleGraph V} {P : Finset V}
+    (O : Order G P) : ↑(forwardEdges O) → Resource (outsideGraph G P) :=
+  fun e ↦ ⟨s(e.1.1, e.1.2), by
+    have he := (mem_forwardEdges O).mp e.2
+    exact (outsideGraph G P).mem_edgeSet.mpr
+      ((outsideGraph_adj G P e.1.1 e.1.2).mpr
+        ⟨he.2.2.2, mem_outsideVertices.mp he.1,
+          mem_outsideVertices.mp he.2.1⟩)⟩
+
+theorem forwardToResource_bijective {G : SimpleGraph V}
+    [DecidableRel G.Adj] {P : Finset V} (O : Order G P) :
+    Function.Bijective (forwardToResource O) := by
+  constructor
+  · intro e f hef
+    apply Subtype.ext
+    exact forward_pair_injectiveOn O e.2 f.2
+      (congrArg Subtype.val hef)
+  · intro r
+    have hr : r.1 ∈ (outsideGraph G P).edgeFinset :=
+      (outsideGraph G P).mem_edgeFinset.mpr r.2
+    rw [outsideGraph_edgeFinset,
+      outsideEdges_eq_forward_image O] at hr
+    obtain ⟨e, he, heq⟩ := Finset.mem_image.mp hr
+    refine ⟨⟨e, he⟩, ?_⟩
+    exact Subtype.ext heq
+
+/-- Oriented outside edges and outside-graph resources are canonically
+equivalent once the rooted PEO is fixed. -/
+noncomputable def forwardResourceEquiv {G : SimpleGraph V}
+    [DecidableRel G.Adj] {P : Finset V} (O : Order G P) :
+    ↑(forwardEdges O) ≃ Resource (outsideGraph G P) :=
+  Equiv.ofBijective (forwardToResource O) (forwardToResource_bijective O)
+
+/-- Invalid root hosts attached directly to an outside-graph resource. -/
+noncomputable def invalidHostsForResource {G : SimpleGraph V}
+    [DecidableRel G.Adj] {P : Finset V} (O : Order G P)
+    (e : Resource (outsideGraph G P)) : Finset V :=
+  let oriented := (forwardResourceEquiv O).symm e
+  invalidHosts G P oriented.1.1 oriented.1.2
+
+/-- A root vertex is not invalid precisely when it is adjacent to both
+endpoints of the outside resource. -/
+theorem not_mem_invalidHostsForResource_iff {G : SimpleGraph V}
+    [DecidableRel G.Adj] {P : Finset V} (O : Order G P)
+    (e : Resource (outsideGraph G P)) {x : V} (hx : x ∈ P) :
+    x ∉ invalidHostsForResource O e ↔
+      ∀ y ∈ e.1.toFinset, G.Adj x y := by
+  classical
+  let oriented := (forwardResourceEquiv O).symm e
+  have hResource : forwardToResource O oriented = e :=
+    (forwardResourceEquiv O).apply_symm_apply e
+  have hEdge : s(oriented.1.1, oriented.1.2) = e.1 :=
+    congrArg Subtype.val hResource
+  have hinvalid :
+      x ∉ invalidHostsForResource O e ↔
+        G.Adj oriented.1.1 x ∧ G.Adj oriented.1.2 x := by
+    simp only [invalidHostsForResource, oriented, mem_invalidHosts, hx,
+      true_and, not_not]
+  rw [hinvalid]
+  constructor
+  · rintro ⟨hu, hv⟩ y hy
+    rw [← hEdge, Sym2.mem_toFinset, Sym2.mem_iff] at hy
+    rcases hy with rfl | rfl
+    · exact hu.symm
+    · exact hv.symm
+  · intro hall
+    constructor
+    · exact (hall oriented.1.1 (by rw [← hEdge]; simp)).symm
+    · exact (hall oriented.1.2 (by rw [← hEdge]; simp)).symm
+
+/-- Both endpoints of an outside-graph resource lie outside the root. -/
+theorem resource_endpoint_mem_outside {G : SimpleGraph V}
+    [DecidableRel G.Adj] {P : Finset V} (O : Order G P)
+    (e : Resource (outsideGraph G P)) {y : V} (hy : y ∈ e.1.toFinset) :
+    y ∈ outsideVertices P := by
+  classical
+  let oriented := (forwardResourceEquiv O).symm e
+  have hResource : forwardToResource O oriented = e :=
+    (forwardResourceEquiv O).apply_symm_apply e
+  have hEdge : s(oriented.1.1, oriented.1.2) = e.1 :=
+    congrArg Subtype.val hResource
+  rw [← hEdge, Sym2.mem_toFinset, Sym2.mem_iff] at hy
+  have horiented := (mem_forwardEdges O).mp oriented.2
+  rcases hy with rfl | rfl
+  · exact horiented.1
+  · exact horiented.2.1
+
+theorem resource_toFinset_card {G : SimpleGraph V}
+    [DecidableRel G.Adj] {P : Finset V}
+    (e : Resource (outsideGraph G P)) : e.1.toFinset.card = 2 := by
+  let ef : ↑(outsideGraph G P).edgeFinset :=
+    ⟨e.1, (outsideGraph G P).mem_edgeFinset.mpr e.2⟩
+  exact (outsideGraph G P).card_toFinset_mem_edgeFinset ef
+
+/-- Summing invalid hosts over outside resources reproduces the oriented
+incidence count. -/
+theorem sum_card_invalidHostsForResource {G : SimpleGraph V}
+    [DecidableRel G.Adj] {P : Finset V} (O : Order G P) :
+    (∑ e : Resource (outsideGraph G P),
+      (invalidHostsForResource O e).card) = invalidHostIncidences O := by
+  classical
+  calc
+    (∑ e : Resource (outsideGraph G P),
+        (invalidHostsForResource O e).card) =
+        ∑ e : ↑(forwardEdges O),
+          (invalidHosts G P e.1.1 e.1.2).card :=
+      (Fintype.sum_equiv (forwardResourceEquiv O)
+        (fun e ↦ (invalidHosts G P e.1.1 e.1.2).card)
+        (fun e ↦ (invalidHostsForResource O e).card) (fun e ↦ by
+          simp [invalidHostsForResource])).symm
+    _ = invalidHostIncidences O := by
+      rw [invalidHostIncidences]
+      exact (Finset.sum_subtype (forwardEdges O) (fun _ ↦ Iff.rfl)
+        (fun e ↦ (invalidHosts G P e.1 e.2).card)).symm
 
 end RootedPEO
 end Erdos81

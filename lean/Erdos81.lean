@@ -14,6 +14,7 @@ import Erdos81.ExternalInputs
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry
 import Erdos81.FirstEntryGraph
+import Erdos81.HostedTriangles
 import Erdos81.IntegralFractional
 import Erdos81.IntegralPacking
 import Erdos81.LargeClasses
@@ -24,10 +25,14 @@ import Erdos81.PerfectElimination
 import Erdos81.RootArithmetic
 import Erdos81.RootedGraph
 import Erdos81.RootedPEO
+import Erdos81.RootHostLists
+import Erdos81.RootHostedTriangles
 import Erdos81.SharpBound
 import Erdos81.Separator
 import Erdos81.SplitDual
 import Erdos81.Statement
+import Erdos81.TerminalAssignment
+import Erdos81.TerminalPacking
 import Erdos81.TrianglePacking
 
 /-!
