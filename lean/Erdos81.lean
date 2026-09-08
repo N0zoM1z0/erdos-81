@@ -28,6 +28,7 @@ import Erdos81.MixedModel
 import Erdos81.PEOExistence
 import Erdos81.PerfectElimination
 import Erdos81.RootArithmetic
+import Erdos81.RootDemotion
 import Erdos81.RootOptimization
 import Erdos81.RootRegularization
 import Erdos81.RootedGraph
