@@ -218,5 +218,41 @@ theorem edgeEditDistance_nested_completeSplitGraph_le {P A : Finset V}
     _ = (A.card - P.card) * Fintype.card V := by
       rw [Finset.card_sdiff_of_subset hPA]
 
+/-- Every missing edge inside `A` is an edit against the complete-split
+template with clique side `A`. -/
+theorem induced_complement_edges_le_distance (G : SimpleGraph V)
+    [DecidableRel G.Adj] (A : Finset V) :
+    (G.induce (A : Set V))ᶜ.edgeFinset.card ≤
+      edgeEditDistance G (completeSplitGraph A) := by
+  classical
+  let inclusion : A ↪ V := Function.Embedding.subtype _
+  have hsubset :
+      (G.induce (A : Set V))ᶜ.edgeFinset.map inclusion.sym2Map ⊆
+        changedEdges G (completeSplitGraph A) := by
+    intro e he
+    obtain ⟨e', he', rfl⟩ := Finset.mem_map.mp he
+    revert he'
+    refine Sym2.inductionOn e' ?_
+    intro x y he'
+    have hcomp : x ≠ y ∧ ¬ G.Adj x y := by
+      simpa using
+        (G.induce (A : Set V))ᶜ.mem_edgeSet.mp
+          ((G.induce (A : Set V))ᶜ.mem_edgeFinset.mp he')
+    have hne : (x : V) ≠ (y : V) := by
+      intro hxy
+      exact hcomp.1 (Subtype.ext hxy)
+    change s((x : V), (y : V)) ∈ changedEdges G (completeSplitGraph A)
+    rw [mem_changedEdges]
+    simp only [Set.mem_symmDiff, SimpleGraph.mem_edgeSet,
+      completeSplitGraph_adj]
+    exact Or.inr ⟨⟨hne, Or.inl x.property⟩, hcomp.2⟩
+  unfold edgeEditDistance
+  calc
+    (G.induce (A : Set V))ᶜ.edgeFinset.card =
+        ((G.induce (A : Set V))ᶜ.edgeFinset.map inclusion.sym2Map).card := by
+      rw [Finset.card_map]
+    _ ≤ (changedEdges G (completeSplitGraph A)).card :=
+      Finset.card_le_card hsubset
+
 end RootDistance
 end Erdos81
