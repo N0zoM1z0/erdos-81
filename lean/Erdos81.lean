@@ -38,6 +38,7 @@ import Erdos81.LocalRoot
 import Erdos81.LocalRootArithmetic
 import Erdos81.LocalRegularization
 import Erdos81.LocalPotential
+import Erdos81.MainTheorem
 import Erdos81.RootedPEO
 import Erdos81.RootHostLists
 import Erdos81.RootHostedTriangles

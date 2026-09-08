@@ -105,8 +105,11 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.SharpBound.floor_Q_eq_sharpBound
 #print axioms Erdos81.SharpBound.sq_div_six_le_sharpBound
 #print axioms Erdos81.Symmetrization.FinePath.chordal_at
+#print axioms Erdos81.Symmetrization.certifiedPotential_eq_potential
 #print axioms Erdos81.SplitDual.exact_minimum
 #print axioms Erdos81.SplitDual.potential_three_branch_formula
 #print axioms Erdos81.TrianglePacking.exists_partition
 #print axioms Erdos81.pairPartition_size_le_square
 #print axioms Erdos81.eventualSharpUpperBound_implies_erdos81
+#print axioms Erdos81.eventualSharpUpperBound_of_inputs
+#print axioms Erdos81.erdos81_of_inputs

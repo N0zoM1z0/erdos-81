@@ -24,16 +24,6 @@ private theorem rat_preorder_le_iff_le (a b : ℚ) :
     @LE.le ℚ Rat.instPreorder.toLE a b ↔ @LE.le ℚ Rat.instLE a b := by
   rfl
 
-/-- The graph potential does not depend on which proof supplies decidable
-adjacency; this bridges the classical instance stored by `certifiedPotential`
-to a caller's local instance. -/
-private theorem certifiedPotential_eq_potential
-    (value : SimpleGraph V → ℚ) (G : SimpleGraph V)
-    [DecidableRel G.Adj] :
-    certifiedPotential value G = potential G (value G) := by
-  unfold certifiedPotential potential
-  congr 1
-
 /-- The manuscript's fixed-neighbourhood global stability theorem. -/
 theorem near_extremal_implies_close
     (value : SimpleGraph V → ℚ)
@@ -67,7 +57,7 @@ theorem near_extremal_implies_close
         potential (completeSplitGraph K) (value (completeSplitGraph K)) := by
     have hterminalOrd := (rat_preorder_le_iff_le _ _).mp
       (by simpa only [n] using hterminalPreorder)
-    rwa [certifiedPotential_eq_potential] at hterminalOrd
+    rwa [Symmetrization.certifiedPotential_eq_potential] at hterminalOrd
   have hterminalContracted :=
     LocalPotential.terminal_near_extremal_split_contraction K hlarge
       (hcert (completeSplitGraph K)).primal hterminalNear
@@ -92,7 +82,7 @@ theorem near_extremal_implies_close
           potential (P.graph i) (value (P.graph i)) := by
       have hpathOrd := (rat_preorder_le_iff_le _ _).mp
         (by simpa only [n] using hpathPreorder)
-      rwa [certifiedPotential_eq_potential] at hpathOrd
+      rwa [Symmetrization.certifiedPotential_eq_potential] at hpathOrd
     exact LocalPotential.near_extremal_split_contraction
       hv hHJ (P.chordal_at hchordal i hi) hlarge
       (hcert (P.graph i)).primal hpathNear hclose

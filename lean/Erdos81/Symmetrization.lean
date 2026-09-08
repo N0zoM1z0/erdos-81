@@ -194,6 +194,16 @@ noncomputable def certifiedPotential
   classical
   exact potential G (value G)
 
+/-- The classical decidability stored in `certifiedPotential` does not affect
+the resulting edge count, so the wrapper agrees with any caller's local
+decidable-adjacency instance. -/
+theorem certifiedPotential_eq_potential
+    (value : SimpleGraph V → ℚ) (G : SimpleGraph V)
+    [DecidableRel G.Adj] :
+    certifiedPotential value G = potential G (value G) := by
+  unfold certifiedPotential potential
+  congr 1
+
 /-- Lexicographic ascent score: potential first, largest simplicial class
 second. -/
 noncomputable def score (value : SimpleGraph V → ℚ) (G : SimpleGraph V)
