@@ -29,6 +29,7 @@ import Erdos81.PEOExistence
 import Erdos81.PerfectElimination
 import Erdos81.RootArithmetic
 import Erdos81.RootOptimization
+import Erdos81.RootRegularization
 import Erdos81.RootedGraph
 import Erdos81.RootedPEO
 import Erdos81.RootHostLists

@@ -83,6 +83,8 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.PEOExistence.complement_edge_bound_of_chordal
 #print axioms Erdos81.RootArithmetic.ceil_seven_quarters_le_nine_fifths
 #print axioms Erdos81.RootArithmetic.final_host_margin_nonnegative
+#print axioms Erdos81.RootOptimization.optimizedRoot_bounds
+#print axioms Erdos81.RootRegularization.exists_strict_partition
 #print axioms Erdos81.RootedGraph.edgeFinset_partition
 #print axioms Erdos81.RootedGraph.edge_count_identity
 #print axioms Erdos81.SharpBound.floor_Q_eq_sharpBound

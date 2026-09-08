@@ -50,9 +50,10 @@ theorem retained_linear_bound
       c * (9 * p * f + 9 * w * A) := by
     nlinarith
   have hcore : (5 : ℚ) * p * m ≤ 9 * p * f + 9 * w * A := by
-    exact le_of_mul_le_mul_left (by
-      convert hcoredWithC using 1 <;> ring)
-      hcQ
+    have hscaled : (c : ℚ) * ((5 : ℚ) * p * m) ≤
+        c * (9 * p * f + 9 * w * A) := by
+      simpa only [mul_assoc] using hcoredWithC
+    exact le_of_mul_le_mul_left hscaled hcQ
   have hcliqueScaled := mul_le_mul_of_nonneg_right hcliqueQ
     (mul_nonneg (show (0 : ℚ) ≤ 9 by norm_num) hAQ)
   have hbeforeCancel : (p : ℚ) * (20 * m) ≤
