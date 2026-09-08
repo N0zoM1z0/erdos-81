@@ -11,6 +11,7 @@ import Erdos81.Dirac
 import Erdos81.EditDistance
 import Erdos81.EdgeColoring
 import Erdos81.ExternalInputs
+import Erdos81.EquitableEdgeColoring
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry
 import Erdos81.FirstEntryGraph

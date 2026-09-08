@@ -1,3 +1,4 @@
+import Erdos81.EquitableEdgeColoring
 import Erdos81.TerminalPacking
 import Mathlib.Tactic
 
@@ -21,7 +22,7 @@ namespace Erdos81
 namespace TerminalConstruction
 
 open MixedModel ExternalInputs EdgeColoring RootedGraph RootedPEO
-  TerminalAssignment RootHostLists
+  EquitableEdgeColoring TerminalAssignment RootHostLists
 
 attribute [-instance] MixedModel.resourceFintype
 
@@ -97,6 +98,26 @@ theorem exists_certificate_of_bounded_coloring
   · exact retained_count_lower_cleared O C.toProper S assign
       P.card (Fintype.card Color) (Nat.card (Resource (outsideGraph G P)))
       rfl hselected hcharge
+
+/-- The terminal construction with the bounded colouring discharged from
+the Vizing interface by equitable refinement. -/
+theorem exists_certificate
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    (hv : VizingInput) (hHJ : HaggkvistJanssenInput)
+    (P : Finset V) (hClique : G.IsClique (P : Set V))
+    (O : RootedPEO.Order G P) (hp : 0 < P.card)
+    {c : ℕ} (hdegree : (outsideGraph G P).maxDegree + 1 ≤ c)
+    (hcolors : P.card ≤ c)
+    (hhost : P.card + 2 * maxMissingColumn G P +
+        4 * classCeiling (Nat.card (Resource (outsideGraph G P))) c ≤
+      (outsideVertices P).card) :
+    Nonempty (Certificate (G := G) P c) := by
+  let C := Classical.choice
+    (exists_bounded_coloring_of_vizing (G := outsideGraph G P) hv hdegree)
+  have hcolors' : P.card ≤ Fintype.card (Fin c) := by
+    simpa using hcolors
+  simpa [C] using exists_certificate_of_bounded_coloring hHJ P hClique O C
+    hp hcolors' hhost
 
 end TerminalConstruction
 end Erdos81
