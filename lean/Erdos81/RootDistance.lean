@@ -254,5 +254,52 @@ theorem induced_complement_edges_le_distance (G : SimpleGraph V)
     _ ≤ (changedEdges G (completeSplitGraph A)).card :=
       Finset.card_le_card hsubset
 
+/-- Resize an arbitrary root to any feasible target cardinality, paying at
+most one vertex-order of edits for each changed root role. -/
+theorem exists_resized_completeSplitGraph (P : Finset V) {k : ℕ}
+    (hk : k ≤ Fintype.card V) :
+    ∃ A : Finset V, A.card = k ∧
+      edgeEditDistance (completeSplitGraph P) (completeSplitGraph A) ≤
+        Nat.dist P.card k * Fintype.card V := by
+  classical
+  by_cases hkp : k ≤ P.card
+  · obtain ⟨A, hAP, hAcard⟩ := Finset.exists_subset_card_eq hkp
+    refine ⟨A, hAcard, ?_⟩
+    have hbound := edgeEditDistance_nested_completeSplitGraph_le hAP
+    simpa [hAcard, Nat.dist_eq_sub_of_le_right hkp] using hbound
+  · have hpk : P.card ≤ k := Nat.le_of_not_ge hkp
+    obtain ⟨A, hPA, hAcard⟩ := Finset.exists_superset_card_eq hpk hk
+    refine ⟨A, hAcard, ?_⟩
+    rw [edgeEditDistance_comm]
+    have hbound := edgeEditDistance_nested_completeSplitGraph_le hPA
+    simpa [hAcard, Nat.dist_eq_sub_of_le hpk] using hbound
+
+/-- A clique root gives an explicit upper bound for distance to the balanced
+complete-split family: its two graph defects plus the cost of resizing its
+role set to `floor(n/3)`. -/
+theorem splitEditDistance_le_rootDefects_add_roles
+    (G : SimpleGraph V) [DecidableRel G.Adj] (P : Finset V)
+    (hP : G.IsClique (P : Set V)) :
+    splitEditDistance G ≤
+      (outsideEdges G P).card + missingIncidences G P +
+        Nat.dist P.card (Fintype.card V / 3) * Fintype.card V := by
+  classical
+  obtain ⟨A, hAcard, hroles⟩ :=
+    exists_resized_completeSplitGraph P
+      (k := Fintype.card V / 3) (by omega)
+  have htemplate : completeSplitGraph A ∈ splitTemplates (V := V) :=
+    mem_splitTemplates.mpr ⟨A, hAcard, rfl⟩
+  calc
+    splitEditDistance G ≤ edgeEditDistance G (completeSplitGraph A) :=
+      distanceToFamily_le G (completeSplitGraph A) splitTemplates
+        splitTemplates_nonempty htemplate
+    _ ≤ edgeEditDistance G (completeSplitGraph P) +
+        edgeEditDistance (completeSplitGraph P) (completeSplitGraph A) :=
+      edgeEditDistance_triangle _ _ _
+    _ ≤ ((outsideEdges G P).card + missingIncidences G P) +
+        Nat.dist P.card (Fintype.card V / 3) * Fintype.card V := by
+      rw [edgeEditDistance_completeSplitGraph G P hP]
+      exact Nat.add_le_add_left hroles _
+
 end RootDistance
 end Erdos81
