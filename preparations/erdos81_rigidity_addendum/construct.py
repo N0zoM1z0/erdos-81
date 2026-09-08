@@ -45,12 +45,19 @@ def graph_edges(p: int, q: int, missing: Iterable[Edge], outside: Iterable[Edge]
         raise ValueError('Outside edges must have two outside endpoints')
     return set(combinations(range(p),2)) | ({(x,y) for x in range(p) for y in range(p,p+q)} - miss) | out
 
-def verify_partition(edges: set[Edge], parts: Iterable[Part]) -> int:
+def verify_partition(
+    edges: set[Edge], parts: Iterable[Part], max_size: int | None = None
+) -> int:
+    """Verify an exact clique partition, optionally with a block-size cap."""
+    if max_size is not None and max_size < 2:
+        raise ValueError('max_size must be at least 2')
     count = Counter()
     number = 0
     for Q in parts:
         if len(Q) < 2 or len(set(Q)) != len(Q):
             raise AssertionError(('Malformed part',Q))
+        if max_size is not None and len(Q) > max_size:
+            raise AssertionError(('Part exceeds the declared maximum size',Q,max_size))
         qe = {edge(x,y) for x,y in combinations(Q,2)}
         if not qe <= edges:
             raise AssertionError(('Nonclique part',Q,qe-edges))
@@ -102,7 +109,7 @@ def construct(p: int, q: int, missing: Iterable[Edge] = (), outside: Iterable[Ed
         assert not (covered & qe)
         covered |= qe
     parts.extend(sorted(edges-covered))
-    number = verify_partition(edges,parts)
+    number = verify_partition(edges,parts,max_size=max_size)
     expected = p*q-p*(p-1)//2-a-(2 if max_size==4 else 1)*m
     assert number == expected
     # For max_size 4 this dual is feasible on EVERY clique, of any size.
@@ -161,7 +168,7 @@ def certify_near_extremizer(n: int, edges_input: Iterable[Edge], s: int) -> dict
         return None
     ans=construct(p,q,missing,outside,4)
     actual_parts=[tuple(order[x] for x in part) for part in ans['parts']]
-    assert verify_partition(edges,actual_parts)==cost
+    assert verify_partition(edges,actual_parts,max_size=4)==cost
     return {'root':root, 'outside_vertices':out, 'missing_count':len(missing),
             'outside_edge_count':len(outside), 'deficit':defect,
             'cp':cost, 'parts':actual_parts}

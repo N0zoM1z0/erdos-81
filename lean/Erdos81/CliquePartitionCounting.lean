@@ -127,6 +127,46 @@ theorem sum_card_blockEdges {G : SimpleGraph V} [DecidableRel G.Adj]
       exact card_containingBlocks_eq_one P he
     _ = G.edgeFinset.card := by simp
 
+/-- Weighted form of the partition incidence count: after restricting graph
+edges by any decidable predicate, summing the restricted block-edge counts
+still counts every selected edge exactly once. -/
+theorem sum_card_filtered_blockEdges {G : SimpleGraph V}
+    [DecidableRel G.Adj] (P : CliquePartition G)
+    (q : Sym2 V → Prop) [DecidablePred q] :
+    (∑ K ∈ P.blocks, ((blockEdges G K).filter q).card) =
+      (G.edgeFinset.filter q).card := by
+  classical
+  calc
+    (∑ K ∈ P.blocks, ((blockEdges G K).filter q).card) =
+        ∑ K ∈ P.blocks, ∑ e ∈ G.edgeFinset,
+          if e.toFinset ⊆ K ∧ q e then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro K hK
+      change ((G.edgeFinset.filter fun e ↦ e.toFinset ⊆ K).filter q).card = _
+      simp only [Finset.card_eq_sum_ones, Finset.sum_filter]
+      apply Finset.sum_congr rfl
+      intro e he
+      by_cases hsubset : e.toFinset ⊆ K <;> by_cases hq : q e <;>
+        simp [hsubset, hq]
+    _ = ∑ e ∈ G.edgeFinset, ∑ K ∈ P.blocks,
+          if e.toFinset ⊆ K ∧ q e then 1 else 0 := by
+      rw [Finset.sum_comm]
+    _ = ∑ e ∈ G.edgeFinset, if q e then (containingBlocks P e).card else 0 := by
+      apply Finset.sum_congr rfl
+      intro e he
+      by_cases hq : q e
+      · simp only [hq, and_true, if_true]
+        change (∑ K ∈ P.blocks, if e.toFinset ⊆ K then 1 else 0) =
+          (P.blocks.filter fun K ↦ e.toFinset ⊆ K).card
+        rw [Finset.card_eq_sum_ones, Finset.sum_filter]
+      · simp [hq]
+    _ = ∑ e ∈ G.edgeFinset, if q e then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro e he
+      rw [card_containingBlocks_eq_one P he]
+    _ = (G.edgeFinset.filter q).card := by
+      rw [Finset.card_eq_sum_ones, Finset.sum_filter]
+
 /-- The standard exact edge-count identity for a clique partition. -/
 theorem sum_choose_eq_card_edges {G : SimpleGraph V} [DecidableRel G.Adj]
     (P : CliquePartition G) :

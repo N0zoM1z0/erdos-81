@@ -1,4 +1,5 @@
 import Erdos81.GlobalStability
+import Erdos81.CompleteSplitLowerBound
 import Erdos81.IntegralPacking
 import Erdos81.LocalRegularization
 import Erdos81.SharpBound
@@ -105,6 +106,20 @@ theorem eventualSharpUpperBound_of_inputs
       (by positivity) (by positivity) hdecomp hfar hgap htarget
     have hstrictNat : P.size < sharpBound n := by exact_mod_cast hstrict
     exact ⟨P, IntegralPacking.orderAtMost_toCliquePartition p, hstrictNat.le⟩
+
+/-- The conditional upper bound and the complete-split witness together give
+the exact eventual extremal value. -/
+theorem eventualSharpEquality_of_inputs
+    (inputs : ExternalInputs.Inputs) : EventualSharpEquality := by
+  obtain ⟨N, hupper⟩ := eventualSharpUpperBound_of_inputs inputs
+  refine ⟨max N 2, ?_⟩
+  intro n hn
+  constructor
+  · intro G hchordal
+    obtain ⟨P, _horder, hsize⟩ := hupper n (Nat.le_max_left N 2 |>.trans hn) G hchordal
+    exact ⟨P, hsize⟩
+  · exact CompleteSplitLowerBound.exists_completeSplit_sharp_lower_bound n
+      (Nat.le_max_right N 2 |>.trans hn)
 
 /-- Conditional kernel-level resolution of Erdős Problem 81. -/
 theorem erdos81_of_inputs (inputs : ExternalInputs.Inputs) :

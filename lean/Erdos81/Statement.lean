@@ -67,6 +67,18 @@ def EventualSharpUpperBound : Prop :=
       P.OrderAtMost 4 ∧ P.size ≤ sharpBound n
 
 /--
+The exact eventual extremal statement.  The first conjunct is the universal
+upper bound; the second supplies a chordal witness for which every clique
+partition has at least the target number of blocks.
+-/
+def EventualSharpEquality : Prop :=
+  ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
+    (∀ G : SimpleGraph (Fin n), IsChordal G →
+      ∃ P : CliquePartition G, P.size ≤ sharpBound n) ∧
+    (∃ G : SimpleGraph (Fin n), IsChordal G ∧
+      ∀ P : CliquePartition G, sharpBound n ≤ P.size)
+
+/--
 Erdős Problem 81, with the denominator cleared and the absolute linear
 constant correspondingly rescaled.
 -/
