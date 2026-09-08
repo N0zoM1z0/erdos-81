@@ -1,6 +1,6 @@
 # Verification status of the proposed solution to Erdős Problem 81
 
-Date of this audit: 2026-09-07
+Date of this audit: 2026-09-08
 
 ## Executive conclusion
 
@@ -27,8 +27,9 @@ for every finite chordal graph.
 The argument has been checked line by line in this repository audit, and both
 supplied independent GPT-6-Pro reviews reached the same positive conclusion.
 No unpaid case, circular threshold, or missing error term has been identified.
-This is nevertheless a **proposed complete proof**, not yet a theorem validated
-by an independent human specialist or by an end-to-end proof assistant.
+This is nevertheless a **proposed complete proof**, not yet validated by an
+independent human specialist. The complete new reduction is now formalized in
+Lean, conditional on exact statements of the same three published inputs.
 
 ## Authoritative sources
 
@@ -143,49 +144,31 @@ asymptotic packing-transfer theorem.
 ## Formalization decision
 
 A conventional proof does not require Lean in order to be mathematically
-valid.  For this particular result, however, comprehensive formalization is
-strongly recommended because the proof is new, AI-assisted, quantitatively
-delicate, and would resolve a long-standing open problem.
+valid. For this result, comprehensive formalization was undertaken because the
+proof is new, AI-assisted, quantitatively delicate, and would resolve a
+long-standing open problem.
 
-The staged project now lives entirely under `lean/` and builds with Lean
-4.31.0 against a manifest-pinned Mathlib revision.  It currently checks the
-exact graph-theoretic statement, a universal partition into edge-sized
-cliques, the implication from the eventual sharp bound to the original
-all-order assertion, the exact floor identity (including its modulo-six
-argument), the main rational identities and margins, finite LP weak
-duality, the mixed triangle--four-clique incidence model, and the discrete
-convexity mechanism behind single-vertex copying.  It also verifies the exact
-integral packing/clique-partition transformations and their optimum identity
-`cp_{<=4}(G) = e(G) - W_int(G)`, attainment of the finite integral extrema,
-and the zero--one embedding into the fractional mixed LP.  The latter yields
-the comparison `Phi(G) <= cp_{<=3}(G)` relative to a certified fractional
-optimum.  It also checks the exact two-direction copy edge count and the
-averaged complete-split dual LP, including the three-branch formula.  The
-least-index first-entry barrier and
-its normalized step bound at `n >= 10^32` are machine checked as well.  Its
-root-regularization constant chain and the algebraic local-deficit extraction
-are machine checked as well.  The minimal-separator clique theorem, strong
-Dirac theorem, chordal-to-perfect-elimination-order construction, and the
-resulting edge and missing-pair bounds are now checked from the project's
-forbidden-induced-cycle definition.  Its check script rejects source-level
-`axiom` and `sorry` declarations and prints the assumptions of the principal
-theorems.
+The project lives entirely under `lean/` and builds with Lean 4.31.0 against a
+manifest-pinned Mathlib revision. It now checks the full chain: chordal
+infrastructure, PEO extraction and edge bounds, the terminal host construction,
+strict root demotion and promotion, exact local-root extraction from edit
+distance, local potential contraction, terminating monotone symmetrization,
+complete-split endpoint analysis, the global first-entry argument, and the
+near/far final assembly. The two final declarations are
 
-This is meaningful progress but not yet the first milestone below: the full
-new chordal reduction has not all been expressed in Lean.  In particular, the
-terminal construction and structural symmetrization and local-stability lemmas
-remain to be completed.  The project README states this boundary explicitly.
+```text
+eventualSharpUpperBound_of_inputs :
+  ExternalInputs.Inputs -> EventualSharpUpperBound
 
-The work should be released in two accurately labelled milestones:
+erdos81_of_inputs : ExternalInputs.Inputs -> Erdos81Statement
+```
 
-1. **Formalized new reduction.** Formalize all definitions and all new
-   arguments, with the three external theorems passed as explicit hypotheses.
-   This verifies the novel local-to-global closure but is not an end-to-end
-   formal proof of Erdős 81.
-2. **End-to-end formal theorem.** Import or formalize the external theorems and
-   discharge those hypotheses.  Häggkvist--Janssen and the weighted packing
-   transfer do not currently have an identified upstream Mathlib theorem in
-   the required form; closing them is a substantial independent project.
+This completes the first formalization milestone: all definitions and all new
+arguments are kernel checked, with the three external theorems passed as
+explicit hypotheses. The remaining, separate milestone is to formalize or
+import Vizing, Häggkvist--Janssen, and the weighted packing transfer so that
+those hypotheses can be discharged. The latter two do not currently have an
+identified upstream Mathlib theorem in the required form.
 
 A theorem can be sorry-free and have only foundational axioms while still
 being conditional because assumptions may occur in its statement.  Every
@@ -201,5 +184,6 @@ release must therefore publish both `#check` output for the exact statement and
 - A deliberate repository and manuscript licence selected by the authors.
 - A stable public archive or DOI and a priority search updated on the release
   date.
-- End-to-end Lean verification if the release is to claim a fully formal proof;
-  otherwise the exact conditional formalization boundary must remain visible.
+- Formalization or import of all three published inputs if the release is to
+  claim a self-contained Lean proof; otherwise the exact conditional boundary
+  must remain visible.

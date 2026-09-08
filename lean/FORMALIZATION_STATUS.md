@@ -1,127 +1,104 @@
 # Formalization status
 
-Date: 2026-09-07
+Date: 2026-09-08
 
-This ledger maps the mathematical manuscript to the Lean project.  “Checked”
-means Lean has compiled a proof with no project-specific axiom and no `sorry`.
-“Modeled” means the exact objects or proposition have been defined, but the
-manuscript theorem about them is not yet proved.  “Pending” and “external” are
-not included in the transitive proof of any claimed end-to-end Lean theorem,
-because no such theorem is claimed yet.
+## Result
 
-| Manuscript component | Lean declaration/module | Status |
-|---|---|---|
-| Chordal graph (no induced `C_k`, `k >= 4`) | `Erdos81.IsChordal` | Modeled exactly |
-| Chordality is hereditary under induced subgraphs | `Erdos81.Chordal.induce_isChordal` | Checked |
-| Shortest paths have no nonconsecutive chord | `Erdos81.ChordalWalk.geodesic_not_adj_of_gap` | Checked |
-| Two separated chordless arcs induce a cycle | `Erdos81.ChordalWalk.inducedCycleEmbedding_of_two_arcs` | Checked |
-| Clique edge partition and block-size restriction | `Erdos81.CliquePartition` | Modeled exactly |
-| Erdős Problem 81 statement | `Erdos81.Erdos81Statement` | Modeled exactly |
-| Eventual `floor(n(n+1)/6)` upper bound | `Erdos81.EventualSharpUpperBound` | Modeled exactly |
-| Edge-by-edge fallback partition | `Erdos81.pairPartition` | Checked |
-| Eventual bound implies every-order Erdős 81 | `Erdos81.eventualSharpUpperBound_implies_erdos81` | Checked |
-| Finite primal/dual weak duality | `Erdos81.FiniteLP.weak_duality` | Checked |
-| Triangle/`K_4` mixed LP incidence and gains | `Erdos81.MixedModel` | Modeled exactly; weak duality checked |
-| Strong duality and existence of an optimum | — | Pending (standard finite LP result) |
-| Clique-partition edge double count | `Erdos81.CliquePartitionCounting.sum_choose_eq_card_edges` | Checked |
-| Packing-to-partition and partition-to-packing constructions | `Erdos81.IntegralPacking.toCliquePartition`, `ofCliquePartition` | Checked |
-| Identity `cp_{<=4}=e-W_4` for attained extrema | `Erdos81.IntegralPacking.isIntegralOptimum_iff_isRestrictedPartitionMinimum` | Checked |
-| Attainment of the integral maximum and restricted partition minimum | `Erdos81.IntegralPacking.exists_integralOptimum_and_restrictedPartitionMinimum` | Checked |
-| Integral packing embeds in the mixed fractional LP with equal objective | `Erdos81.IntegralFractional.toFractional`, `packingValue_toFractional` | Checked |
-| Comparison `Phi <= cp_{<=3}` | `Erdos81.IntegralFractional.potential_le_size_of_orderAtMost_three` | Checked conditional on a certified fractional primal optimum |
-| Vizing edge colouring | `Erdos81.ExternalInputs.VizingInput` | Exact external interface modeled; theorem not yet proved in Lean |
-| Häggkvist--Janssen list edge colouring | `Erdos81.ExternalInputs.HaggkvistJanssenInput` | Exact external interface modeled; theorem not yet proved in Lean |
-| Rohatgi--Urschel--Wellens uniform transfer | `Erdos81.ExternalInputs.PackingTransferInput` | Exact uniform external interface modeled; theorem not yet proved in Lean |
-| Terminal host construction | — | Pending |
-| Root/outside/crossing edge decomposition and `e=choose(p,2)+pq-A+m` | `Erdos81.RootedGraph.edge_count_identity` | Checked |
-| Completing edge-disjoint triangles to an order-at-most-three partition | `Erdos81.TrianglePacking.exists_partition` | Checked |
-| Demotion/promotion numerical chain | `Erdos81.RootArithmetic` | Checked |
-| Common-neighbor clique and nonadjacency degree bound | `Erdos81.Chordal.commonNeighbors_isClique_of_chordal`, `root_nonadjacency_degree_bound` | Checked |
-| Minimal separators of chordal graphs are cliques | `Erdos81.ChordalSeparator.minimal_separator_isClique` | Checked from the induced-cycle definition |
-| Strong finite Dirac simplicial-vertex theorem | `Erdos81.Dirac.complete_or_two_simplicial` | Checked |
-| Perfect-elimination ordering conditions | `Erdos81.PerfectElimination.IsPEO`, `HasPEO` | Modeled exactly for a fixed order and label-independently |
-| PEO implies the forbidden-induced-cycle definition of chordality | `Erdos81.PerfectElimination.isChordal_of_peo`, `isChordal_of_hasPEO` | Checked |
-| Every finite chordal graph admits a PEO | `Erdos81.PEOExistence.hasPEO_of_chordal` | Checked |
-| Chordal iff PEO | `Erdos81.PEOExistence.isChordal_iff_hasPEO` | Checked |
-| A PEO can be chosen to end in a prescribed clique | `Erdos81.PEOExistence.exists_elimination_list_ending_clique` | Checked |
-| Edge count from chordality and a clique-order bound | `Erdos81.PEOExistence.edge_bound_of_chordal` | Checked |
-| Missing-pair consequence `e(complement G) >= choose(n-p+1,2)` | `Erdos81.PEOExistence.complement_edge_bound_of_chordal` | Checked directly from chordality |
-| Full strict root-regularization lemma | — | Pending |
-| Stability square identity and second-branch square identity | `Erdos81.Arithmetic` | Checked |
-| Exact floor identity for `Q(n)` | `Erdos81.SharpBound.floor_Q_eq_sharpBound` | Checked |
-| Local-deficit algebra and integer rounding | `Erdos81.LocalStability` | Checked |
-| Labelled edge-edit distance and triangle inequality | `Erdos81.EditDistance.edgeEditDistance_triangle` | Checked |
-| Distance to the `floor(n/3)` complete-split family | `Erdos81.EditDistance.splitEditDistance` | Modeled exactly; minimum attainment checked |
-| A single vertex copy changes split distance by at most `n-2` | `Erdos81.EditDistance.splitEditDistance_replaceVertex_dist_le` | Checked |
-| Local root extraction in edit distance | — | Pending |
-| Orientation and edge count of opposite vertex copies | `Erdos81.Copying` | Checked |
-| Simpliciality of the copied vertex | `Erdos81.Copying.simplicial_target_of_simplicial_source` | Checked |
-| Chordality preservation under the required copy | `Erdos81.Copying.chordal_replaceVertex_of_simplicial_source` | Checked |
-| Replacement-collapse homomorphism and clique-order preservation | `Erdos81.Copying.collapseHom`, `card_finset_image_of_isClique` | Checked |
-| Feasible mixed-dual pullback through the replacement collapse | `Erdos81.CopyCover.pullbackCover` applied to `Copying.collapseHom` | Checked |
-| Opposite pulled-cover objective identity | `Erdos81.CopyCover.coverValue_opposite_pullbacks` | Checked |
-| Mixed-potential copy inequality | `Erdos81.CopyCover.potential_opposite_copy_inequality` | Checked for certified dual optima; their general existence remains pending with finite LP duality |
-| Copy-potential sign algebra | `Erdos81.DiscreteConvexity.potential_copy_inequality` | Checked |
-| Discrete-convex endpoint propagation | `Erdos81.DiscreteConvexity` | Checked |
-| Complete-split terminal characterization | — | Pending |
-| Averaged complete-split two-variable dual | `Erdos81.SplitDual` | Algebraic LP checked; averaging pending |
-| Terminal branch separation | `Erdos81.Arithmetic` | Checked |
-| First-entry least-index barrier | `Erdos81.FirstEntry.barrier` | Checked |
-| First-entry explicit numerical scale | `Erdos81.Arithmetic.first_entry_numerics`, `Erdos81.FirstEntry.inverse_order_lt_quarter_radius` | Checked |
-| First-entry barrier instantiated on a legal graph-copy path | `Erdos81.FirstEntryGraph.copyPath_barrier_at_manuscript_scale` | Checked, conditional on the separately tracked path endpoint and local-stability hypotheses |
-| Far-case closing arithmetic | `Erdos81.Arithmetic.far_case_closure` | Checked |
-| Full eventual sharp upper bound | — | Pending |
-| Rigidity addendum | Python exact certificates only | Pending in Lean |
-
-## Progress estimate
-
-The current engineering estimate is **60% of the local conditional-proof
-formalization**.  This percentage is a weighted dependency-block estimate,
-not a theorem and not a count of source lines.  It excludes proofs of the
-three published external inputs: those remain separate projects and will be
-represented by explicit hypotheses at the first end-to-end milestone.
-
-| Dependency block | Weight | Checked contribution |
-|---|---:|---:|
-| Statements, fallback partition, floor and numerical arithmetic | 10 | 10 |
-| Chordal infrastructure: induced cycles, separators, Dirac, and PEOs | 15 | 15 |
-| Mixed LP, integral identity, and the `Phi <= cp_{<=3}` interface | 15 | 12 |
-| Copying, edit distance, discrete convexity, and first-entry kernel | 18 | 13 |
-| Terminal construction and strict root regularization | 18 | 4 |
-| Local/terminal stability and complete-split analysis | 14 | 4 |
-| Full symmetrization and final conditional assembly | 10 | 2 |
-| **Total** | **100** | **60** |
-
-The unearned portions correspond to named pending rows in the ledger above.
-Reaching 100% on this metric will mean a sorry-free theorem deriving
-`EventualSharpUpperBound` from explicit statements of Vizing,
-Häggkvist--Janssen, and the finite-family transfer theorem.  It will still not
-mean that those three external results themselves have been proved in Lean.
-
-## Honest theorem boundary
-
-The strongest graph-theoretic implication currently proved in Lean is
+The conditional-proof formalization is **100% complete**. Lean proves
 
 ```text
-EventualSharpUpperBound -> Erdos81Statement
+Erdos81.eventualSharpUpperBound_of_inputs :
+  Erdos81.ExternalInputs.Inputs -> Erdos81.EventualSharpUpperBound
+
+Erdos81.erdos81_of_inputs :
+  Erdos81.ExternalInputs.Inputs -> Erdos81.Erdos81Statement
 ```
 
-The antecedent is not yet proved in Lean.  Consequently, this repository must
-not be advertised as containing a complete formal proof of Erdős Problem 81.
-The conventional manuscript is complete subject to its three published
-inputs; the Lean project currently verifies a growing set of its delicate
-subarguments.
+`ExternalInputs.Inputs` consists of exactly three published results:
+
+1. Vizing's `Delta + 1` edge-colouring theorem;
+2. the Häggkvist--Janssen list-edge-colouring theorem for complete graphs;
+3. the Rohatgi--Urschel--Wellens uniform finite-family packing-transfer
+   theorem for the triangle/`K_4` gains used here.
+
+These are ordinary hypotheses in the theorem statement. They are not Lean
+axioms, `sorry` declarations, or opaque assumptions introduced inside a
+proof. Formalizing or importing those three published theorems would be a
+separate upstream project and is not included in the 100% figure.
+
+## Manuscript-to-Lean ledger
+
+“Checked” means Lean 4.31.0 compiled a proof with no project-specific axiom and
+no `sorry`.
+
+| Manuscript component | Principal Lean declaration/module | Status |
+|---|---|---|
+| Chordal graph and clique partitions | `Statement.lean` | Defined exactly |
+| Erdős 81 and eventual sharp statements | `Erdos81Statement`, `EventualSharpUpperBound` | Defined exactly |
+| Small-order edge partition and all-order reduction | `pairPartition`, `eventualSharpUpperBound_implies_erdos81` | Checked |
+| Rational identities, margins, and near/far arithmetic | `Arithmetic.lean`, `SharpBound.lean` | Checked |
+| Finite mixed LP and weak duality | `FiniteLP.lean`, `MixedModel.lean` | Checked |
+| Integral packing/partition identity and attainment | `IntegralPacking.lean` | Checked |
+| Integral-to-fractional embedding and `Phi <= cp_{<=3}` | `IntegralFractional.lean` | Checked |
+| Vizing input | `ExternalInputs.VizingInput` | Exact external hypothesis |
+| Häggkvist--Janssen input | `ExternalInputs.HaggkvistJanssenInput` | Exact external hypothesis |
+| Uniform packing-transfer input | `ExternalInputs.PackingTransferInput` | Exact external hypothesis |
+| Chordal separators, Dirac, and PEO characterization | `ChordalSeparator.lean`, `Dirac.lean`, `PEOExistence.lean` | Checked |
+| Chordal edge and complement missing-pair bounds | `PEOExistence.edge_bound_of_chordal`, `complement_edge_bound_of_chordal` | Checked |
+| Root edge decomposition and triangle completion | `RootedGraph.lean`, `TrianglePacking.lean` | Checked |
+| Terminal host construction | `TerminalConstruction.lean`, `StrictTerminalBound.lean` | Checked |
+| Root demotion, optimization, and strict regularization | `RootDemotion.lean`, `RootOptimization.lean`, `RootRegularization.lean` | Checked |
+| Exact rooted defects as labelled edit distance | `RootDistance.edgeEditDistance_completeSplitGraph` | Checked |
+| Clique-root extraction from split distance | `LocalRoot.exists_initialRoot` | Checked |
+| Integer-scale local-root numerics | `LocalRootArithmetic.initialRoot_numerics` | Checked |
+| Local strict and sharp partition bounds | `LocalRegularization.lean` | Checked |
+| Vertex copying and chordality preservation | `Copying.lean`, `CopyCover.lean` | Checked |
+| Complete-split terminal characterization | `TerminalCharacterization.isCompleteSplit_of_terminal` | Checked |
+| Monotone terminating fine-copy path | `Symmetrization.exists_completeSplit_finePath` | Checked |
+| Complete-split dual and branch analysis | `SplitDual.lean`, `CompleteSplitPotential.lean` | Checked |
+| Split edit distance and one-copy movement | `EditDistance.lean`, `FirstEntryGraph.lean` | Checked |
+| Local potential contraction | `LocalPotential.near_extremal_split_contraction` | Checked |
+| Complete-split endpoint contraction | `LocalPotential.terminal_near_extremal_split_contraction` | Checked |
+| Global first-entry stability | `GlobalStability.near_extremal_implies_close` | Checked |
+| Near/far eventual sharp upper bound | `eventualSharpUpperBound_of_inputs` | Checked, conditional on the three inputs |
+| Erdős Problem 81 | `erdos81_of_inputs` | Checked, conditional on the three inputs |
+
+The separate rigidity addendum has exact Python certificate replays but is not
+part of the theorem needed to resolve Erdős Problem 81 and is not included in
+this 100% conditional-proof milestone.
+
+## Trust boundary
+
+The strongest checked conclusion is not merely an implication from an
+unproved local lemma. It is the complete manuscript conclusion from a record
+whose fields state the three named published results. Thus:
+
+- all definitions and all new graph-theoretic, optimization, stability,
+  symmetrization, and assembly arguments are inside the Lean kernel;
+- the three published inputs remain visible in the type of the final theorem;
+- the repository does not claim that those external papers have themselves
+  been re-proved in Lean.
 
 ## Verification gate
 
-Run:
+From the repository root, run:
 
 ```bash
 cd lean
+lake update
+lake exe cache get
 ./check.sh
 ```
 
-The script first rejects source lines declaring `axiom` or `sorry`, then builds
-all modules and prints the transitive assumptions of representative theorems.
-The source tree intentionally contains no theorem whose proof is merely an
-unproved manuscript hypothesis packaged as a project axiom.
+`check.sh` rejects source lines declaring `axiom` or `sorry`, builds the whole
+library, and runs `#print axioms` on the principal declarations, including the
+two final theorems. The expected transitive assumptions are only
+Lean/Mathlib's standard logical primitives:
+
+```text
+propext, Classical.choice, Quot.sound
+```
+
+The published assumptions do not appear in `#print axioms` because they are
+explicit arguments to the final theorems rather than global axioms. Inspect
+both `#check` and `#print axioms` when reviewing the trust boundary.

@@ -45,7 +45,7 @@
   {Clique partitions of chordal graphs with linear error}
 
 \author{Anonymous}
-\date{September 7, 2026}
+\date{September 8, 2026}
 
 \subjclass[2020]{05C70, 05C35, 90C27}
 \keywords{chordal graph, clique partition, fractional packing,
@@ -1038,11 +1038,18 @@ deficit pays for its $o(n^2)$ loss.  In the near regime,
 triangles and $K_2$'s.
 
 The accompanying repository contains exact rational checks of the numerical
-inequalities, finite mixed-packing certificates, and the single-copy
-mechanism.  These computations are regression tests; none is a premise of the
-proof for arbitrary $n$.  The repository also records the precise boundary of
-the staged Lean formalization and the commands used to reproduce every
-machine check.
+inequalities and finite mixed-packing certificates.  These computations are
+regression tests; none is a premise of the proof for arbitrary $n$.
+
+The Lean companion formalizes every new argument in the paper, including the
+terminal construction, root regularization, local stability, terminating
+single-vertex symmetrization, first-entry argument, and near--far assembly.
+Its final theorem proves the Erd\H{o}s--Ordman--Zalcstein statement from a
+record with exactly three fields, corresponding to
+\cref{thm:vizing,thm:HJ,thm:packing-transfer}.  Those published theorems are
+explicit hypotheses rather than project axioms; they have not themselves been
+reproved in Lean.  The repository records this conditional trust boundary and
+the commands used to reproduce the full build and axiom audit.
 
 \subsection*{AI-assisted development disclosure}
 

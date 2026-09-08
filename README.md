@@ -2,8 +2,8 @@
 
 This repository contains a proposed complete proof of [Erdős Problem
 81](https://www.erdosproblems.com/81), a publication manuscript, exact finite
-certificate replays, independent review records, and a staged Lean 4
-formalization.
+certificate replays, independent review records, and a Lean 4 formalization
+of the complete new reduction.
 
 The proposed theorem is stronger than the asymptotic question.  For every
 sufficiently large chordal graph `G` on `n` vertices, it constructs an edge
@@ -20,8 +20,11 @@ The mathematical argument has survived two independent model reviews, a
 separate line-by-line audit, exact certificate replay, and broad finite
 regression testing.  No substantive gap is currently known.  It should still
 be described as a **proposed complete proof** until it has received independent
-human specialist review.  The Lean development is useful and sorry-free, but
-is not yet an end-to-end formal proof; its exact boundary is documented below.
+human specialist review.  The Lean development is sorry-free and proves the
+full manuscript conclusion from exact propositions representing the three
+published inputs.  Those three external theorems have not themselves been
+formalized, so this is a complete conditional formalization, not a
+self-contained kernel proof from Mathlib alone.
 
 ## Repository map
 
@@ -72,8 +75,8 @@ The current Lean project machine-checks:
   modulo-six remainder argument;
 - the universal partition into two-vertex cliques and the implication from
   the eventual bound to `n^2 / 6 + O(n)` for every order;
-- the rational stability identities and all decisive numerical margins
-  formalized so far, including the complete root-regularization constant chain;
+- the rational stability identities and all decisive numerical margins,
+  including the complete root-regularization constant chain;
 - finite packing/covering weak duality and its mixed triangle--`K_4` model;
 - the exact clique-partition edge double count and both objective-preserving
   transformations proving `cp_{<=4}(G) = e(G) - W_int(G)` for attained
@@ -89,17 +92,27 @@ The current Lean project machine-checks:
 - the least-index first-entry barrier and the normalized step-size inequality
   at the manuscript's explicit threshold `n >= 10^32`;
 - the algebraic extraction of defect and root-displacement control from the
-  local deficit inequality, including the final integrality step.
+  local deficit inequality, including the final integrality step;
 - the finite chordal-graph characterization by perfect-elimination order,
   including minimal-separator clique and Dirac simplicial-vertex theorems;
 - the chordal edge bound and its complement missing-pair consequence used in
-  the manuscript.
+  the manuscript;
+- the strict terminal construction and root demotion/promotion argument;
+- exact root extraction from split edit distance and the defect/edit-distance
+  identity;
+- quantitative local contraction at the manuscript constants;
+- the full fine-copy symmetrization path, complete-split endpoint, and global
+  first-entry stability theorem;
+- the near/far assembly, including the transfer-gap argument, as
+  `eventualSharpUpperBound_of_inputs` and the conditional resolution
+  `erdos81_of_inputs`.
 
-The remaining chordal symmetrization, terminal construction, local structural
-lemmas, and the three external inputs are not yet fully formalized.  No
-custom axiom or `sorry` hides that boundary.  See `lean/README.md` for the
-build guide and `lean/FORMALIZATION_STATUS.md` for the theorem-by-theorem
-ledger.
+All new arguments in the manuscript are now formalized.  The remaining trust
+boundary consists exactly of Vizing's theorem, the Häggkvist--Janssen list
+edge-colouring theorem, and the Rohatgi--Urschel--Wellens transfer theorem,
+passed as ordinary hypotheses through `ExternalInputs.Inputs`.  No custom
+axiom or `sorry` hides that boundary.  See `lean/README.md` for the build guide
+and `lean/FORMALIZATION_STATUS.md` for the theorem-by-theorem ledger.
 
 ## System requirements
 
@@ -199,7 +212,7 @@ With the pinned `SOURCE_DATE_EPOCH` and the TeX installation used for this
 audit, the 16-page PDF has SHA-256:
 
 ```text
-04a7a6ea71d7a1cf52ed6b79ac83bd74a08baf30db1085b583facab2c4ea7eb6
+12f16b80cee60c9a8cfbafe5bd5f7105ee96179a6baa10a57de674d1162505f2
 ```
 
 TeX engine or package-version changes can alter PDF bytes without altering the
@@ -236,6 +249,7 @@ trusted automatically.
 
 Replace the manuscript's `Anonymous` placeholder with the final authors and
 affiliations, choose explicit repository and manuscript licences, obtain human
-specialist review, and create a stable archive/DOI.  A release claiming a fully
-formal proof must additionally close the remaining Lean boundary; otherwise
-that limitation should remain prominent in the abstract-facing release notes.
+specialist review, and create a stable archive/DOI.  A release claiming a
+self-contained formal proof must additionally formalize or import the three
+published inputs; otherwise the conditional boundary should remain prominent
+in the abstract-facing release notes.

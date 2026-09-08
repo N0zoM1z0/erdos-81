@@ -1,9 +1,23 @@
 # Lean formalization
 
-This directory contains the staged Lean 4 formalization accompanying the
+This directory contains the Lean 4 formalization accompanying the
 Erdős Problem 81 manuscript.  It is deliberately self-contained under
 `lean/`; Lake files and Lean sources do not spill into the repository root.
 See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
+
+The complete new reduction is machine checked.  The principal declarations
+are
+
+```text
+eventualSharpUpperBound_of_inputs :
+  ExternalInputs.Inputs -> EventualSharpUpperBound
+
+erdos81_of_inputs : ExternalInputs.Inputs -> Erdos81Statement
+```
+
+`ExternalInputs.Inputs` has exactly three fields: Vizing, Häggkvist--Janssen,
+and the uniform finite-family packing transfer.  They are explicit hypotheses,
+not axioms or placeholders hidden in the implementation.
 
 ## What is machine checked now
 
@@ -83,8 +97,7 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
   applying it to the replacement-collapse homomorphism gives the copied cover
   used in the manuscript.  The same module proves the exact two-direction
   objective identity and the resulting mixed-potential copy inequality for
-  certified dual optima; general optimum existence remains part of the finite
-  LP boundary.
+  certified dual optima supplied by the graphwise external input family.
 - `Erdos81/SplitDual.lean` solves the averaged two-variable dual on a
   complete-split graph, proves attainment at one of its three lower-boundary
   vertices, and derives the manuscript's three-branch potential formula.
@@ -105,13 +118,30 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
 - `Erdos81/LocalStability.lean` derives defect and root-displacement control
   from the regularized deficit inequality and checks the final integrality
   step from `Q(n)` to `sharpBound n`.
+- `Erdos81/RootDistance.lean`, `LocalRoot.lean`, and
+  `LocalRootArithmetic.lean` identify rooted defects with exact labelled edit
+  distance, extract a clique root from a nearby split template, and verify the
+  integer-scale balance and defect inequalities.
+- `Erdos81/RootRegularization.lean` and `LocalRegularization.lean` formalize
+  the full strict terminal construction, root demotion/promotion, and the local
+  sharp clique-partition bound.
+- `Erdos81/LocalPotential.lean` combines fractional potential, strict
+  regularization, root displacement, and edit distance to prove contraction
+  from radius `10^-12` to `10^-12 / 4`.
+- `Erdos81/Symmetrization.lean` and `GlobalStability.lean` construct the
+  monotone fine-copy path, preserve chordality at every step, control its
+  complete-split endpoint, and close the global first-entry argument.
+- `Erdos81/MainTheorem.lean` performs the near/far split and proves the full
+  eventual sharp bound, and hence Erdős Problem 81, from the three published
+  inputs.
 - `Erdos81/AxiomAudit.lean` prints the assumptions of the principal theorems.
 
-The long chordal symmetrization, the full root and local structural lemmas, and
-the applications of Vizing, Häggkvist--Janssen, and
-Rohatgi--Urschel--Wellens are **not yet fully formalized**.  No placeholder
-axiom or `sorry` is used to hide this boundary.  Accordingly, the Lean project
-is not yet a kernel proof of the complete result.
+No internal manuscript lemma remains pending.  Vizing,
+Häggkvist--Janssen, and Rohatgi--Urschel--Wellens are not proved inside this
+repository; their exact statements are the three fields of
+`ExternalInputs.Inputs`.  Accordingly, the project is an end-to-end
+conditional kernel proof, but not yet a self-contained proof with those three
+published theorems discharged inside Lean.
 
 ## Reproduce
 
@@ -127,6 +157,9 @@ lake exe cache get
 The toolchain is pinned in `lean-toolchain`; all Mathlib dependency revisions
 are pinned in `lake-manifest.json`.  `./check.sh` rejects source-level `axiom`
 or `sorry` declarations, builds the library, and runs the assumption audit.
+In particular, the audit includes `eventualSharpUpperBound_of_inputs` and
+`erdos81_of_inputs`; their expected transitive assumptions are only
+Lean/Mathlib's standard `propext`, `Classical.choice`, and `Quot.sound`.
 
 To inspect a single module interactively:
 
