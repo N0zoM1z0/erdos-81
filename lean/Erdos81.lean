@@ -1,4 +1,5 @@
 import Erdos81.Arithmetic
+import Erdos81.AssignmentAverage
 import Erdos81.Chordal
 import Erdos81.ChordalSeparator
 import Erdos81.ChordalWalk
