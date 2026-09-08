@@ -1,0 +1,222 @@
+import Erdos81.EditDistance
+import Erdos81.RootedGraph
+
+/-!
+# Edit distance from a rooted graph to its complete-split template
+
+This file identifies the two root-relative defects with the labelled edge
+edits needed to turn a graph into the complete-split graph on the same root.
+It also bounds the distance between two nested complete-split templates.
+-/
+
+namespace Erdos81
+namespace RootDistance
+
+open EditDistance RootedGraph
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+
+/-- Missing crossing edges, represented as unordered pairs. -/
+noncomputable def missingCrossingEdges (G : SimpleGraph V)
+    [DecidableRel G.Adj] (P : Finset V) : Finset (Sym2 V) :=
+  crossingEdges Gᶜ P
+
+theorem card_missingCrossingEdges (G : SimpleGraph V)
+    [DecidableRel G.Adj] (P : Finset V) :
+    (missingCrossingEdges G P).card = missingIncidences G P := by
+  rw [missingCrossingEdges, card_crossingEdges]
+  rfl
+
+theorem mem_missingCrossingEdges_mk {G : SimpleGraph V}
+    [DecidableRel G.Adj] {P : Finset V} {x y : V} :
+    s(x, y) ∈ missingCrossingEdges G P ↔
+      ((x ∈ P ∧ y ∉ P) ∨ (y ∈ P ∧ x ∉ P)) ∧ ¬ G.Adj x y := by
+  classical
+  constructor
+  · intro h
+    obtain ⟨⟨a, b⟩, hab, heq⟩ := Finset.mem_image.mp h
+    have hab' := mem_crossingIncidences.mp hab
+    change s(a, b) = s(x, y) at heq
+    rw [Sym2.eq, Sym2.rel_iff] at heq
+    rcases heq with hdir | hswap
+    · rcases hdir with ⟨rfl, rfl⟩
+      have hn : a ≠ b ∧ ¬ G.Adj a b := by
+        simpa using hab'.2.2
+      exact ⟨Or.inl ⟨hab'.1, mem_outsideVertices.mp hab'.2.1⟩,
+        hn.2⟩
+    · rcases hswap with ⟨rfl, rfl⟩
+      have hn : a ≠ b ∧ ¬ G.Adj a b := by
+        simpa using hab'.2.2
+      exact ⟨Or.inr ⟨hab'.1, mem_outsideVertices.mp hab'.2.1⟩,
+        (by simpa [SimpleGraph.adj_comm] using hn.2)⟩
+  · rintro ⟨hroot, hnonedge⟩
+    rw [missingCrossingEdges, crossingEdges]
+    rcases hroot with ⟨hx, hy⟩ | ⟨hy, hx⟩
+    · apply Finset.mem_image.mpr
+      refine ⟨(x, y), ?_, rfl⟩
+      have hne : x ≠ y := by
+        intro h
+        exact hy (h ▸ hx)
+      have hcomp : Gᶜ.Adj x y := by
+        change x ≠ y ∧ ¬ G.Adj x y
+        exact ⟨hne, hnonedge⟩
+      exact mem_crossingIncidences.mpr
+        ⟨hx, mem_outsideVertices.mpr hy, hcomp⟩
+    · apply Finset.mem_image.mpr
+      refine ⟨(y, x), ?_, Sym2.eq_swap⟩
+      have hne : y ≠ x := by
+        intro h
+        exact hx (h ▸ hy)
+      have hcomp : Gᶜ.Adj y x := by
+        change y ≠ x ∧ ¬ G.Adj y x
+        exact ⟨hne, by simpa [SimpleGraph.adj_comm] using hnonedge⟩
+      exact mem_crossingIncidences.mpr
+        ⟨hy, mem_outsideVertices.mpr hx, hcomp⟩
+
+theorem mem_outsideEdges_mk {G : SimpleGraph V} [DecidableRel G.Adj]
+    {P : Finset V} {x y : V} :
+    s(x, y) ∈ outsideEdges G P ↔ x ∉ P ∧ y ∉ P ∧ G.Adj x y := by
+  classical
+  simp only [outsideEdges, Finset.mem_filter, SimpleGraph.mem_edgeFinset,
+    SimpleGraph.mem_edgeSet, Sym2.toFinset_mk_eq]
+  constructor
+  · rintro ⟨hxy, hsub⟩
+    refine ⟨?_, ?_, hxy⟩
+    · exact mem_outsideVertices.mp
+        (hsub (Finset.mem_insert_self x {y}))
+    · exact mem_outsideVertices.mp
+        (hsub (Finset.mem_insert_of_mem (Finset.mem_singleton_self y)))
+  · rintro ⟨hx, hy, hxy⟩
+    refine ⟨hxy, ?_⟩
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact mem_outsideVertices.mpr hx
+    · exact mem_outsideVertices.mpr hy
+
+/-- For a clique root, the edits to its complete-split template are exactly
+the outside edges and the missing root--outside edges. -/
+theorem changedEdges_completeSplitGraph (G : SimpleGraph V)
+    [DecidableRel G.Adj] (P : Finset V)
+    (hP : G.IsClique (P : Set V)) :
+    changedEdges G (completeSplitGraph P) =
+      outsideEdges G P ∪ missingCrossingEdges G P := by
+  classical
+  ext e
+  refine Sym2.inductionOn e ?_
+  intro x y
+  simp only [mem_changedEdges, Set.mem_symmDiff, SimpleGraph.mem_edgeSet,
+    completeSplitGraph_adj, Finset.mem_union, mem_outsideEdges_mk,
+    mem_missingCrossingEdges_mk]
+  by_cases hxy : x = y
+  · subst y
+    simp
+  by_cases hx : x ∈ P
+  · by_cases hy : y ∈ P
+    · have hadj : G.Adj x y := hP hx hy hxy
+      simp [hxy, hx, hy, hadj]
+    · simp [hxy, hx, hy]
+  · by_cases hy : y ∈ P
+    · simp [hxy, hx, hy]
+    · simp [hxy, hx, hy]
+
+theorem outsideEdges_disjoint_missingCrossingEdges (G : SimpleGraph V)
+    [DecidableRel G.Adj] (P : Finset V) :
+    Disjoint (outsideEdges G P) (missingCrossingEdges G P) := by
+  classical
+  rw [Finset.disjoint_left]
+  intro e hout hmissing
+  revert hout hmissing
+  refine Sym2.inductionOn e ?_
+  intro x y hout hmissing
+  exact (mem_missingCrossingEdges_mk.mp hmissing).2
+    (mem_outsideEdges_mk.mp hout).2.2
+
+/-- Exact defect interpretation as a labelled edit distance. -/
+theorem edgeEditDistance_completeSplitGraph (G : SimpleGraph V)
+    [DecidableRel G.Adj] (P : Finset V)
+    (hP : G.IsClique (P : Set V)) :
+    edgeEditDistance G (completeSplitGraph P) =
+      (outsideEdges G P).card + missingIncidences G P := by
+  rw [edgeEditDistance, changedEdges_completeSplitGraph G P hP,
+    Finset.card_union_of_disjoint
+      (outsideEdges_disjoint_missingCrossingEdges G P),
+    card_missingCrossingEdges]
+
+/-- All unordered pairs incident with at least one vertex of `U`. -/
+noncomputable def vertexEdgeSupport (U : Finset V) : Finset (Sym2 V) :=
+  U.biUnion fun x ↦ (⊤ : SimpleGraph V).incidenceFinset x
+
+theorem card_vertexEdgeSupport_le (U : Finset V) :
+    (vertexEdgeSupport U).card ≤ U.card * Fintype.card V := by
+  classical
+  calc
+    (vertexEdgeSupport U).card ≤
+        ∑ x ∈ U, ((⊤ : SimpleGraph V).incidenceFinset x).card := by
+      exact Finset.card_biUnion_le
+    _ ≤ ∑ _x ∈ U, Fintype.card V := by
+      apply Finset.sum_le_sum
+      intro x hx
+      simpa only [SimpleGraph.card_incidenceFinset_eq_degree] using
+        Nat.le_of_lt ((⊤ : SimpleGraph V).degree_lt_card_verts x)
+    _ = U.card * Fintype.card V := by simp
+
+theorem changedEdges_nested_completeSplitGraph_subset {P A : Finset V}
+    (hPA : P ⊆ A) :
+    changedEdges (completeSplitGraph A) (completeSplitGraph P) ⊆
+      vertexEdgeSupport (A \ P) := by
+  classical
+  intro e he
+  revert he
+  refine Sym2.inductionOn e ?_
+  intro x y he
+  simp only [mem_changedEdges, Set.mem_symmDiff, SimpleGraph.mem_edgeSet,
+    completeSplitGraph_adj] at he
+  have hne : x ≠ y := by tauto
+  have hu : x ∈ A \ P ∨ y ∈ A \ P := by
+    simp only [Finset.mem_sdiff]
+    by_cases hxP : x ∈ P
+    · have hxA : x ∈ A := hPA hxP
+      by_cases hyP : y ∈ P
+      · have hyA : y ∈ A := hPA hyP
+        tauto
+      · by_cases hyA : y ∈ A
+        · exact Or.inr ⟨hyA, hyP⟩
+        · tauto
+    · by_cases hyP : y ∈ P
+      · have hyA : y ∈ A := hPA hyP
+        by_cases hxA : x ∈ A
+        · exact Or.inl ⟨hxA, hxP⟩
+        · tauto
+      · by_cases hxA : x ∈ A
+        · exact Or.inl ⟨hxA, hxP⟩
+        · by_cases hyA : y ∈ A
+          · exact Or.inr ⟨hyA, hyP⟩
+          · tauto
+  rw [vertexEdgeSupport]
+  rcases hu with hxu | hyu
+  · apply Finset.mem_biUnion.mpr
+    refine ⟨x, hxu, ?_⟩
+    simp [SimpleGraph.mem_incidenceFinset, hne]
+  · apply Finset.mem_biUnion.mpr
+    refine ⟨y, hyu, ?_⟩
+    simp [SimpleGraph.mem_incidenceFinset,
+      SimpleGraph.mk'_mem_incidenceSet_iff, hne]
+
+/-- Moving from a root `A` to a nested root `P` changes at most
+`|A \ P| |V|` template edges. -/
+theorem edgeEditDistance_nested_completeSplitGraph_le {P A : Finset V}
+    (hPA : P ⊆ A) :
+    edgeEditDistance (completeSplitGraph A) (completeSplitGraph P) ≤
+      (A.card - P.card) * Fintype.card V := by
+  unfold edgeEditDistance
+  calc
+    (changedEdges (completeSplitGraph A) (completeSplitGraph P)).card ≤
+        (vertexEdgeSupport (A \ P)).card :=
+      Finset.card_le_card (changedEdges_nested_completeSplitGraph_subset hPA)
+    _ ≤ (A \ P).card * Fintype.card V := card_vertexEdgeSupport_le _
+    _ = (A.card - P.card) * Fintype.card V := by
+      rw [Finset.card_sdiff_of_subset hPA]
+
+end RootDistance
+end Erdos81

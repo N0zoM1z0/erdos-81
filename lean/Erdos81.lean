@@ -32,6 +32,7 @@ import Erdos81.RootDemotion
 import Erdos81.RootOptimization
 import Erdos81.RootRegularization
 import Erdos81.RootedGraph
+import Erdos81.RootDistance
 import Erdos81.RootedPEO
 import Erdos81.RootHostLists
 import Erdos81.RootHostedTriangles
