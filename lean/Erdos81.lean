@@ -19,10 +19,12 @@ import Erdos81.MixedModel
 import Erdos81.PEOExistence
 import Erdos81.PerfectElimination
 import Erdos81.RootArithmetic
+import Erdos81.RootedGraph
 import Erdos81.SharpBound
 import Erdos81.Separator
 import Erdos81.SplitDual
 import Erdos81.Statement
+import Erdos81.TrianglePacking
 
 /-!
 # Erdős Problem 81

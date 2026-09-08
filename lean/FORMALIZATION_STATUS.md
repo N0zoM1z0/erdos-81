@@ -33,6 +33,8 @@ because no such theorem is claimed yet.
 | Häggkvist--Janssen list edge colouring | `Erdos81.ExternalInputs.HaggkvistJanssenInput` | Exact external interface modeled; theorem not yet proved in Lean |
 | Rohatgi--Urschel--Wellens uniform transfer | `Erdos81.ExternalInputs.PackingTransferInput` | Exact uniform external interface modeled; theorem not yet proved in Lean |
 | Terminal host construction | — | Pending |
+| Root/outside/crossing edge decomposition and `e=choose(p,2)+pq-A+m` | `Erdos81.RootedGraph.edge_count_identity` | Checked |
+| Completing edge-disjoint triangles to an order-at-most-three partition | `Erdos81.TrianglePacking.exists_partition` | Checked |
 | Demotion/promotion numerical chain | `Erdos81.RootArithmetic` | Checked |
 | Common-neighbor clique and nonadjacency degree bound | `Erdos81.Chordal.commonNeighbors_isClique_of_chordal`, `root_nonadjacency_degree_bound` | Checked |
 | Minimal separators of chordal graphs are cliques | `Erdos81.ChordalSeparator.minimal_separator_isClique` | Checked from the induced-cycle definition |

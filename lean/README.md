@@ -98,6 +98,10 @@ See `FORMALIZATION_STATUS.md` for a manuscript-to-Lean theorem ledger.
 - `Erdos81/RootArithmetic.lean` checks the complete exact-constant chain in
   strict root demotion/promotion, including the ceiling and final host-list
   margins.
+- `Erdos81/RootedGraph.lean` partitions graph edges into root, outside, and
+  crossing types and proves the exact `e=choose(p,2)+pq-A+m` identity.
+- `Erdos81/TrianglePacking.lean` turns any edge-disjoint triangle family into
+  an explicit `K_2/K_3` clique partition with exactly `e(G)-2f` blocks.
 - `Erdos81/LocalStability.lean` derives defect and root-displacement control
   from the regularized deficit inequality and checks the final integrality
   step from `Q(n)` to `sharpBound n`.
