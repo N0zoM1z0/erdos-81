@@ -342,5 +342,38 @@ theorem complement_edge_bound_of_chordal {n p : ℕ}
   PerfectElimination.complement_edge_bound_of_hasPEO hp hpn
     (hasPEO_of_chordal G hchordal) hclique
 
+/-- Label-independent form of the chordal missing-pair bound.  This is the
+version used on an induced graph whose vertex type is a finite subtype. -/
+theorem complement_edge_bound_of_chordal_finite
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] {p : ℕ}
+    (hp : 1 ≤ p) (hpn : p ≤ Fintype.card V)
+    (hchordal : Erdos81.IsChordal G)
+    (hclique : ∀ K : Finset V, G.IsClique (K : Set V) → K.card ≤ p) :
+    Nat.choose (Fintype.card V - p + 1) 2 ≤ Gᶜ.edgeFinset.card := by
+  classical
+  let e : Fin (Fintype.card V) ≃ V := (Fintype.equivFin V).symm
+  let H : SimpleGraph (Fin (Fintype.card V)) := G.comap e
+  have hHchordal : Erdos81.IsChordal H := by
+    intro k hk hcycle
+    apply hchordal k hk
+    obtain ⟨f⟩ := hcycle
+    exact ⟨(SimpleGraph.Embedding.comap e.toEmbedding G).comp f⟩
+  have hHclique : PerfectElimination.CliqueOrderAtMost H p := by
+    intro K hK
+    have hmap : G.IsClique ((K.map e.toEmbedding : Finset V) : Set V) := by
+      intro x hx y hy hxy
+      obtain ⟨a, ha, rfl⟩ := Finset.mem_map.mp hx
+      obtain ⟨b, hb, rfl⟩ := Finset.mem_map.mp hy
+      have hab : a ≠ b := fun hab ↦ hxy (congrArg e hab)
+      exact (SimpleGraph.Iso.comap e G).map_adj_iff.mp (hK ha hb hab)
+    simpa using hclique (K.map e.toEmbedding) hmap
+  have hbound := complement_edge_bound_of_chordal hp hpn hHchordal hHclique
+  let ec : Hᶜ ≃g Gᶜ :=
+    { __ := e
+      map_rel_iff' := by simp [H] }
+  rw [ec.card_edgeFinset_eq] at hbound
+  exact hbound
+
 end PEOExistence
 end Erdos81
