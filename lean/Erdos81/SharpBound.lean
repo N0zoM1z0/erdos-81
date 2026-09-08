@@ -56,5 +56,17 @@ theorem floor_Q_eq_sharpBound (n : ℕ) :
     simp only [Arithmetic.Q]
     nlinarith
 
+/-- From order four onward, the exact integer target is at least `n^2/6`. -/
+theorem sq_div_six_le_sharpBound {n : ℕ} (hn : 4 ≤ n) :
+    (n : ℚ) ^ 2 / 6 ≤ (sharpBound n : ℚ) := by
+  have hupper := consecutive_product_le_six_mul_div_add_four n
+  have hsquare : n * n ≤ 6 * sharpBound n := by
+    change n * n ≤ 6 * (n * (n + 1) / 6)
+    have hproduct : n * (n + 1) = n * n + n := by ring
+    omega
+  have hsquareQ : (n : ℚ) * n ≤ 6 * (sharpBound n : ℚ) := by
+    exact_mod_cast hsquare
+  nlinarith
+
 end SharpBound
 end Erdos81

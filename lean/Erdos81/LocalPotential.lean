@@ -8,8 +8,8 @@ import Erdos81.RootDistance
 
 This module closes the quantitative local implication used by the first-entry
 argument.  A chordal graph at normalized split distance below `10^-12` and
-within `10^-30 n^2` of the continuous potential envelope is in fact at split
-distance below one quarter of that radius.
+within `2 * 10^-30 n^2` of the continuous potential envelope is in fact at
+split distance below one quarter of that radius.
 -/
 
 namespace Erdos81
@@ -52,7 +52,7 @@ theorem near_extremal_split_contraction
     (hlarge : 10 ^ 32 ≤ Fintype.card V)
     (hOpt : MixedModel.IsPackingOptimum (G := G) w)
     (hnear : Arithmetic.Q (Fintype.card V : ℚ) -
-        (Fintype.card V : ℚ) ^ 2 / (10 : ℚ) ^ 30 ≤
+        2 * (Fintype.card V : ℚ) ^ 2 / (10 : ℚ) ^ 30 ≤
       MixedModel.potential G w)
     (hclose : FirstEntryGraph.normalizedSplitDistance G <
       (1 : ℚ) / 10 ^ 12) :
@@ -77,12 +77,12 @@ theorem near_extremal_split_contraction
   have hm : 0 ≤ ((outsideEdges G R.root).card : ℚ) := by positivity
   have hA : 0 ≤ (missingIncidences G R.root : ℚ) := by positivity
   have hchain :
-      Arithmetic.Q n - n ^ 2 / (10 : ℚ) ^ 30 ≤
+      Arithmetic.Q n - 2 * n ^ 2 / (10 : ℚ) ^ 30 ≤
         Arithmetic.splitFirstBranch n R.root.card -
           (outsideEdges G R.root).card / 9 -
           missingIncidences G R.root / 2 := by
     calc
-      Arithmetic.Q n - n ^ 2 / (10 : ℚ) ^ 30 ≤
+      Arithmetic.Q n - 2 * n ^ 2 / (10 : ℚ) ^ 30 ≤
           MixedModel.potential G w := by simpa only [n] using hnear
       _ ≤ (P.size : ℚ) := hpotential
       _ ≤ (R.root.card : ℚ) * (outsideVertices R.root).card -
@@ -96,21 +96,21 @@ theorem near_extremal_split_contraction
       (6 * (R.root.card : ℚ) - 2 * n - 1) ^ 2 / 24 +
           (outsideEdges G R.root).card / 9 +
           missingIncidences G R.root / 2 ≤
-        n ^ 2 / (10 : ℚ) ^ 30 := by
+        2 * n ^ 2 / (10 : ℚ) ^ 30 := by
     rw [← Arithmetic.square_identity]
     linarith
   have hdefects :
       ((outsideEdges G R.root).card : ℚ) +
           missingIncidences G R.root ≤
-        9 * (n ^ 2 / (10 : ℚ) ^ 30) :=
+        9 * (2 * n ^ 2 / (10 : ℚ) ^ 30) :=
     LocalStability.defect_sum_le_nine_delta hm hA hdeficit
   have hsquareTerm :
       (6 * (R.root.card : ℚ) - 2 * n - 1) ^ 2 / 24 ≤
-        n ^ 2 / (10 : ℚ) ^ 30 := by
+        2 * n ^ 2 / (10 : ℚ) ^ 30 := by
     nlinarith
   have hdisplacement :
       ((R.root.card : ℚ) - (2 * n + 1) / 6) ^ 2 ≤
-        2 * (n ^ 2 / (10 : ℚ) ^ 30) / 3 :=
+        2 * (2 * n ^ 2 / (10 : ℚ) ^ 30) / 3 :=
     LocalStability.root_displacement_squared hsquareTerm
   have hdistanceNat :=
     RootDistance.splitEditDistance_le_rootDefects_add_roles
@@ -135,14 +135,73 @@ theorem near_extremal_split_contraction
     nlinarith
   unfold FirstEntryGraph.normalizedSplitDistance
   apply LocalStability.manuscript_contraction_numerics
-    (n := n) (delta := n ^ 2 / (10 : ℚ) ^ 30)
+    (n := n) (delta := 2 * n ^ 2 / (10 : ℚ) ^ 30)
     (defects := ((outsideEdges G R.root).card : ℚ) +
       missingIncidences G R.root)
     (displacement := (R.root.card : ℚ) - (2 * n + 1) / 6)
   · dsimp only [n]
     exact_mod_cast hlarge
-  · rfl
+  · exact le_rfl
   · exact hdefects
+  · exact hdisplacement
+  · simpa only [n] using hdistance
+
+/-- A near-extremal complete-split endpoint is already inside the contracted
+radius; here the defect terms vanish and only the root-role imbalance remains. -/
+theorem terminal_near_extremal_split_contraction
+    (K : Finset V) {w : ℚ}
+    (hlarge : 10 ^ 32 ≤ Fintype.card V)
+    (hOpt : MixedModel.IsPackingOptimum (G := completeSplitGraph K) w)
+    (hnear : Arithmetic.Q (Fintype.card V : ℚ) -
+        2 * (Fintype.card V : ℚ) ^ 2 / (10 : ℚ) ^ 30 ≤
+      MixedModel.potential (completeSplitGraph K) w) :
+    FirstEntryGraph.normalizedSplitDistance (completeSplitGraph K) <
+      ((1 : ℚ) / 10 ^ 12) / 4 := by
+  let n : ℚ := Fintype.card V
+  have hn100 : 100 ≤ Fintype.card V := by omega
+  have hdeltaNonneg : (0 : ℚ) ≤ 2 / 10 ^ 30 := by positivity
+  have hdeltaSmall : (2 : ℚ) / 10 ^ 30 ≤ 1 / 40 := by norm_num
+  have hnear' : Arithmetic.Q (Fintype.card V : ℚ) -
+      ((2 : ℚ) / 10 ^ 30) * (Fintype.card V : ℚ) ^ 2 ≤
+        MixedModel.potential (completeSplitGraph K) w := by
+    nlinarith [hnear]
+  obtain ⟨-, -, hsquare⟩ :=
+    CompleteSplitPotential.near_extremal_forces_firstRegime K w
+      ((2 : ℚ) / 10 ^ 30) hOpt hn100 hdeltaNonneg hdeltaSmall hnear'
+  have hsquareTerm :
+      (6 * (K.card : ℚ) - 2 * n - 1) ^ 2 / 24 ≤
+        2 * n ^ 2 / (10 : ℚ) ^ 30 := by
+    dsimp only [n] at hsquare ⊢
+    nlinarith
+  have hdisplacement :
+      ((K.card : ℚ) - (2 * n + 1) / 6) ^ 2 ≤
+        2 * (2 * n ^ 2 / (10 : ℚ) ^ 30) / 3 :=
+    LocalStability.root_displacement_squared hsquareTerm
+  have hdistanceNat :=
+    RootDistance.splitEditDistance_completeSplitGraph_le_roles K
+  have hdistanceQ :
+      (splitEditDistance (completeSplitGraph K) : ℚ) ≤
+        (Nat.dist K.card (Fintype.card V / 3) : ℚ) * n := by
+    dsimp only [n]
+    exact_mod_cast hdistanceNat
+  have hroles :=
+    LocalRootArithmetic.cast_dist_div_three_le_abs_displacement
+      (Fintype.card V) K.card
+  have hnNonneg : (0 : ℚ) ≤ n := by positivity
+  have hroleProduct := mul_le_mul_of_nonneg_right hroles hnNonneg
+  have hdistance :
+      (splitEditDistance (completeSplitGraph K) : ℚ) ≤
+        0 + n * (|(K.card : ℚ) - (2 * n + 1) / 6| + 1) := by
+    nlinarith
+  unfold FirstEntryGraph.normalizedSplitDistance
+  apply LocalStability.manuscript_contraction_numerics
+    (n := n) (delta := 2 * n ^ 2 / (10 : ℚ) ^ 30)
+    (defects := 0)
+    (displacement := (K.card : ℚ) - (2 * n + 1) / 6)
+  · dsimp only [n]
+    exact_mod_cast hlarge
+  · exact le_rfl
+  · positivity
   · exact hdisplacement
   · simpa only [n] using hdistance
 

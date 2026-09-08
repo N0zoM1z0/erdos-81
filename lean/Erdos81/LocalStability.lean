@@ -60,7 +60,7 @@ into a strict contraction from radius `10^-12` to radius `10^-12 / 4`. -/
 theorem manuscript_contraction_numerics
     {n delta defects displacement distance : ℚ}
     (hn : (10 : ℚ) ^ 32 ≤ n)
-    (hdelta : delta = n ^ 2 / (10 : ℚ) ^ 30)
+    (hdelta : delta ≤ 2 * n ^ 2 / (10 : ℚ) ^ 30)
     (hdefects : defects ≤ 9 * delta)
     (hdisplacement : displacement ^ 2 ≤ 2 * delta / 3)
     (hdistance : distance ≤ defects + n * (|displacement| + 1)) :
@@ -77,14 +77,12 @@ theorem manuscript_contraction_numerics
     have hsquare :=
       (sq_le_sq₀ htargetNonneg (abs_nonneg displacement)).2 hlarge
     rw [sq_abs] at hsquare
-    rw [hdelta] at hdisplacement
     nlinarith
   have hmul := mul_lt_mul_of_pos_left habsSmall hn0
   have hnProduct : (10 : ℚ) ^ 32 * n ≤ n * n :=
     mul_le_mul_of_nonneg_right hn (le_of_lt hn0)
   have hnSmall : n ≤ n ^ 2 / (10 : ℚ) ^ 32 := by
     nlinarith
-  rw [hdelta] at hdefects
   apply (div_lt_iff₀ hn2pos).2
   nlinarith
 

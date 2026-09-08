@@ -92,6 +92,18 @@ theorem first_entry_numerics :
       (1 / 10 ^ 12) / 4 := by
   norm_num
 
+/-- At manuscript order, the linear offset between `Q(n)` and `n^2/6` is
+absorbed by one additional `10^-30 n^2` unit along the copying path. -/
+theorem Q_sub_two_eta_le_near_threshold {n : ℚ}
+    (hn : (10 : ℚ) ^ 32 ≤ n) :
+    Q n - 2 * n ^ 2 / (10 : ℚ) ^ 30 ≤
+      n ^ 2 / 6 - n ^ 2 / (10 : ℚ) ^ 30 := by
+  unfold Q
+  have hn0 : 0 < n := lt_of_lt_of_le (by positivity) hn
+  have hproduct : (10 : ℚ) ^ 32 * n ≤ n * n :=
+    mul_le_mul_of_nonneg_right hn hn0.le
+  nlinarith
+
 /-- The near-extremal threshold leaves room for the transfer error. -/
 theorem half_threshold_lt_threshold :
     (1 : ℚ) / 10 ^ 30 / 2 < 1 / 10 ^ 30 := by

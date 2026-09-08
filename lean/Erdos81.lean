@@ -19,6 +19,7 @@ import Erdos81.EquitableEdgeColoring
 import Erdos81.FiniteLP
 import Erdos81.FirstEntry
 import Erdos81.FirstEntryGraph
+import Erdos81.GlobalStability
 import Erdos81.HostedTriangles
 import Erdos81.IntegralFractional
 import Erdos81.IntegralPacking

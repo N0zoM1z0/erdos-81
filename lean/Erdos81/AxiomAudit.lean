@@ -21,6 +21,7 @@ uses classical finite-set reasoning.
 
 #print axioms Erdos81.Arithmetic.square_identity
 #print axioms Erdos81.Arithmetic.first_entry_numerics
+#print axioms Erdos81.Arithmetic.Q_sub_two_eta_le_near_threshold
 #print axioms Erdos81.Arithmetic.second_branch_square_identity
 #print axioms Erdos81.Arithmetic.far_case_closure
 #print axioms Erdos81.Chordal.commonNeighbors_isClique_of_chordal
@@ -73,6 +74,8 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.LocalRegularization.exists_strict_partition_of_split_close
 #print axioms Erdos81.LocalRegularization.exists_partition_le_sharpBound_of_split_close
 #print axioms Erdos81.LocalPotential.near_extremal_split_contraction
+#print axioms Erdos81.LocalPotential.terminal_near_extremal_split_contraction
+#print axioms Erdos81.GlobalStability.near_extremal_implies_close
 #print axioms Erdos81.MixedModel.weak_duality
 #print axioms Erdos81.PerfectElimination.card_edgeFinset_eq_sum_laterNeighbors
 #print axioms Erdos81.PerfectElimination.isChordal_of_peo
@@ -92,6 +95,7 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.RootArithmetic.final_host_margin_nonnegative
 #print axioms Erdos81.RootDistance.exists_resized_completeSplitGraph
 #print axioms Erdos81.RootDistance.splitEditDistance_le_rootDefects_add_roles
+#print axioms Erdos81.RootDistance.splitEditDistance_completeSplitGraph_le_roles
 #print axioms Erdos81.RootDemotion.outsideEdges_retained_le
 #print axioms Erdos81.RootOptimization.optimizedRoot_bounds
 #print axioms Erdos81.RootRegularization.exists_strict_partition
@@ -99,6 +103,8 @@ uses classical finite-set reasoning.
 #print axioms Erdos81.RootedGraph.edgeFinset_partition
 #print axioms Erdos81.RootedGraph.edge_count_identity
 #print axioms Erdos81.SharpBound.floor_Q_eq_sharpBound
+#print axioms Erdos81.SharpBound.sq_div_six_le_sharpBound
+#print axioms Erdos81.Symmetrization.FinePath.chordal_at
 #print axioms Erdos81.SplitDual.exact_minimum
 #print axioms Erdos81.SplitDual.potential_three_branch_formula
 #print axioms Erdos81.TrianglePacking.exists_partition

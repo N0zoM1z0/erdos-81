@@ -301,5 +301,19 @@ theorem splitEditDistance_le_rootDefects_add_roles
       rw [edgeEditDistance_completeSplitGraph G P hP]
       exact Nat.add_le_add_left hroles _
 
+/-- For an arbitrary complete-split graph, only the root-role imbalance is
+needed to reach the balanced complete-split family. -/
+theorem splitEditDistance_completeSplitGraph_le_roles (P : Finset V) :
+    splitEditDistance (completeSplitGraph P) ≤
+      Nat.dist P.card (Fintype.card V / 3) * Fintype.card V := by
+  classical
+  obtain ⟨A, hAcard, hroles⟩ :=
+    exists_resized_completeSplitGraph P
+      (k := Fintype.card V / 3) (by omega)
+  have htemplate : completeSplitGraph A ∈ splitTemplates (V := V) :=
+    mem_splitTemplates.mpr ⟨A, hAcard, rfl⟩
+  exact (distanceToFamily_le (completeSplitGraph P) (completeSplitGraph A)
+    splitTemplates splitTemplates_nonempty htemplate).trans hroles
+
 end RootDistance
 end Erdos81

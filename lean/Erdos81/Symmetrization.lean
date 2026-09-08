@@ -285,21 +285,52 @@ structure FinePath (value : SimpleGraph V → ℚ)
   finish : graph length = H
   step : ∀ i : ℕ, i < length → ImprovingCopy value (graph i) (graph (i + 1))
 
-/-- The certified potential is nondecreasing along a concrete fine path. -/
-theorem FinePath.certifiedPotential_le
+/-- The certified potential is nondecreasing from the initial graph to every
+index of a fine path. -/
+theorem FinePath.certifiedPotential_le_at
     {value : SimpleGraph V → ℚ} {G H : SimpleGraph V}
-    (P : FinePath value G H) :
-    certifiedPotential value G ≤ certifiedPotential value H := by
-  have hprefix : ∀ i : ℕ, i ≤ P.length →
-      certifiedPotential value (P.graph 0) ≤
-        certifiedPotential value (P.graph i) := by
-    intro i hi
+    (P : FinePath value G H) (i : ℕ) (hi : i ≤ P.length) :
+    certifiedPotential value G ≤ certifiedPotential value (P.graph i) := by
+  have hprefix : certifiedPotential value (P.graph 0) ≤
+      certifiedPotential value (P.graph i) := by
     induction i with
     | zero => exact le_rfl
     | succ i ih =>
         exact (ih (by omega)).trans
           (certifiedPotential_le_of_improvingCopy (P.step i (by omega)))
-  simpa only [P.start, P.finish] using hprefix P.length le_rfl
+  simpa only [P.start] using hprefix
+
+/-- Chordality persists at every index of a fine path. -/
+theorem FinePath.chordal_at
+    {value : SimpleGraph V → ℚ} {G H : SimpleGraph V}
+    (P : FinePath value G H) (hG : IsChordal G)
+    (i : ℕ) (hi : i ≤ P.length) : IsChordal (P.graph i) := by
+  induction i with
+  | zero => simpa only [P.start] using hG
+  | succ i ih =>
+      have hprev := ih (by omega)
+      obtain ⟨s, t, -, -, hs, -, hnext, -⟩ := P.step i (by omega)
+      rw [hnext]
+      exact chordal_replaceVertex_of_simplicial_source
+        (G := P.graph i) (s := s) (t := t) hprev hs
+
+/-- Forgetting the improvement score leaves exactly the legal replacement
+step required by the graph first-entry barrier. -/
+theorem FinePath.copy_step
+    {value : SimpleGraph V → ℚ} {G H : SimpleGraph V}
+    (P : FinePath value G H) (i : ℕ) (hi : i < P.length) :
+    ∃ a b : V, a ≠ b ∧ ¬(P.graph i).Adj a b ∧
+      P.graph (i + 1) = (P.graph i).replaceVertex a b := by
+  obtain ⟨a, b, hab, hnab, -, -, hnext, -⟩ := P.step i hi
+  exact ⟨a, b, hab, hnab, hnext⟩
+
+/-- The certified potential is nondecreasing along a concrete fine path. -/
+theorem FinePath.certifiedPotential_le
+    {value : SimpleGraph V → ℚ} {G H : SimpleGraph V}
+    (P : FinePath value G H) :
+    certifiedPotential value G ≤ certifiedPotential value H := by
+  simpa only [P.finish] using
+    P.certifiedPotential_le_at P.length le_rfl
 
 /-- Every reflexive-transitive improvement witness has a concrete fine path. -/
 theorem finePath_of_improvingReachable
